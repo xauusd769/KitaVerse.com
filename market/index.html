@@ -57,6 +57,11 @@
         
         .nav-item { transition: all 0.2s; color: #94a3b8; }
         .nav-item.active { color: #2D6A4F; }
+        
+        /* Dropdown Animation */
+        #rider-dropdown { transition: all 0.2s ease-in-out; transform-origin: top right; }
+        .dropdown-hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
+        .dropdown-visible { opacity: 1; transform: scale(1); pointer-events: auto; }
     </style>
 </head>
 <body class="text-slate-800 antialiased selection:bg-km-main selection:text-white">
@@ -65,7 +70,7 @@
     <div class="mobile-container" id="app-wrapper">
         
         <!-- HEADER SECTION -->
-        <header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-gray-100">
+        <header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-gray-100 relative">
             <!-- Top Bar KEMAS -->
             <div class="bg-km-dark text-white text-[10px] py-1.5 px-3 flex justify-center items-center gap-1.5">
                 <span class="text-yellow-300">✨</span>
@@ -73,14 +78,29 @@
             </div>
 
             <!-- Hub Rider Banner -->
-            <div class="bg-orange-50 border-b border-orange-100 p-1.5 flex justify-between items-center px-3">
+            <div class="bg-orange-50 border-b border-orange-100 p-1.5 flex justify-between items-center px-3 relative">
                 <div class="flex items-center gap-1.5 text-[10px] font-bold text-orange-900 truncate">
                     <span>🛵</span> 
                     <span class="truncate">Hub Rider: Lalamove &bull; BungkusIt &bull; MISI</span>
                 </div>
-                <button class="bg-km-rider text-white rounded-md px-2 py-0.5 text-[9px] font-black shadow-sm shrink-0 active:scale-95">
-                    Daftar &rarr;
-                </button>
+                <div class="relative">
+                    <button onclick="app.toggleRiderDropdown()" class="bg-km-rider text-white rounded-md px-2 py-0.5 text-[9px] font-black shadow-sm shrink-0 active:scale-95 flex items-center gap-1">
+                        Daftar <span class="text-[7px]">▼</span>
+                    </button>
+                    <!-- Dropdown Menu Rider -->
+                    <div id="rider-dropdown" class="dropdown-hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-orange-100 overflow-hidden z-50">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest px-3 py-2 border-b border-slate-50 bg-slate-50">Portal Pendaftaran Rider</p>
+                        <a href="https://www.lalamove.com/ms-my/driver" target="_blank" class="block px-4 py-3 text-xs font-bold text-slate-700 hover:bg-orange-50 active:bg-orange-100 border-b border-slate-50 transition-colors flex items-center gap-2">
+                            <span class="text-orange-500">🚚</span> Lalamove
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.bungkusit.rider" target="_blank" class="block px-4 py-3 text-xs font-bold text-slate-700 hover:bg-orange-50 active:bg-orange-100 border-b border-slate-50 transition-colors flex items-center gap-2">
+                            <span class="text-blue-500">📦</span> BungkusIt (App)
+                        </a>
+                        <a href="https://misirakyat.com/join_rider" target="_blank" class="block px-4 py-3 text-xs font-bold text-slate-700 hover:bg-orange-50 active:bg-orange-100 transition-colors flex items-center gap-2">
+                            <span class="text-red-500">🛵</span> MISI Rakyat
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <!-- Logo & Top Actions -->
@@ -183,7 +203,7 @@
                 
                 <div class="bg-white border-b border-gray-200 p-5 mb-3 flex flex-col items-center text-center relative overflow-hidden">
                     <div class="w-20 h-20 bg-km-main text-white rounded-full flex items-center justify-center text-3xl font-black shadow-md border-4 border-white mb-2 shrink-0 z-10" id="shop-logo-placeholder">🏪</div>
-                    <img id="shop-logo-img" class="hidden w-20 h-20 rounded-full object-cover border-4 border-white shadow-md mb-2 shrink-0 z-10">
+                    <img id="shop-logo-img" loading="lazy" class="hidden w-20 h-20 rounded-full object-cover border-4 border-white shadow-md mb-2 shrink-0 z-10">
                     <div class="z-10">
                         <h2 id="shop-name" class="font-black text-slate-800 text-lg leading-tight mb-1">Nama Kedai</h2>
                         <p id="shop-location" class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md inline-block"></p>
@@ -384,7 +404,7 @@
                     </div>
                     
                     <div id="chk-qr-sec" class="bg-white p-5 rounded-2xl border border-slate-200 text-center shadow-sm">
-                        <img id="chk-qr-img" class="w-40 h-40 object-cover mx-auto rounded-xl shadow-sm hidden mb-4 border border-slate-100">
+                        <img id="chk-qr-img" loading="lazy" class="w-40 h-40 object-cover mx-auto rounded-xl shadow-sm hidden mb-4 border border-slate-100">
                         <p id="chk-no-qr" class="text-red-500 text-xs font-bold hidden mb-4 p-4 bg-red-50 rounded-xl border border-red-100">Penjual belum muat naik QR.</p>
                         <input type="file" id="chk-receipt" accept="image/*" class="w-full text-[10px] font-bold file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-km-main/10 file:text-km-main bg-slate-50 p-1.5 rounded-xl border border-slate-200 cursor-pointer">
                     </div>
@@ -426,7 +446,27 @@
             showToast: (msg) => { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); },
             showAlert: (msg) => { document.getElementById('alert-msg').innerText = msg; app.openModal('alert-modal'); },
             closeModal: (id) => document.getElementById(id).classList.add('hidden'), openModal: (id) => document.getElementById(id).classList.remove('hidden'),
-            resizeImage: (file) => new Promise((res, rej) => { if(!file.type.match(/image.*/)) rej("Bukan gambar"); const r=new FileReader(); r.onload=(e)=>{const img=new Image(); img.onload=()=>{const c=document.createElement('canvas'); const ctx=c.getContext('2d'); let w=img.width, h=img.height; if(w>400){h*=400/w;w=400;} c.width=w;c.height=h;ctx.drawImage(img,0,0,w,h); res(c.toDataURL('image/jpeg',0.5));}; img.src=e.target.result;}; r.readAsDataURL(file); }),
+            
+            // LAZY LOADING COMPRESSION FIX
+            resizeImage: (file) => new Promise((res, rej) => { 
+                if(!file.type.match(/image.*/)) rej("Bukan gambar"); 
+                const r=new FileReader(); 
+                r.onload=(e)=>{
+                    const img=new Image(); 
+                    img.onload=()=>{
+                        const c=document.createElement('canvas'); const ctx=c.getContext('2d'); 
+                        let w=img.width, h=img.height; 
+                        // Mampatan Maksimum: Hadkan lebar ke 250px sahaja
+                        if(w>250){h*=250/w;w=250;} 
+                        c.width=w;c.height=h;ctx.drawImage(img,0,0,w,h); 
+                        // Mampatan Kualiti: 0.3 untuk kelajuan pantas Firebase
+                        res(c.toDataURL('image/jpeg',0.3));
+                    }; 
+                    img.src=e.target.result;
+                }; 
+                r.readAsDataURL(file); 
+            }),
+            
             copyTextToClipboard: (text, successMsg = "Disalin!") => { const tempInput = document.createElement("textarea"); tempInput.value = text; document.body.appendChild(tempInput); tempInput.select(); document.execCommand("copy"); document.body.removeChild(tempInput); if(successMsg) app.showToast(successMsg); },
             openWhatsAppLink: (text, phone = null) => { const url = phone ? `https://api.whatsapp.com/send?phone=6${phone.replace(/\D/g, '')}&text=${encodeURIComponent(text)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`; window.open(url, '_blank'); },
 
@@ -456,6 +496,29 @@
                     actions += `<button onclick="app.closeModal('account-modal'); app.logout()" class="w-full bg-red-50 text-red-600 font-bold py-3 rounded-xl border border-red-200 mt-2">🚪 Log Keluar</button>`;
                     document.getElementById('acc-modal-actions').innerHTML = actions;
                     app.openModal('account-modal');
+                }
+            },
+            
+            // Rider Dropdown Logic
+            toggleRiderDropdown: () => {
+                const dropdown = document.getElementById('rider-dropdown');
+                if (dropdown.classList.contains('dropdown-hidden')) {
+                    dropdown.classList.remove('dropdown-hidden');
+                    dropdown.classList.add('dropdown-visible');
+                    
+                    // Listener to close if clicked outside
+                    const closeDropdown = (e) => {
+                        if (!e.target.closest('#rider-dropdown') && !e.target.closest('button[onclick="app.toggleRiderDropdown()"]')) {
+                            dropdown.classList.add('dropdown-hidden');
+                            dropdown.classList.remove('dropdown-visible');
+                            document.removeEventListener('click', closeDropdown);
+                        }
+                    };
+                    // Delay adding listener slightly so the click that opened it doesn't immediately close it
+                    setTimeout(() => document.addEventListener('click', closeDropdown), 10);
+                } else {
+                    dropdown.classList.add('dropdown-hidden');
+                    dropdown.classList.remove('dropdown-visible');
                 }
             },
 
@@ -545,11 +608,12 @@
                         if(cat && p.category!==cat) return false; return true;
                     }).sort((a,b)=>b.timestamp-a.timestamp);
                     
+                    // Added loading="lazy" to product images here
                     grid.innerHTML = prods.length ? prods.map(p=>{
                         const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp); const sNm = slr?.shopName||'Peniaga'; const loc = slr?.state?`${slr.state}`:'Malaysia';
                         return `
                         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative pb-2">
-                            <div class="h-32 bg-slate-100 relative cursor-pointer" onclick="app.viewSingleShop('${p.sellerWhatsapp}')"><img src="${p.image}" class="w-full h-full object-cover"></div>
+                            <div class="h-32 bg-slate-100 relative cursor-pointer" onclick="app.viewSingleShop('${p.sellerWhatsapp}')"><img src="${p.image}" loading="lazy" decoding="async" class="w-full h-full object-cover"></div>
                             <div class="p-2 flex-1 flex flex-col">
                                 <h3 class="font-extrabold text-slate-800 text-[11px] mb-1 line-clamp-2 leading-tight h-8" onclick="app.viewSingleShop('${p.sellerWhatsapp}')">${p.name}</h3>
                                 <div class="flex items-center gap-1 text-[9px] text-slate-500 mb-1"><span class="font-black text-km-main text-xs">RM ${p.price.toFixed(2)}</span></div>
@@ -572,7 +636,7 @@
                 else if(t==='kursus') {
                     grid.className = "grid grid-cols-1 gap-3 px-3";
                     const crs = app.state.data.courses.filter(c => { if(q && !c.title.toLowerCase().includes(q)) return false; return true; });
-                    grid.innerHTML = crs.length ? crs.map(c=>`<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?`<img src="${c.image}" class="w-full h-full object-cover rounded-xl">`:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-sm leading-tight mb-1">${c.title}</h3><p class="text-[10px] text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${parseFloat(c.fee).toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${c.title}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30">Daftar</button></div></div></div>`).join('') : '<div class="text-center py-10 bg-white rounded-2xl border border-slate-200"><span class="text-4xl opacity-30 block mb-2">🎓</span><p class="text-xs font-bold text-slate-500">Tiada kursus dijadualkan.</p></div>';
+                    grid.innerHTML = crs.length ? crs.map(c=>`<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?`<img src="${c.image}" loading="lazy" class="w-full h-full object-cover rounded-xl">`:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-sm leading-tight mb-1">${c.title}</h3><p class="text-[10px] text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${parseFloat(c.fee).toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${c.title}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30">Daftar</button></div></div></div>`).join('') : '<div class="text-center py-10 bg-white rounded-2xl border border-slate-200"><span class="text-4xl opacity-30 block mb-2">🎓</span><p class="text-xs font-bold text-slate-500">Tiada kursus dijadualkan.</p></div>';
                 }
                 else if(t==='kedai') {
                     grid.className = "grid grid-cols-2 gap-3 px-3";
@@ -581,7 +645,7 @@
                     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-pointer active:scale-95 transition-transform flex flex-col h-full" onclick="app.viewSingleShop('${sl.id}')">
                         <div class="h-12 bg-gradient-to-r from-slate-700 to-slate-800 relative"><div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwaDh2OEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')]"></div></div>
                         <div class="px-2 pb-3 relative flex-1 flex flex-col items-center text-center -mt-6">
-                            <div class="w-12 h-12 bg-white rounded-full p-1 shadow-sm mb-2 z-10"><div class="w-full h-full bg-slate-100 rounded-full flex justify-center items-center text-lg overflow-hidden">${sl.storeLogo ? `<img src="${sl.storeLogo}" class="w-full h-full object-cover">` : '🏪'}</div></div>
+                            <div class="w-12 h-12 bg-white rounded-full p-1 shadow-sm mb-2 z-10"><div class="w-full h-full bg-slate-100 rounded-full flex justify-center items-center text-lg overflow-hidden">${sl.storeLogo ? `<img src="${sl.storeLogo}" loading="lazy" class="w-full h-full object-cover">` : '🏪'}</div></div>
                             <h4 class="font-extrabold text-slate-800 text-[11px] uppercase line-clamp-2 leading-tight mb-1">${sl.shopName || sl.id}</h4>
                             <p class="text-[9px] bg-slate-50 border border-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold mb-2">${sl.state || 'Malaysia'}</p>
                             <div class="mt-auto w-full border-t border-slate-100 pt-2"><p class="text-[10px] text-km-light font-black">🛍️ ${c} Produk</p></div>
@@ -599,9 +663,10 @@
                 let iH=''; if(slr.coverage) iH+=`<div><span class="text-slate-400 text-[9px] uppercase tracking-wider block">🚚 Liputan:</span> <span class="font-black text-slate-700">${slr.coverage}</span></div>`; if(slr.codCharge!==undefined) iH+=`<div><span class="text-slate-400 text-[9px] uppercase tracking-wider block">💰 Caj COD:</span> <span class="font-black text-slate-700">${slr.codCharge>0?`RM${slr.codCharge}`:'Percuma'}</span></div>`; document.getElementById('shop-info-box').innerHTML=iH||'<p class="text-center text-slate-400 w-full col-span-2">Tiada info tambahan.</p>';
                 
                 const prods = app.state.data.products.filter(p=>p.sellerWhatsapp===sId);
+                // Added loading="lazy" to products inside single shop view
                 document.getElementById('single-shop-products').innerHTML = prods.length ? prods.map(p=>`
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col pb-2">
-                    <div class="h-32 bg-slate-100"><img src="${p.image}" class="w-full h-full object-cover"></div>
+                    <div class="h-32 bg-slate-100"><img src="${p.image}" loading="lazy" decoding="async" class="w-full h-full object-cover"></div>
                     <div class="p-2 flex-1 flex flex-col">
                         <h3 class="font-extrabold text-slate-800 text-[11px] line-clamp-2 mb-1 h-8">${p.name}</h3>
                         <span class="font-black text-km-main text-xs mb-2">RM ${p.price.toFixed(2)}</span>
