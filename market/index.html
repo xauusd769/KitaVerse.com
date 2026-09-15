@@ -144,6 +144,9 @@
                     <p class="text-sm font-bold text-gray-800">Sila tunggu...</p>
                 </div>
             </div>
+            
+            <!-- Tempat memaparkan ralat (jika ada masalah sistem) -->
+            <div id="system-error-msg" class="hidden bg-red-100 text-red-700 p-3 m-3 rounded-xl text-xs font-bold border border-red-200"></div>
 
             <!-- MOD PEMBELI -->
             <div id="buyer-section" class="pb-24">
@@ -232,7 +235,8 @@
                         <div>
                             <div class="flex justify-between items-end mb-1.5">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide">Kata Laluan</label>
-                                <a href="#" onclick="app.showResetPwd()" class="text-[11px] font-bold text-red-500 hover:text-red-600 transition-colors">Lupa Laluan?</a>
+                                <!-- BUTTON RASMI UNTUK LUPA KATA LALUAN (ANTI-CRASH) -->
+                                <button type="button" onclick="app.showResetPwd()" class="text-[11px] font-bold text-red-500 hover:text-red-600 transition-colors bg-transparent border-none p-0 cursor-pointer outline-none">Lupa Kata Laluan?</button>
                             </div>
                             <input type="password" id="auth-pwd" placeholder="••••••••" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-km-main outline-none text-base font-bold transition-colors">
                         </div>
@@ -453,8 +457,20 @@
         const firebaseApp = initializeApp(firebaseConfig); const auth = getAuth(firebaseApp); const db = getFirestore(firebaseApp);
 
         function hashString(str) { let hash=0; for(let i=0;i<str.length;i++){ hash=(hash<<5)-hash+str.charCodeAt(i); hash|=0; } return hash.toString(16); }
+        
         // Pembersih String Khas untuk Syntax Error
-        const safeStr = (s) => (s||'').toString().replace(/['"\n\r]/g, ' ');
+        const safeStr = (s) => (s||'').toString().replace(/['"\n\r\t\\]/g, ' ').trim();
+
+        // Pembersih Harga Tahan Lasak (Anti-Crash)
+        const safePrice = (p) => {
+            if(p === undefined || p === null) return 0.00;
+            if(typeof p === 'number') return isNaN(p) ? 0.00 : p;
+            if(typeof p === 'string') {
+                const num = parseFloat(p.replace(/[^0-9.-]+/g,""));
+                return isNaN(num) ? 0.00 : num;
+            }
+            return 0.00;
+        };
 
         window.app = {
             state: {
@@ -463,6 +479,8 @@
                 malaysiaDistricts: { "Johor": ["Batu Pahat", "Johor Bahru", "Kluang", "Kota Tinggi", "Kulai", "Mersing", "Muar", "Pontian", "Segamat", "Tangkak"], "Kedah": ["Baling", "Bandar Baharu", "Kota Setar", "Kuala Muda", "Kubang Pasu", "Kulim", "Langkawi", "Padang Terap", "Pendang", "Pokok Sena", "Sik", "Yan"], "Kelantan": ["Bachok", "Gua Musang", "Jeli", "Kota Bharu", "Kuala Krai", "Machang", "Pasir Mas", "Pasir Puteh", "Tanah Merah", "Tumpat"], "Melaka": ["Alor Gajah", "Jasin", "Melaka Tengah"], "Negeri Sembilan": ["Jelebu", "Jempol", "Kuala Pilah", "Port Dickson", "Rembau", "Seremban", "Tampin"], "Pahang": ["Bera", "Bentong", "Cameron Highlands", "Jerantut", "Kuantan", "Lipis", "Maran", "Pekan", "Raub", "Rompin", "Temerloh"], "Perak": ["Bagan Datuk", "Batang Padang", "Hilir Perak", "Hulu Perak", "Kampar", "Kerian", "Kinta", "Kuala Kangsar", "Larut Matang Selama", "Manjung", "Muallim", "Perak Tengah"], "Perlis": ["Arau", "Kangar", "Padang Besar"], "Pulau Pinang": ["Barat Daya", "Seberang Perai Selatan", "Seberang Perai Tengah", "Seberang Perai Utara", "Timur Laut"], "Sabah": ["Beaufort", "Beluran", "Keningau", "Kinabatangan", "Kota Belud", "Kota Kinabalu", "Kota Marudu", "Kuala Penyu", "Kudat", "Kunak", "Lahad Datu", "Nabawan", "Papar", "Penampang", "Putatan", "Pitas", "Ranau", "Sandakan", "Semporna", "Sipitang", "Tambunan", "Tawau", "Tenom", "Tongod", "Tuaran"], "Sarawak": ["Asajaya", "Bau", "Belaga", "Beluru", "Betong", "Bintulu", "Bukit Mabong", "Dalat", "Daro", "Julau", "Kabong", "Kanowit", "Kapit", "Kuching", "Lawas", "Limbang", "Lubok Antu", "Lundu", "Marudi", "Matu", "Meradong", "Miri", "Mukah", "Pakan", "Pusa", "Samarahan", "Saratok", "Sarikei", "Sebauh", "Selangau", "Serian", "Sibu", "Simunjan", "Song", "Sri Aman", "Subis", "Tanjung Manis", "Tatau", "Tebedu", "Telang Usan"], "Selangor": ["Gombak", "Hulu Langat", "Hulu Selangor", "Klang", "Kuala Langat", "Kuala Selangor", "Petaling", "Sabak Bernam", "Sepang"], "Terengganu": ["Besut", "Dungun", "Hulu Terengganu", "Kemaman", "Kuala Nerus", "Kuala Terengganu", "Marang", "Setiu"], "W.P. Kuala Lumpur": ["Batu", "Bukit Bintang", "Bandar Tun Razak", "Cheras", "Kepong", "Lembah Pantai", "Segambut", "Seputeh", "Titiwangsa", "Wangsa Maju"], "W.P. Labuan": ["Labuan"], "W.P. Putrajaya": ["Putrajaya"] }
             },
 
+            showErrorUI: (msg) => { const box=document.getElementById('system-error-msg'); box.innerText=`⚠️ Ralat Sistem:\n${msg}`; box.classList.remove('hidden'); },
+            hideErrorUI: () => { document.getElementById('system-error-msg').classList.add('hidden'); },
             showToast: (msg) => { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); },
             showAlert: (msg) => { document.getElementById('alert-msg').innerText = msg; app.openModal('alert-modal'); },
             closeModal: (id) => document.getElementById(id).classList.remove('active'), 
@@ -525,18 +543,16 @@
             setupListeners: () => {
                 const errHandler = (err) => {
                     console.error("Firebase DB Error:", err);
-                    app.showToast("Ralat Pangkalan Data. Hubungi admin.");
-                    const grid = document.getElementById('dynamic-grid-container');
-                    if (grid) { grid.innerHTML = `<div class="col-span-2 p-4 bg-red-50 text-red-600 rounded-xl font-bold text-center border border-red-200 text-xs shadow-sm">Akses Firebase Ditolak: ${err.message}</div>`; }
+                    app.showErrorUI(`Akses Pangkalan Data Terganggu: ${err.message}`);
                 };
 
                 // Clear previous unsubs to prevent duplicate listeners if called multiple times
                 app.state.unsubs.forEach(u => u());
                 app.state.unsubs = [];
 
-                app.state.unsubs.push(onSnapshot(collection(db, 'sellers'), s => { app.state.data.sellers = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
-                app.state.unsubs.push(onSnapshot(collection(db, 'products'), s => { app.state.data.products = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
-                app.state.unsubs.push(onSnapshot(collection(db, 'courses'), s => { app.state.data.courses = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
+                app.state.unsubs.push(onSnapshot(collection(db, 'sellers'), s => { app.hideErrorUI(); app.state.data.sellers = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
+                app.state.unsubs.push(onSnapshot(collection(db, 'products'), s => { app.hideErrorUI(); app.state.data.products = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
+                app.state.unsubs.push(onSnapshot(collection(db, 'courses'), s => { app.hideErrorUI(); app.state.data.courses = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
                 
                 if(app.state.appUser) {
                     app.state.unsubs.push(onSnapshot(collection(db, 'orders'), s => { app.state.data.orders = s.docs.map(d=>({id: d.id, ...d.data()})); if(app.state.currentMode==='seller') app.renderSellerDashboard(); }, errHandler));
@@ -627,6 +643,7 @@
 
             renderMarketplace: () => {
                 try {
+                    app.hideErrorUI(); // Reset ralat
                     if(app.state.currentMode !== 'buyer' || document.getElementById('buyer-section').classList.contains('hidden')) return;
                     const t = app.state.currentMainTab; const grid = document.getElementById('dynamic-grid-container');
                     const q = (document.getElementById('global-search')?.value||'').toLowerCase(); const s = document.getElementById('global-state')?.value; const d = document.getElementById('global-district')?.value;
@@ -645,7 +662,7 @@
                             const sNm = slr?.shopName||'Peniaga'; const loc = slr?.state?`${slr.state}`:'Malaysia';
                             
                             // Anti-Crash Data Parser (Super Safe)
-                            const pPrice = parseFloat(p.price) || 0; 
+                            const pPrice = safePrice(p.price); 
                             const safeName = safeStr(p.name);
                             const safeShop = safeStr(sNm);
 
@@ -653,9 +670,9 @@
                             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative pb-2">
                                 <div class="h-32 bg-slate-100 relative cursor-pointer" onclick="app.viewSingleShop('${p.sellerWhatsapp}')"><img src="${p.image||''}" loading="lazy" decoding="async" class="w-full h-full object-cover"></div>
                                 <div class="p-2 flex-1 flex flex-col">
-                                    <h3 class="font-extrabold text-slate-800 text-[11px] mb-1 line-clamp-2 leading-tight h-8" onclick="app.viewSingleShop('${p.sellerWhatsapp}')">${p.name||'-'}</h3>
+                                    <h3 class="font-extrabold text-slate-800 text-[11px] mb-1 line-clamp-2 leading-tight h-8" onclick="app.viewSingleShop('${p.sellerWhatsapp}')">${safeName||'-'}</h3>
                                     <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1"><span class="font-black text-km-main text-sm">RM ${pPrice.toFixed(2)}</span></div>
-                                    <div class="text-[9px] text-slate-400 truncate mb-2 font-medium">🏪 ${sNm} &bull; 📍 ${loc}</div>
+                                    <div class="text-[9px] text-slate-400 truncate mb-2 font-medium">🏪 ${safeShop} &bull; 📍 ${loc}</div>
                                     
                                     <div class="mt-auto flex flex-col gap-1.5">
                                         <div class="flex gap-1.5 w-full">
@@ -675,9 +692,9 @@
                         grid.className = "grid grid-cols-1 gap-3 px-3";
                         const crs = app.state.data.courses.filter(c => { if(q && !(c.title||'').toLowerCase().includes(q)) return false; return true; });
                         grid.innerHTML = crs.length ? crs.map(c=>{
-                            const cFee = parseFloat(c.fee) || 0;
+                            const cFee = safePrice(c.fee);
                             const safeTitle = safeStr(c.title);
-                            return `<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?`<img src="${c.image}" loading="lazy" class="w-full h-full object-cover rounded-xl">`:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-base leading-tight mb-1">${c.title||'-'}</h3><p class="text-xs text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${cFee.toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${safeTitle}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30">Daftar</button></div></div></div>`
+                            return `<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?`<img src="${c.image}" loading="lazy" class="w-full h-full object-cover rounded-xl">`:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-base leading-tight mb-1">${safeTitle||'-'}</h3><p class="text-xs text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${cFee.toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${safeTitle}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30">Daftar</button></div></div></div>`
                         }).join('') : '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200"><span class="text-5xl opacity-30 block mb-2">🎓</span><p class="text-sm font-bold text-slate-500">Tiada kursus dijadualkan.</p></div>';
                     }
                     else if(t==='kedai') {
@@ -696,7 +713,7 @@
                     }
                 } catch (e) {
                     console.error("Critical Render Error:", e);
-                    document.getElementById('dynamic-grid-container').innerHTML = `<div class="col-span-2 text-center text-red-500 font-bold p-4 bg-red-50 rounded-xl border border-red-200 text-xs shadow-sm">Ralat Paparan Kod: ${e.message}</div>`;
+                    app.showErrorUI(`Gagal memaparkan produk. Punca: ${e.message}`);
                 }
             },
 
@@ -710,12 +727,13 @@
                     
                     const prods = app.state.data.products.filter(p=>p.sellerWhatsapp===sId);
                     document.getElementById('single-shop-products').innerHTML = prods.length ? prods.map(p=>{
-                        const pPrice = parseFloat(p.price) || 0;
+                        const pPrice = safePrice(p.price);
+                        const safeName = safeStr(p.name);
                         return `
                         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col pb-2">
                             <div class="h-32 bg-slate-100"><img src="${p.image||''}" loading="lazy" decoding="async" class="w-full h-full object-cover"></div>
                             <div class="p-2 flex-1 flex flex-col">
-                                <h3 class="font-extrabold text-slate-800 text-[11px] line-clamp-2 mb-1 h-8">${p.name||'-'}</h3>
+                                <h3 class="font-extrabold text-slate-800 text-[11px] line-clamp-2 mb-1 h-8">${safeName||'-'}</h3>
                                 <span class="font-black text-km-main text-sm mb-2">RM ${pPrice.toFixed(2)}</span>
                                 <div class="mt-auto flex flex-col gap-1.5">
                                     <div class="flex gap-1.5 w-full">
@@ -728,7 +746,7 @@
                     }).join('') : '<p class="col-span-2 text-center text-sm text-slate-500 py-8 bg-white rounded-2xl border border-slate-200">Katalog kosong.</p>';
                 } catch(e) {
                     console.error("View Single Shop Error:", e);
-                    app.showToast("Ralat Paparan: " + e.message);
+                    app.showErrorUI(`Gagal membuka kedai. Punca: ${e.message}`);
                 }
             },
             showMarketplace: () => { document.getElementById('single-shop-view').classList.add('hidden'); document.getElementById('buyer-section').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.remove('hidden'); app.renderMarketplace(); },
@@ -749,24 +767,25 @@
                 else{ c.innerHTML=s.map(sId=>{ 
                     const slr=app.state.data.sellers.find(x=>x.id===sId)||{shopName:sId}; let t=0; 
                     const items=app.state.cart[sId].map(i=>{
-                        const pPrice = parseFloat(i.product.price) || 0;
+                        const pPrice = safePrice(i.product.price);
                         t+=i.qty*pPrice; 
-                        return `<div class="flex justify-between items-center text-sm py-3 border-b border-slate-100 last:border-0"><div class="flex-1 pr-2"><p class="font-extrabold text-slate-800 line-clamp-1">${i.product.name||'-'}</p><p class="text-km-main font-black">RM${pPrice.toFixed(2)}</p></div><div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1 border border-slate-200"><button onclick="app.updateCartQty('${sId}','${i.product.id}',-1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">-</button><span class="font-black w-4 text-center">${i.qty}</span><button onclick="app.updateCartQty('${sId}','${i.product.id}',1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">+</button></div></div>`
+                        return `<div class="flex justify-between items-center text-sm py-3 border-b border-slate-100 last:border-0"><div class="flex-1 pr-2"><p class="font-extrabold text-slate-800 line-clamp-1">${safeStr(i.product.name)}</p><p class="text-km-main font-black">RM${pPrice.toFixed(2)}</p></div><div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1 border border-slate-200"><button onclick="app.updateCartQty('${sId}','${i.product.id}',-1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">-</button><span class="font-black w-4 text-center">${i.qty}</span><button onclick="app.updateCartQty('${sId}','${i.product.id}',1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">+</button></div></div>`
                     }).join(''); 
-                    return `<div class="bg-white p-4 rounded-2xl border border-slate-200 mb-3 shadow-sm"><h4 class="font-black text-base mb-2 border-b border-slate-100 pb-2">🏪 ${slr.shopName||sId}</h4>${items}<div class="mt-3 flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold text-xs text-slate-500">Subtotal: <span class="text-slate-900 text-xl font-black">RM${t.toFixed(2)}</span></span><button onclick="app.prepCheck('${sId}',${t})" class="bg-km-main text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-md active:scale-95">Bayar &rarr;</button></div></div>` }).join(''); 
+                    return `<div class="bg-white p-4 rounded-2xl border border-slate-200 mb-3 shadow-sm"><h4 class="font-black text-base mb-2 border-b border-slate-100 pb-2">🏪 ${safeStr(slr.shopName)||sId}</h4>${items}<div class="mt-3 flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold text-xs text-slate-500">Subtotal: <span class="text-slate-900 text-xl font-black">RM${t.toFixed(2)}</span></span><button onclick="app.prepCheck('${sId}',${t})" class="bg-km-main text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-md active:scale-95">Bayar &rarr;</button></div></div>` }).join(''); 
                 } 
                 app.openModal('cart-modal'); 
             },
+            
             prepCheck: (sId, t) => { const slr=app.state.data.sellers.find(s=>s.id===sId); const cod=slr?.codCharge||0; app.state.pendingCheckout={id:sId,base:t,cod:cod}; app.closeModal('cart-modal'); document.getElementById('chk-seller').innerText=slr?.shopName||sId; document.getElementById('chk-sub').innerText=`RM ${t.toFixed(2)}`; app.togglePayMethod(); const img=document.getElementById('chk-qr-img'); const noMsg=document.getElementById('chk-no-qr'); if(slr?.qrImage){img.src=slr.qrImage;img.classList.remove('hidden');noMsg.classList.add('hidden');}else{img.classList.add('hidden');noMsg.classList.remove('hidden');} app.openModal('checkout-modal'); },
             togglePayMethod: () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; if(m==='qr'){document.getElementById('chk-qr-sec').classList.remove('hidden');document.getElementById('chk-cash-sec').classList.add('hidden');document.getElementById('chk-cod-row').classList.add('hidden');document.getElementById('chk-total').innerText=`RM ${d.base.toFixed(2)}`;}else{document.getElementById('chk-qr-sec').classList.add('hidden');document.getElementById('chk-cash-sec').classList.remove('hidden');if(d.cod>0){document.getElementById('chk-cod-row').classList.remove('hidden');document.getElementById('chk-cod').innerText=`RM ${d.cod.toFixed(2)}`;} document.getElementById('chk-total').innerText=`RM ${(d.base+d.cod).toFixed(2)}`;} },
-            submitOrder: async () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; const sId=d.id; const ft=m==='cash'?(d.base+d.cod):d.base; const fc=m==='cash'?d.cod:0; const proc=async(r=null)=>{ document.getElementById('global-loader').classList.remove('hidden'); await addDoc(collection(db,'orders'),{buyerWhatsapp:app.state.appUser.whatsapp,buyerName:app.state.appUser.name,sellerWhatsapp:sId,items:app.state.cart[sId].map(i=>({name:i.product.name,price:parseFloat(i.product.price)||0,qty:i.qty})),total:ft,codCharge:fc,paymentMethod:m,receipt:r,status:'Menunggu Pengesahan',timestamp:Date.now()}); delete app.state.cart[sId]; document.getElementById('global-loader').classList.add('hidden'); app.updateNavHighlight(); app.closeModal('checkout-modal'); app.showAlert(`Pesanan Selesai! RM ${ft.toFixed(2)}.\n\nSila WA penjual untuk pengesahan.`); }; if(m==='qr'){const f=document.getElementById('chk-receipt'); if(f.files.length===0)return app.showToast("Muat naik resit."); const b=await app.resizeImage(f.files[0]); proc(b); } else { proc(); } },
+            submitOrder: async () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; const sId=d.id; const ft=m==='cash'?(d.base+d.cod):d.base; const fc=m==='cash'?d.cod:0; const proc=async(r=null)=>{ document.getElementById('global-loader').classList.remove('hidden'); await addDoc(collection(db,'orders'),{buyerWhatsapp:app.state.appUser.whatsapp,buyerName:app.state.appUser.name,sellerWhatsapp:sId,items:app.state.cart[sId].map(i=>({name:i.product.name,price:safePrice(i.product.price),qty:i.qty})),total:ft,codCharge:fc,paymentMethod:m,receipt:r,status:'Menunggu Pengesahan',timestamp:Date.now()}); delete app.state.cart[sId]; document.getElementById('global-loader').classList.add('hidden'); app.updateNavHighlight(); app.closeModal('checkout-modal'); app.showAlert(`Pesanan Selesai! RM ${ft.toFixed(2)}.\n\nSila WA penjual untuk pengesahan.`); }; if(m==='qr'){const f=document.getElementById('chk-receipt'); if(f.files.length===0)return app.showToast("Muat naik resit."); const b=await app.resizeImage(f.files[0]); proc(b); } else { proc(); } },
 
             renderSellerDashboard: () => {
                 const wa=app.state.appUser.whatsapp; const me=app.state.data.sellers.find(s=>s.id===wa); if(me){document.getElementById('seller-name').value=me.shopName||'';if(me.state){document.getElementById('seller-state').value=me.state;app.updateDistricts(me.state,'seller-district');document.getElementById('seller-district').value=me.district||'';}document.getElementById('seller-coverage').value=me.coverage||'';document.getElementById('seller-cod').value=me.codCharge||'';}
                 const ords=app.state.data.orders.filter(o=>o.sellerWhatsapp===wa&&o.status==='Menunggu Pengesahan'); document.getElementById('seller-orders-list').innerHTML=ords.length?ords.map(o=>`<div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><p class="font-extrabold text-base text-slate-800">${o.buyerName} <span class="text-xs text-slate-500 font-bold ml-1 bg-white px-2 py-0.5 rounded border border-slate-200">${o.paymentMethod==='cash'?'COD':'QR Pay'}</span></p><p class="text-km-main font-black text-xl mt-1">RM ${Number(o.total||0).toFixed(2)}</p><button onclick="updateDoc(doc(db,'orders','${o.id}'),{status:'Berjaya'});app.showToast('Disahkan')" class="w-full bg-km-main text-white py-3 text-sm rounded-xl font-black mt-3 shadow-md active:scale-95">Sahkan Selesai</button></div>`).join(''):'<p class="text-sm text-slate-400 font-bold">Tiada pesanan baru.</p>';
                 const prods=app.state.data.products.filter(p=>p.sellerWhatsapp===wa); const crs=app.state.data.courses.filter(c=>c.providerWhatsapp===wa);
-                let catHtml = prods.length?prods.map(p=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-slate-700 truncate pr-2 flex-1">📦 ${p.name||'-'}</span><button onclick="deleteDoc(doc(db,'products','${p.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
-                catHtml += crs.length?crs.map(c=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-yellow-700 truncate pr-2 flex-1">🎓 ${c.title||'-'}</span><button onclick="deleteDoc(doc(db,'courses','${c.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
+                let catHtml = prods.length?prods.map(p=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-slate-700 truncate pr-2 flex-1">📦 ${safeStr(p.name)}</span><button onclick="deleteDoc(doc(db,'products','${p.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
+                catHtml += crs.length?crs.map(c=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-yellow-700 truncate pr-2 flex-1">🎓 ${safeStr(c.title)}</span><button onclick="deleteDoc(doc(db,'courses','${c.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
                 document.getElementById('seller-catalog-list').innerHTML=catHtml||'<p class="text-slate-400 font-bold text-center py-4">Katalog kosong.</p>';
             },
             saveProfile: async () => { document.getElementById('global-loader').classList.remove('hidden'); let d={shopName:document.getElementById('seller-name').value,state:document.getElementById('seller-state').value,district:document.getElementById('seller-district').value,coverage:document.getElementById('seller-coverage').value,codCharge:parseFloat(document.getElementById('seller-cod').value)||0}; const f=document.getElementById('seller-qr'); const l=document.getElementById('seller-logo'); if(f.files.length>0)d.qrImage=await app.resizeImage(f.files[0]); if(l.files.length>0)d.storeLogo=await app.resizeImage(l.files[0]); await setDoc(doc(db,'sellers',app.state.appUser.whatsapp),d,{merge:true}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Profil Disimpan"); },
@@ -776,10 +795,10 @@
             renderAdmin: () => { 
                 document.getElementById('admin-users-list').innerHTML=app.state.data.users.map(u=>`
                     <div class="flex justify-between items-center py-3 border-b border-slate-100 bg-slate-50 px-4 rounded-xl mb-2 shadow-sm">
-                        <span class="font-extrabold text-slate-800 text-sm">${u.id} <br><span class="text-slate-500 font-medium text-xs uppercase">${u.name||'-'}</span></span>
+                        <span class="font-extrabold text-slate-800 text-sm">${u.id} <br><span class="text-slate-500 font-medium text-xs uppercase">${safeStr(u.name)||'-'}</span></span>
                         <div class="flex items-center gap-2">
                             <span class="bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase text-indigo-600 shadow-sm">${u.role}</span>
-                            <button onclick="app.adminResetPwd('${u.id}')" class="bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase active:scale-95 shadow-sm border border-red-200 transition-colors">Reset</button>
+                            <button onclick="app.adminResetPwd('${u.id}')" class="bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase active:scale-95 shadow-sm border border-red-200 transition-colors">RESET</button>
                         </div>
                     </div>
                 `).join(''); 
