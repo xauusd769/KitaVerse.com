@@ -1,147 +1,168 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KitaVerse | Ekosistem Digital Beretika & Mampan</title>
-<!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-body { font-family: 'Plus Jakarta Sans', sans-serif; }
-html { scroll-behavior: smooth; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KitaVerse | Ekosistem Digital Beretika &amp; Mampan</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
-<!-- Header / Navbar -->
-<header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-<div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-<!-- Logo Section -->
-<div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='/index.html'">
-<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center font-extrabold text-slate-950 text-xl shadow-lg shadow-emerald-500/20">
-K
-</div>
-<span class="text-xl font-bold tracking-tight text-white">Kita<span class="text-emerald-400">Verse</span></span>
-</div>
-<!-- Desktop Navigation -->
-<nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
-<a href="/index.html#produk" class="hover:text-emerald-400 transition-colors duration-200">Ekosistem</a>
-<a href="/market/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaMarket</a>
-<a href="/kahwin/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaKahwin</a>
-<a href="/invite/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaInvite</a>
-<a href="/pay/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaPay</a>
-<a href="/affiliate/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaAffiliate</a>
-</nav>
-<!-- Call to Action Button -->
-<div>
-<a href="/market/index.html" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-emerald-500/20 inline-block transform hover:-translate-y-0.5">
-Masuk KitaMarket →
-</a>
-</div>
-</div>
-</header>
-<!-- Hero Section -->
-<main class="flex-grow">
-<section class="max-w-6xl mx-auto px-6 py-20 md:py-32 text-center relative overflow-hidden">
-<!-- Decorative background elements -->
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-<div class="inline-flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full text-emerald-400 text-xs font-semibold mb-6">
-<span class="relative flex h-2 w-2">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-</span>
-<span>Hab Usahawan Komuniti • E-Dagang • Direktori Vendor</span>
-</div>
-<h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight mb-6">
-Ekosistem Digital Pintar Untuk Keperluan <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Masa Depan</span>
-</h1>
-<p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-Menghubungkan komuniti melalui pasaran tempatan, kursus kemahiran, direktori perkahwinan eksklusif, dan gerbang kewangan beretika.
-</p>
-<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-<a href="/market/index.html" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-xl shadow-emerald-500/20 text-center transform hover:-translate-y-1 flex items-center justify-center gap-2">
-<span>🛍️</span> Beli-belah di KitaMarket
-</a>
-<a href="/kahwin/index.html" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 font-semibold px-8 py-4 rounded-xl text-base transition-all duration-200 text-center transform hover:-translate-y-1 flex items-center justify-center gap-2">
-<span>💍</span> Direktori KitaKahwin
-</a>
-</div>
-</section>
-<!-- Produk Grid Section -->
-<section id="produk" class="max-w-6xl mx-auto px-6 py-16 md:py-24 border-t border-slate-800/50">
-<div class="text-center mb-16">
-<h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Modul Utama KitaVerse</h2>
-<p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto">Pilih modul yang anda ingin lawati hari ini. Semua modul dihubungkan dalam satu ekosistem yang harmoni.</p>
-</div>
-<!-- Grid Modul -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<!-- Card 1: KitaMarket -->
-<div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-emerald-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/market/index.html'">
-<div class="relative z-10">
-<div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">🛍️</div>
-<h3 class="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">KitaMarket</h3>
-<p class="text-slate-400 text-sm leading-relaxed mb-6">Hab E-Dagang komuniti, pendaftaran kursus KEMAS, dan direktori penjual tempatan.</p>
-</div>
-<div class="relative z-10 mt-auto">
-<span class="inline-flex items-center text-emerald-400 font-semibold text-sm group-hover:text-emerald-300">Masuk Pasaran →</span>
-</div>
-</div>
-<!-- Card 2: KitaKahwin -->
-<div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-amber-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/kahwin/index.html'">
-<div class="relative z-10">
-<div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">💍</div>
-<h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">KitaKahwin</h3>
-<p class="text-slate-400 text-sm leading-relaxed mb-6">Direktori vendor perkahwinan eksklusif, dewan acara, dan pakej pengantin berdaftar.</p>
-</div>
-<div class="relative z-10 mt-auto">
-<span class="inline-flex items-center text-amber-400 font-semibold text-sm group-hover:text-amber-300">Teroka Vendor →</span>
-</div>
-</div>
-<!-- Card 3: KitaInvite -->
-<div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-pink-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/invite/index.html'">
-<div class="relative z-10">
-<div class="w-12 h-12 rounded-2xl bg-pink-500/10 text-pink-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">💌</div>
-<h3 class="text-xl font-bold text-white mb-2 group-hover:text-pink-300 transition-colors">KitaInvite</h3>
-<p class="text-slate-400 text-sm leading-relaxed mb-6">SaaS kad jemputan kahwin pintar lengkap dengan pengurusan RSVP dan peta lokasi.</p>
-</div>
-<div class="relative z-10 mt-auto">
-<span class="inline-flex items-center text-pink-400 font-semibold text-sm group-hover:text-pink-300">Cipta Kad →</span>
-</div>
-</div>
-<!-- Card 4: KitaPay -->
-<div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-teal-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/pay/index.html'">
-<div class="relative z-10">
-<div class="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">💳</div>
-<h3 class="text-xl font-bold text-white mb-2 group-hover:text-teal-300 transition-colors">KitaPay & Fi Barakah</h3>
-<p class="text-slate-400 text-sm leading-relaxed mb-6">Gerbang bayaran telus dengan pengagihan automatik dan tabung zakat (Zero-Admin).</p>
-</div>
-<div class="relative z-10 mt-auto">
-<span class="inline-flex items-center text-teal-400 font-semibold text-sm group-hover:text-teal-300">Kira Kos →</span>
-</div>
-</div>
-<!-- Card 5: KitaAffiliate -->
-<div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-cyan-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/affiliate/index.html'">
-<div class="relative z-10">
-<div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">🤝</div>
-<h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">KitaAffiliate</h3>
-<p class="text-slate-400 text-sm leading-relaxed mb-6">Papan pemuka ejen rujukan. Jana pendapatan pasif dengan pautan perkongsian.</p>
-</div>
-<div class="relative z-10 mt-auto">
-<span class="inline-flex items-center text-cyan-400 font-semibold text-sm group-hover:text-cyan-300">Log Masuk Ejen →</span>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- Footer -->
-<footer class="border-t border-slate-800/80 py-8 bg-slate-950 mt-auto">
-<div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500">
-<p>© 2026 KitaVerse. Hak Cipta Terpelihara (Lean Solopreneur).</p>
-<div class="flex space-x-6 mt-4 md:mt-0">
-<a href="#" class="hover:text-emerald-400 transition-colors">Dasar Privasi</a>
-<a href="#" class="hover:text-emerald-400 transition-colors">Terma Perkhidmatan</a>
-</div>
-</div>
-</footer>
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Logo Section -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='/index.html'">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center font-extrabold text-slate-950 text-xl shadow-lg shadow-emerald-500/20">
+                    K
+                </div>
+                <span class="text-xl font-bold tracking-tight text-white">Kita<span class="text-emerald-400">Verse</span></span>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="/index.html#produk" class="hover:text-emerald-400 transition-colors duration-200">Ekosistem</a>
+                <a href="/market/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaMarket</a>
+                <a href="/kahwin/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaKahwin</a>
+                <a href="/invite/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaInvite</a>
+                <a href="/pay/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaPay</a>
+                <a href="/affiliate/index.html" class="hover:text-emerald-400 transition-colors duration-200">KitaAffiliate</a>
+            </nav>
+            
+            <!-- Call to Action Button -->
+            <div>
+                <a href="/market/index.html" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-emerald-500/20 inline-block transform hover:-translate-y-0.5">
+                    Masuk KitaMarket &rarr;
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="flex-grow">
+        <section class="max-w-6xl mx-auto px-6 py-20 md:py-32 text-center relative overflow-hidden">
+            
+            <!-- Decorative background elements -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+            <div class="inline-flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full text-emerald-400 text-xs font-semibold mb-6">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>Hab Usahawan Komuniti • E-Dagang • Direktori Vendor</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight mb-6">
+                Ekosistem Digital Pintar Untuk Keperluan <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Masa Depan</span>
+            </h1>
+            
+            <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+                Menghubungkan komuniti melalui pasaran tempatan, kursus kemahiran, direktori perkahwinan eksklusif, dan gerbang kewangan beretika.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="/market/index.html" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-xl shadow-emerald-500/20 text-center transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <span>🛍️</span> Beli-belah di KitaMarket
+                </a>
+                <a href="/kahwin/index.html" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 font-semibold px-8 py-4 rounded-xl text-base transition-all duration-200 text-center transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <span>💍</span> Direktori KitaKahwin
+                </a>
+            </div>
+        </section>
+
+        <!-- Produk Grid Section -->
+        <section id="produk" class="max-w-6xl mx-auto px-6 py-16 md:py-24 border-t border-slate-800/50">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Modul Utama KitaVerse</h2>
+                <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto">Pilih modul yang anda ingin lawati hari ini. Semua modul dihubungkan dalam satu ekosistem yang harmoni.</p>
+            </div>
+
+            <!-- Grid Modul -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1: KitaMarket -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-emerald-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/market/index.html'">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">🛍️</div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">KitaMarket</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Hab E-Dagang komuniti, pendaftaran kursus KEMAS, dan direktori penjual tempatan.</p>
+                    </div>
+                    <div class="relative z-10 mt-auto">
+                        <span class="inline-flex items-center text-emerald-400 font-semibold text-sm group-hover:text-emerald-300">Masuk Pasaran &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: KitaKahwin -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-amber-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/kahwin/index.html'">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">💍</div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">KitaKahwin</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Direktori vendor perkahwinan eksklusif, dewan acara, dan pakej pengantin berdaftar.</p>
+                    </div>
+                    <div class="relative z-10 mt-auto">
+                        <span class="inline-flex items-center text-amber-400 font-semibold text-sm group-hover:text-amber-300">Teroka Vendor &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: KitaInvite -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-pink-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/invite/index.html'">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-pink-500/10 text-pink-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">💌</div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-pink-300 transition-colors">KitaInvite</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">SaaS kad jemputan kahwin pintar lengkap dengan pengurusan RSVP dan peta lokasi.</p>
+                    </div>
+                    <div class="relative z-10 mt-auto">
+                        <span class="inline-flex items-center text-pink-400 font-semibold text-sm group-hover:text-pink-300">Cipta Kad &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: KitaPay -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-teal-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/pay/index.html'">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">💳</div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-teal-300 transition-colors">KitaPay &amp; KitaCoin</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Kalkulator split-payment automatik, agihan tabung zakat (Fi Barakah) dan kumpul mata ganjaran.</p>
+                    </div>
+                    <div class="relative z-10 mt-auto">
+                        <span class="inline-flex items-center text-teal-400 font-semibold text-sm group-hover:text-teal-300">Kira Kos &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: KitaAffiliate -->
+                <div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 hover:border-cyan-500/50 hover:bg-slate-900/85 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden" onclick="window.location.href='/affiliate/index.html'">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-2xl mb-4 group-hover:scale-110 transition-all">🤝</div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">KitaAffiliate</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Papan pemuka ejen rujukan. Jana pendapatan pasif RM20/jualan dengan pautan link anda.</p>
+                    </div>
+                    <div class="relative z-10 mt-auto">
+                        <span class="inline-flex items-center text-cyan-400 font-semibold text-sm group-hover:text-cyan-300">Daftar / Log Masuk &rarr;</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-8 bg-slate-950 mt-auto">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500">
+            <p>&copy; 2026 KitaVerse. Hak Cipta Terpelihara (Lean Solopreneur).</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-emerald-400 transition-colors">Dasar Privasi</a>
+                <a href="#" class="hover:text-emerald-400 transition-colors">Terma Perkhidmatan</a>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
