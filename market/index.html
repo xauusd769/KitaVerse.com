@@ -37,30 +37,19 @@
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
     
     <style>
-        /* Anti-Zoom Strict Settings */
+        /* Anti-Zoom Strict Settings untuk iOS */
         html, body {
             -webkit-text-size-adjust: 100%;
             margin: 0; padding: 0; width: 100%;
             overflow-x: hidden;
             touch-action: pan-y;
         }
-        body { 
-            background-color: #e2e8f0; 
-            display: flex; justify-content: center; 
-            font-family: 'Inter', sans-serif; 
-        }
-        /* Mencegah iPhone auto-zoom pada input field */
+        body { background-color: #e2e8f0; display: flex; justify-content: center; font-family: 'Inter', sans-serif; }
+        
+        /* Mencegah iPhone auto-zoom pada input field (PENTING) */
         input, select, textarea { font-size: 16px !important; }
         
-        .mobile-container { 
-            width: 100%; max-width: 440px; 
-            background-color: #f8fafc; 
-            min-height: 100vh; min-height: 100dvh; 
-            position: relative; 
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
-            display: flex; flex-direction: column; 
-            margin: 0 auto; overflow-x: hidden; 
-        }
+        .mobile-container { width: 100%; max-width: 440px; background-color: #f8fafc; min-height: 100vh; min-height: 100dvh; position: relative; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; margin: 0 auto; overflow-x: hidden; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -74,7 +63,7 @@
         
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; transition: opacity 0.2s ease-out; pointer-events: none; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { transform: scale(0.95); transition: transform 0.2s ease-out; }
+        .modal-content { transform: scale(0.95); transition: transform 0.2s ease-out; max-height: 90vh; overflow-y: auto; }
         .modal-overlay.active .modal-content { transform: scale(1); }
         
         .tab-btn { transition: all 0.2s; }
@@ -88,7 +77,6 @@
 </head>
 <body class="text-slate-800 antialiased selection:bg-km-main selection:text-white">
 
-    <!-- Mobile App Container -->
     <div class="mobile-container" id="app-wrapper">
         
         <!-- HEADER SECTION -->
@@ -98,13 +86,13 @@
                 <span class="font-medium tracking-wide truncate">KITA Market — Hab Usahawan Komuniti & Kursus KEMAS</span>
             </div>
 
-            <!-- Hub Rider Banner (Dengan Fungsi Modal) -->
+            <!-- Hub Rider Banner (Dropdown Popup) -->
             <div class="bg-orange-50 border-b border-orange-100 p-1.5 flex justify-between items-center px-3 relative">
                 <div class="flex items-center gap-1.5 text-[10px] font-bold text-orange-900 truncate">
                     <span>🛵</span> 
                     <span class="truncate">Hub Rider: Lalamove &bull; BungkusIt &bull; MISI</span>
                 </div>
-                <button onclick="app.openModal('rider-modal')" class="bg-km-rider hover:bg-orange-500 text-white rounded-md px-2 py-0.5 text-[10px] font-black shadow-sm shrink-0 active:scale-95 flex items-center gap-1 cursor-pointer transition-colors">
+                <button onclick="app.openModal('rider-modal')" class="bg-km-rider hover:bg-orange-500 text-white rounded-md px-2 py-0.5 text-[10px] font-black shadow-sm shrink-0 active:scale-95 flex items-center gap-1 cursor-pointer transition-colors border-none outline-none">
                     Daftar <span class="text-[7px]">▼</span>
                 </button>
             </div>
@@ -145,7 +133,7 @@
                 </div>
             </div>
             
-            <div id="system-error-msg" class="hidden bg-red-100 text-red-700 p-3 m-3 rounded-xl text-xs font-bold border border-red-200"></div>
+            <div id="system-error-msg" class="hidden bg-red-100 text-red-700 p-3 m-3 rounded-xl text-xs font-bold border border-red-200 whitespace-pre-line"></div>
 
             <!-- MOD PEMBELI -->
             <div id="buyer-section" class="pb-24">
@@ -172,15 +160,19 @@
                             <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">⬇️</div>
                         </div>
                     </div>
+                    
+                    <!-- FILTER KAWASAN LIPUTAN -->
+                    <div class="relative mb-3">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">🚚</div>
+                        <input type="text" id="global-coverage" onkeyup="app.debounceRender()" class="block w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-xs font-bold focus:ring-1 focus:ring-km-main focus:border-km-main bg-white outline-none placeholder-slate-400" placeholder="Kawasan liputan COD... (Cth: Skudai)">
+                    </div>
 
+                    <!-- KATEGORI BARANGAN (Auto-Generate) -->
                     <div id="product-categories" class="mb-1">
                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kategori Barangan:</p>
-                        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-                            <button onclick="app.setCategoryFilter('')" class="cat-pill active shrink-0 bg-km-main text-white px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors">Semua</button>
-                            <button onclick="app.setCategoryFilter('Lauk & Kuih')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1 transition-colors hover:border-km-main">🍲 Lauk & Kuih</button>
-                            <button onclick="app.setCategoryFilter('Kerepek & Biskut')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1 transition-colors hover:border-km-main">🍪 Kerepek & Biskut</button>
-                            <button onclick="app.setCategoryFilter('Pakaian & Fesyen')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1 transition-colors hover:border-km-main">👗 Pakaian</button>
-                            <button onclick="app.setCategoryFilter('Kraf & Gubahan')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1 transition-colors hover:border-km-main">💐 Kraf & Gubahan</button>
+                        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="dynamic-category-filters">
+                            <button onclick="app.setCategoryFilter('')" class="cat-pill active shrink-0 bg-km-main text-white px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors border border-transparent" data-cat="">Semua</button>
+                            <!-- Diisi automatik oleh JS berdasarkan database -->
                         </div>
                     </div>
                 </div>
@@ -234,10 +226,11 @@
                         <div>
                             <div class="flex justify-between items-end mb-1.5">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide">Kata Laluan</label>
-                                <!-- BUTANG LUPA KATA LALUAN YANG SELAMAT (BUKAN HREF) -->
-                                <button type="button" onclick="app.showResetPwd()" class="text-[11px] font-bold text-red-500 hover:text-red-600 transition-colors bg-transparent border-none p-0 cursor-pointer outline-none">Lupa Kata Laluan?</button>
                             </div>
                             <input type="password" id="auth-pwd" placeholder="••••••••" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-km-main outline-none text-base font-bold transition-colors">
+                            <div class="text-right mt-1.5">
+                                <button type="button" onclick="app.showResetPwd()" class="text-[11px] font-bold text-red-500 hover:text-red-600 transition-colors bg-transparent border-none p-0 cursor-pointer outline-none">Lupa Kata Laluan?</button>
+                            </div>
                         </div>
                         
                         <div id="auth-register-fields" class="hidden bg-emerald-50 p-5 rounded-2xl border border-emerald-100 mt-2 space-y-4">
@@ -258,7 +251,7 @@
                             <div><label class="block text-[11px] font-bold text-red-600 mb-1.5 uppercase">PIN (4-Digit) Didaftarkan</label><input type="number" id="reset-pin" placeholder="1234" class="w-full px-4 py-3 rounded-xl border-2 border-red-200 bg-white outline-none text-lg font-black text-center tracking-[0.5em] text-red-600" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);"></div>
                             <div><label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase">Kata Laluan Baru</label><input type="password" id="reset-new-pwd" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none text-sm font-bold"></div>
                         </div>
-                        <button onclick="app.handleResetPwd()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-xl shadow-lg shadow-red-500/30 active:scale-95 text-base transition-all">Sahkan Reset Password</button>
+                        <button onclick="app.handleResetPwd()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-xl shadow-lg shadow-red-500/30 active:scale-95 text-base transition-all">Sahkan Reset</button>
                         <button onclick="app.hideResetPwd()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl active:scale-95 text-sm transition-colors">Batal</button>
                     </div>
 
@@ -304,7 +297,16 @@
                                 <div><label class="block font-bold text-slate-500 mb-1.5">Nama Produk</label><input type="text" id="prod-name" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold focus:border-km-main outline-none"></div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div><label class="block font-bold text-slate-500 mb-1.5">Harga (RM)</label><input type="number" id="prod-price" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-black text-km-main focus:border-km-main outline-none"></div>
-                                    <div><label class="block font-bold text-slate-500 mb-1.5">Kategori</label><select id="prod-cat" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"><option value="Lauk & Kuih">Lauk & Kuih</option><option value="Kerepek & Biskut">Kerepek & Biskut</option><option value="Pakaian & Fesyen">Pakaian</option><option value="Kraf & Gubahan">Kraf & Gubahan</option><option value="Lain-lain">Lain-lain</option></select></div>
+                                    <div>
+                                        <label class="block font-bold text-slate-500 mb-1.5">Kategori</label>
+                                        <select id="prod-cat" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none">
+                                            <option value="Lauk & Kuih">Lauk & Kuih</option>
+                                            <option value="Kerepek & Biskut">Kerepek & Biskut</option>
+                                            <option value="Pakaian & Fesyen">Pakaian & Fesyen</option>
+                                            <option value="Kraf & Gubahan">Kraf & Gubahan</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div><label class="block font-bold text-slate-500 mb-1.5">Gambar Produk</label><input type="file" id="prod-img" accept="image/*" class="w-full text-xs p-2 border border-slate-200 rounded-xl bg-slate-50"></div>
                                 <button onclick="app.addProduct()" class="w-full bg-km-main text-white font-bold py-3.5 rounded-xl mt-2 shadow-md active:scale-95 text-base">Simpan Produk</button>
@@ -340,7 +342,7 @@
                 <div class="bg-indigo-600 text-white p-6 rounded-3xl shadow-lg mb-6 relative overflow-hidden">
                     <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-500 rounded-full opacity-50 blur-xl"></div>
                     <h2 class="font-black text-2xl relative z-10">🛡️ Panel Admin</h2>
-                    <p class="text-sm opacity-80 mt-1 relative z-10 font-medium">Kawalan sistem & kata laluan.</p>
+                    <p class="text-sm opacity-80 mt-1 relative z-10 font-medium">Kawalan sistem & pengguna.</p>
                 </div>
                 <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
                     <h3 class="font-extrabold mb-4 border-b border-slate-100 pb-3 text-slate-800 flex items-center gap-2 text-base"><span>👥</span> Senarai Pengguna</h3>
@@ -439,7 +441,7 @@
         <div id="admin-reset-modal" class="modal-overlay" onclick="app.closeModal('admin-reset-modal')">
             <div class="modal-content w-[90%] max-w-xs bg-white rounded-3xl p-6 text-center shadow-2xl border border-slate-100" onclick="event.stopPropagation()">
                 <h3 class="font-black text-slate-800 text-lg mb-2">Reset Kata Laluan</h3>
-                <p class="text-xs text-slate-500 mb-4 font-medium">Katalaluan baru untuk <span id="admin-reset-wa" class="font-bold text-red-600"></span>:</p>
+                <p class="text-xs text-slate-500 mb-4 font-medium">Masukkan kata laluan baharu untuk pelanggan <br><span id="admin-reset-wa" class="font-bold text-red-600 text-base block mt-1"></span></p>
                 <input type="text" id="admin-reset-new-pwd" placeholder="123456" class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 mb-4 text-center font-black text-lg tracking-[0.2em] outline-none focus:border-indigo-500">
                 <button onclick="app.confirmAdminReset()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3.5 rounded-xl active:scale-95 shadow-md mb-2 transition-colors">Sahkan Reset</button>
                 <button onclick="app.closeModal('admin-reset-modal')" class="w-full bg-slate-100 text-slate-600 font-bold py-3 rounded-xl active:scale-95">Batal</button>
@@ -457,32 +459,38 @@
         import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // =========================================================================
-        // AMARAN PENTING KEPADA TUAN NAIM:
-        // Jika Tuan mempunyai Firebase Config yang SEBENAR (Production), sila gantikan 
-        // blok kod di bawah ini dengan config Tuan. 
-        // Jika tidak, sistem akan terus membaca data dari 'pasarkita-eff95' ini.
+        // AMARAN PENTING:
+        // SILA PASTIKAN FIREBASE CONFIG INI ADALAH DATABASE SEBENAR TUAN (PASARKITA-EFF95).
+        // KOD INI AKAN MENARIK DATA DARI DALAM FOLDER: artifacts/pasarkita-prod/public/data/
         // =========================================================================
-        const firebaseConfig = { 
-            apiKey: "AIzaSyB3Yyo-F6Cp9rP_3btB35K31SDaMwwf2to", 
-            authDomain: "pasarkita-eff95.firebaseapp.com", 
-            projectId: "pasarkita-eff95", 
-            storageBucket: "pasarkita-eff95.firebasestorage.app", 
-            messagingSenderId: "47537965550", 
-            appId: "1:47537965550:web:2ecd0fe86a4c964af3e6ff" 
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3Yyo-F6Cp9rP_3btB35K31SDaMwwf2to",
+            authDomain: "pasarkita-eff95.firebaseapp.com",
+            projectId: "pasarkita-eff95",
+            storageBucket: "pasarkita-eff95.firebasestorage.app",
+            messagingSenderId: "47537965550",
+            appId: "1:47537965550:web:2ecd0fe86a4c964af3e6ff",
+            measurementId: "G-5QT6B08L2M"
         };
-        const firebaseApp = initializeApp(firebaseConfig); const auth = getAuth(firebaseApp); const db = getFirestore(firebaseApp);
+        
+        // Pangkalan Data Laluan Induk (Database Path)
+        const dbPath = "artifacts/pasarkita-prod/public/data";
+
+        let firebaseApp, auth, db;
+        try {
+            firebaseApp = initializeApp(firebaseConfig); 
+            auth = getAuth(firebaseApp); 
+            db = getFirestore(firebaseApp);
+        } catch (error) { console.error("Firebase Error:", error); }
 
         function hashString(str) { let hash=0; for(let i=0;i<str.length;i++){ hash=(hash<<5)-hash+str.charCodeAt(i); hash|=0; } return hash.toString(16); }
         
-        // Pembersih String & Nombor (Anti-Crash)
-        const safeStr = (s) => (s||'').toString().replace(/['"\n\r\t\\]/g, ' ').trim();
-        const safePrice = (p) => {
-            if(p === undefined || p === null) return 0.00;
+        // Pembersih Data Pintar (Anti-Crash)
+        const safeStr = (s) => { if (!s) return ''; return String(s).replace(/[\r\n]+/g, ' ').replace(/"/g, '&quot;').replace(/'/g, '&#39;').trim(); };
+        const safePrice = (p) => { 
+            if(p === undefined || p === null || p === '') return 0.00;
             if(typeof p === 'number') return isNaN(p) ? 0.00 : p;
-            if(typeof p === 'string') {
-                const num = parseFloat(p.replace(/[^0-9.-]+/g,""));
-                return isNaN(num) ? 0.00 : num;
-            }
+            if(typeof p === 'string') { const num = parseFloat(p.replace(/[^0-9.-]+/g,"")); return isNaN(num) ? 0.00 : num; }
             return parseFloat(p) || 0.00;
         };
 
@@ -493,7 +501,10 @@
                 malaysiaDistricts: { "Johor": ["Batu Pahat", "Johor Bahru", "Kluang", "Kota Tinggi", "Kulai", "Mersing", "Muar", "Pontian", "Segamat", "Tangkak"], "Kedah": ["Baling", "Bandar Baharu", "Kota Setar", "Kuala Muda", "Kubang Pasu", "Kulim", "Langkawi", "Padang Terap", "Pendang", "Pokok Sena", "Sik", "Yan"], "Kelantan": ["Bachok", "Gua Musang", "Jeli", "Kota Bharu", "Kuala Krai", "Machang", "Pasir Mas", "Pasir Puteh", "Tanah Merah", "Tumpat"], "Melaka": ["Alor Gajah", "Jasin", "Melaka Tengah"], "Negeri Sembilan": ["Jelebu", "Jempol", "Kuala Pilah", "Port Dickson", "Rembau", "Seremban", "Tampin"], "Pahang": ["Bera", "Bentong", "Cameron Highlands", "Jerantut", "Kuantan", "Lipis", "Maran", "Pekan", "Raub", "Rompin", "Temerloh"], "Perak": ["Bagan Datuk", "Batang Padang", "Hilir Perak", "Hulu Perak", "Kampar", "Kerian", "Kinta", "Kuala Kangsar", "Larut Matang Selama", "Manjung", "Muallim", "Perak Tengah"], "Perlis": ["Arau", "Kangar", "Padang Besar"], "Pulau Pinang": ["Barat Daya", "Seberang Perai Selatan", "Seberang Perai Tengah", "Seberang Perai Utara", "Timur Laut"], "Sabah": ["Beaufort", "Beluran", "Keningau", "Kinabatangan", "Kota Belud", "Kota Kinabalu", "Kota Marudu", "Kuala Penyu", "Kudat", "Kunak", "Lahad Datu", "Nabawan", "Papar", "Penampang", "Putatan", "Pitas", "Ranau", "Sandakan", "Semporna", "Sipitang", "Tambunan", "Tawau", "Tenom", "Tongod", "Tuaran"], "Sarawak": ["Asajaya", "Bau", "Belaga", "Beluru", "Betong", "Bintulu", "Bukit Mabong", "Dalat", "Daro", "Julau", "Kabong", "Kanowit", "Kapit", "Kuching", "Lawas", "Limbang", "Lubok Antu", "Lundu", "Marudi", "Matu", "Meradong", "Miri", "Mukah", "Pakan", "Pusa", "Samarahan", "Saratok", "Sarikei", "Sebauh", "Selangau", "Serian", "Sibu", "Simunjan", "Song", "Sri Aman", "Subis", "Tanjung Manis", "Tatau", "Tebedu", "Telang Usan"], "Selangor": ["Gombak", "Hulu Langat", "Hulu Selangor", "Klang", "Kuala Langat", "Kuala Selangor", "Petaling", "Sabak Bernam", "Sepang"], "Terengganu": ["Besut", "Dungun", "Hulu Terengganu", "Kemaman", "Kuala Nerus", "Kuala Terengganu", "Marang", "Setiu"], "W.P. Kuala Lumpur": ["Batu", "Bukit Bintang", "Bandar Tun Razak", "Cheras", "Kepong", "Lembah Pantai", "Segambut", "Seputeh", "Titiwangsa", "Wangsa Maju"], "W.P. Labuan": ["Labuan"], "W.P. Putrajaya": ["Putrajaya"] }
             },
 
-            showErrorUI: (msg) => { const box=document.getElementById('system-error-msg'); box.innerText=`ℹ️ Info Sistem: ${msg}`; box.classList.remove('hidden'); },
+            showErrorUI: (msg, detail="") => { 
+                const box=document.getElementById('system-error-msg'); 
+                box.innerText=`🚨 Ralat:\n${msg}\n${detail}`; box.classList.remove('hidden'); 
+            },
             hideErrorUI: () => { document.getElementById('system-error-msg').classList.add('hidden'); },
             showToast: (msg) => { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); },
             closeModal: (id) => document.getElementById(id).classList.remove('active'), 
@@ -508,12 +519,10 @@
                         const c=document.createElement('canvas'); const ctx=c.getContext('2d'); 
                         let w=img.width, h=img.height; 
                         if(w>400){h*=400/w;w=400;} 
-                        c.width=w;c.height=h;ctx.drawImage(img,0,0,w,h); 
-                        res(c.toDataURL('image/jpeg',0.5)); 
+                        c.width=w;c.height=h;ctx.drawImage(img,0,0,w,h); res(c.toDataURL('image/jpeg',0.5)); 
                     }; 
-                    img.src=e.target.result;
-                }; 
-                r.readAsDataURL(file); 
+                    img.onerror = () => rej("Gambar rosak"); img.src=e.target.result;
+                }; r.onerror = () => rej("Gagal baca fail"); r.readAsDataURL(file); 
             }),
             
             copyTextToClipboard: (text, successMsg = "Disalin!") => { const tempInput = document.createElement("textarea"); tempInput.value = text; document.body.appendChild(tempInput); tempInput.select(); document.execCommand("copy"); document.body.removeChild(tempInput); if(successMsg) app.showToast(successMsg); },
@@ -554,26 +563,43 @@
             },
             
             setupListeners: () => {
-                const errHandler = (err) => {
-                    console.error("Firebase DB Error:", err);
-                    app.showErrorUI(`Sambungan ke database terganggu. Sila semak firebaseConfig.`);
-                };
+                app.state.unsubs.forEach(u => u()); app.state.unsubs = [];
+                const errHandler = (err) => { console.error(err); };
 
-                app.state.unsubs.forEach(u => u());
-                app.state.unsubs = [];
-
-                // TARIK SEMUA DATA TANPA SYARAT
-                app.state.unsubs.push(onSnapshot(collection(db, 'sellers'), s => { app.hideErrorUI(); app.state.data.sellers = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
-                app.state.unsubs.push(onSnapshot(collection(db, 'products'), s => { app.hideErrorUI(); app.state.data.products = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
-                app.state.unsubs.push(onSnapshot(collection(db, 'courses'), s => { app.hideErrorUI(); app.state.data.courses = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
-                
-                if(app.state.appUser) {
-                    app.state.unsubs.push(onSnapshot(collection(db, 'orders'), s => { app.state.data.orders = s.docs.map(d=>({id: d.id, ...d.data()})); if(app.state.currentMode==='seller') app.renderSellerDashboard(); }, errHandler));
-                    if(app.state.appUser.role==='admin') {
-                        app.state.unsubs.push(onSnapshot(collection(db, 'users'), s => { app.state.data.users = s.docs.map(d=>({id: d.id, ...d.data()})); app.renderAdmin(); }, errHandler));
+                try {
+                    // AMBIK DARI DATABASE PATH SEBENAR
+                    app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/sellers`), s => { app.hideErrorUI(); app.state.data.sellers = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
+                    app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/products`), s => { app.hideErrorUI(); app.state.data.products = s.docs.map(d=>({id: d.id, ...d.data()})); app.extractCategories(); app.debounceRender(); }, errHandler));
+                    app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/courses`), s => { app.hideErrorUI(); app.state.data.courses = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
+                    
+                    if(app.state.appUser) {
+                        app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/orders`), s => { app.state.data.orders = s.docs.map(d=>({id: d.id, ...d.data()})); if(app.state.currentMode==='seller') app.renderSellerDashboard(); }, errHandler));
+                        if(app.state.appUser.role==='admin') {
+                            app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/users`), s => { app.state.data.users = s.docs.map(d=>({id: d.id, ...d.data()})); app.renderAdmin(); }, errHandler));
+                        }
                     }
-                }
+                } catch(e) { console.log(e); }
             },
+            
+            extractCategories: () => {
+                const catContainer = document.getElementById('dynamic-category-filters');
+                if(!catContainer) return;
+                const categories = new Set();
+                app.state.data.products.forEach(p => {
+                    const c = safeStr(p.category);
+                    if(c && c.toLowerCase() !== 'lain-lain') categories.add(c);
+                });
+                const sortedCategories = Array.from(categories).sort();
+                let html = `<button onclick="app.setCategoryFilter('')" class="cat-pill ${app.state.activeCategory === '' ? 'active bg-km-main text-white' : 'bg-white text-slate-600'} shrink-0 px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors border ${app.state.activeCategory === '' ? 'border-transparent' : 'border-slate-200'}">Semua</button>`;
+                sortedCategories.forEach(cat => {
+                    const isActive = app.state.activeCategory === cat;
+                    html += `<button onclick="app.setCategoryFilter('${cat}')" class="cat-pill ${isActive ? 'active bg-km-main text-white border-transparent' : 'bg-white text-slate-600 border-slate-200 hover:border-km-main'} shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors border">${cat}</button>`;
+                });
+                const isLainActive = app.state.activeCategory === 'Lain-lain';
+                html += `<button onclick="app.setCategoryFilter('Lain-lain')" class="cat-pill ${isLainActive ? 'active bg-km-main text-white border-transparent' : 'bg-white text-slate-600 border-slate-200 hover:border-km-main'} shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors border">Lain-lain</button>`;
+                catContainer.innerHTML = html;
+            },
+
             debounceRender: () => { clearTimeout(app.state.renderTimer); app.state.renderTimer = setTimeout(app.renderMarketplace, 100); },
             updateDistricts: (st, tId, isFilter=false) => { const s=document.getElementById(tId); s.innerHTML=isFilter?'<option value="">Semua Daerah</option>':'<option value="">Pilih...</option>'; if(st&&app.state.malaysiaDistricts[st]) app.state.malaysiaDistricts[st].forEach(d=>s.innerHTML+=`<option value="${d}">${d}</option>`); },
 
@@ -582,11 +608,10 @@
                 if(!wa || !pwd) return app.showToast("Isi nombor & kata laluan");
                 document.getElementById('global-loader').classList.remove('hidden');
                 try {
-                    const uRef = doc(db, 'users', wa); const snap = await getDoc(uRef); const hash = hashString(pwd); const isMaster = (wa.replace(/\D/g, '') === "0182676999");
+                    const uRef = doc(db, `${dbPath}/users`, wa); const snap = await getDoc(uRef); const hash = hashString(pwd); const isMaster = (wa.replace(/\D/g, '') === "0182676999");
                     if(snap.exists()) {
                         if(snap.data().passwordHash === hash || (isMaster && pwd === "admin123")) { 
-                            app.state.appUser = {whatsapp: wa, name: snap.data().name || 'Pengguna', role: isMaster?'admin':'dual'}; 
-                            app.loginSuccess(); 
+                            app.state.appUser = {whatsapp: wa, name: snap.data().name || 'Pengguna', role: isMaster?'admin':'dual'}; app.loginSuccess(); 
                         } else { app.showToast("Katalaluan salah"); }
                     } else {
                         if(reg.classList.contains('hidden')){ reg.classList.remove('hidden'); } else {
@@ -602,21 +627,16 @@
             showResetPwd: () => { document.getElementById('auth-default-fields').classList.add('hidden'); document.getElementById('auth-reset-fields').classList.remove('hidden'); },
             hideResetPwd: () => { document.getElementById('auth-reset-fields').classList.add('hidden'); document.getElementById('auth-default-fields').classList.remove('hidden'); },
             handleResetPwd: async () => {
-                const wa = document.getElementById('reset-wa').value.trim();
-                const pin = document.getElementById('reset-pin').value;
-                const newPwd = document.getElementById('reset-new-pwd').value;
+                const wa = document.getElementById('reset-wa').value.trim(); const pin = document.getElementById('reset-pin').value; const newPwd = document.getElementById('reset-new-pwd').value;
                 if(!wa || pin.length!==4 || !newPwd) return app.showToast("Lengkapkan maklumat reset.");
                 document.getElementById('global-loader').classList.remove('hidden');
                 try {
-                    const uRef = doc(db, 'users', wa); const snap = await getDoc(uRef);
-                    if(snap.exists()) {
-                        if(snap.data().pin === pin) {
-                            const hash = hashString(newPwd); await updateDoc(uRef, { passwordHash: hash });
-                            app.showToast("Kata laluan ditukar! Sila log masuk.");
-                            document.getElementById('reset-wa').value=''; document.getElementById('reset-pin').value=''; document.getElementById('reset-new-pwd').value='';
-                            app.hideResetPwd();
-                        } else { app.showToast("PIN Keselamatan Salah!"); }
-                    } else { app.showToast("Pengguna tidak wujud."); }
+                    const uRef = doc(db, `${dbPath}/users`, wa); const snap = await getDoc(uRef);
+                    if(snap.exists() && snap.data().pin === pin) {
+                        const hash = hashString(newPwd); await updateDoc(uRef, { passwordHash: hash });
+                        app.showToast("Kata laluan ditukar! Sila log masuk.");
+                        document.getElementById('reset-wa').value=''; document.getElementById('reset-pin').value=''; document.getElementById('reset-new-pwd').value=''; app.hideResetPwd();
+                    } else { app.showToast(snap.exists() ? "PIN Salah!" : "Pengguna tidak wujud."); }
                 } catch(e) { app.showToast("Ralat sistem."); }
                 document.getElementById('global-loader').classList.add('hidden');
             },
@@ -627,7 +647,6 @@
             switchMode: (m) => { 
                 document.getElementById('auth-section').classList.add('hidden'); app.state.currentMode=m; 
                 document.getElementById('buyer-section').classList.add('hidden'); document.getElementById('seller-section').classList.add('hidden'); document.getElementById('admin-section').classList.add('hidden'); document.getElementById('main-tabs-container').classList.add('hidden'); document.getElementById('single-shop-view').classList.add('hidden');
-                
                 if(m==='buyer') { document.getElementById('buyer-section').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.remove('hidden'); app.renderMarketplace(); } 
                 else if(m==='auth') { document.getElementById('auth-section').classList.remove('hidden'); app.hideResetPwd(); }
                 else if(m==='seller') { if(!app.state.appUser) { app.showToast("Sila log masuk untuk urus kedai."); app.switchMode('auth'); } else { document.getElementById('seller-section').classList.remove('hidden'); app.renderSellerDashboard(); } } 
@@ -645,7 +664,7 @@
 
             switchMainTab: (t) => {
                 app.state.currentMainTab = t;
-                ['beli','kursus','kedai'].forEach(id=>{ const btn = document.getElementById('tab-'+id); btn.className=`tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95`; });
+                ['beli','kursus','kedai'].forEach(id=>{ document.getElementById('tab-'+id).className=`tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95`; });
                 const actBtn = document.getElementById('tab-'+t);
                 if(t==='beli') actBtn.className = `tab-btn active-beli rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95`;
                 if(t==='kursus') actBtn.className = `tab-btn active-kursus rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95`;
@@ -655,90 +674,58 @@
                 document.getElementById('global-search').placeholder = t==='beli'?"Cari produk, makanan...":(t==='kursus'?"Cari kelas jahitan, solekan...":"Cari nama kedai...");
                 app.renderMarketplace();
             },
-            setCategoryFilter: (c) => { app.state.activeCategory=c; document.querySelectorAll('.cat-pill').forEach(b=>{b.classList.remove('bg-km-main','text-white');b.classList.add('bg-white','text-slate-600');}); event.currentTarget.classList.remove('bg-white','text-slate-600'); event.currentTarget.classList.add('bg-km-main','text-white'); app.renderMarketplace(); },
+            setCategoryFilter: (c) => { app.state.activeCategory=c; app.extractCategories(); app.renderMarketplace(); },
 
             renderMarketplace: () => {
                 if(app.state.currentMode !== 'buyer' || document.getElementById('buyer-section').classList.contains('hidden')) return;
                 const t = app.state.currentMainTab; const grid = document.getElementById('dynamic-grid-container');
                 const q = (document.getElementById('global-search')?.value||'').toLowerCase(); 
-                const s = document.getElementById('global-state')?.value; 
-                const d = document.getElementById('global-district')?.value;
+                const s = document.getElementById('global-state')?.value; const d = document.getElementById('global-district')?.value;
+                const cov = (document.getElementById('global-coverage')?.value||'').toLowerCase();
                 
-                if(t==='beli') {
-                    grid.className = "grid grid-cols-2 gap-3 px-3"; const cat = app.state.activeCategory;
-                    
-                    // PENAPISAN RAW & SELAMAT
-                    const prods = app.state.data.products.filter(p => {
-                        if (q && !(p.name||'').toLowerCase().includes(q)) return false;
-                        if (cat && p.category !== cat) return false;
-                        if (s || d) {
-                            const slr = app.state.data.sellers.find(x => x.id === p.sellerWhatsapp) || {};
-                            if (s && slr.state !== s) return false;
-                            if (d && slr.district !== d) return false;
-                        }
-                        return true;
-                    }).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
-                    
-                    grid.innerHTML = prods.length ? prods.map(p=>{
-                        const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp); 
-                        const sNm = slr?.shopName||'Peniaga'; const loc = slr?.state?`${slr.state}`:'Malaysia';
-                        const pPrice = safePrice(p.price); 
-                        const safeName = safeStr(p.name);
+                try {
+                    if(t==='beli') {
+                        grid.className = "grid grid-cols-2 gap-3 px-3"; const cat = app.state.activeCategory;
+                        const prods = app.state.data.products.filter(p => {
+                            const pName = safeStr(p.name).toLowerCase(); const pCat = safeStr(p.category);
+                            if (q && !pName.includes(q)) return false; if (cat && pCat !== cat) return false;
+                            if (s || d || cov) {
+                                const slr = app.state.data.sellers.find(x => x.id === p.sellerWhatsapp) || {};
+                                if (s && slr.state !== s) return false; if (d && slr.district !== d) return false;
+                                if (cov && !(slr.coverage||'').toLowerCase().includes(cov)) return false;
+                            } return true;
+                        }).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
                         
-                        return `
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative pb-2">
-                            <div class="h-32 bg-slate-100 relative cursor-pointer" onclick="app.viewSingleShop('${p.sellerWhatsapp}')"><img src="${p.image||''}" loading="lazy" class="w-full h-full object-cover"></div>
-                            <div class="p-2 flex-1 flex flex-col">
-                                <h3 class="font-extrabold text-slate-800 text-[11px] mb-1" onclick="app.viewSingleShop('${p.sellerWhatsapp}')">${safeName||'-'}</h3>
-                                <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1"><span class="font-black text-km-main text-sm">RM ${pPrice.toFixed(2)}</span></div>
-                                <div class="text-[9px] text-slate-400 truncate mb-2 font-medium">🏪 ${safeStr(sNm)} &bull; 📍 ${loc}</div>
-                                
-                                <div class="mt-auto flex flex-col gap-1.5">
-                                    <div class="flex gap-1.5 w-full">
-                                        <button onclick="app.addToCart('${p.id}')" class="w-9 bg-orange-50 text-orange-600 border border-orange-200 rounded-lg flex items-center justify-center font-bold active:scale-95" title="Masuk Troli">🛒</button>
-                                        <button onclick="app.buyNow('${p.id}')" class="flex-1 bg-km-main text-white py-1.5 rounded-lg text-[11px] font-bold flex justify-center items-center gap-0.5 shadow-sm active:scale-95">⚡ Beli</button>
-                                    </div>
-                                    <div class="flex gap-1.5 w-full">
-                                        <button onclick="app.copyProductLink('${p.sellerWhatsapp}', '${p.id}')" class="flex-1 bg-slate-100 text-slate-600 py-1 rounded-lg text-[10px] font-bold active:scale-95">📋 Link</button>
-                                        <button onclick="app.shareProductWA('${p.sellerWhatsapp}','${p.id}','${safeName}',${pPrice},'${safeStr(sNm)}')" class="flex-1 bg-[#25D366]/10 text-[#25D366] py-1 rounded-lg text-[10px] font-bold active:scale-95">💬 WA</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-                    }).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><span class="text-5xl opacity-30 block mb-2">🛍️</span><p class="text-sm font-bold text-slate-500">Tiada produk ditemui.</p></div>';
-                }
-                else if(t==='kursus') {
-                    grid.className = "grid grid-cols-1 gap-3 px-3";
-                    const crs = app.state.data.courses.filter(c => { if(q && !(c.title||'').toLowerCase().includes(q)) return false; return true; });
-                    grid.innerHTML = crs.length ? crs.map(c=>{
-                        const cFee = safePrice(c.fee);
-                        return `<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?`<img src="${c.image}" loading="lazy" class="w-full h-full object-cover rounded-xl">`:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-base leading-tight mb-1">${safeStr(c.title)}</h3><p class="text-xs text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${cFee.toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${safeStr(c.title)}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30">Daftar</button></div></div></div>`
-                    }).join('') : '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200"><span class="text-5xl opacity-30 block mb-2">🎓</span><p class="text-sm font-bold text-slate-500">Tiada kursus dijadualkan.</p></div>';
-                }
-                else if(t==='kedai') {
-                    grid.className = "grid grid-cols-2 gap-3 px-3";
-                    // PAPAR SEMUA KEDAI SELLER (TIADA FILTER KEDAI KOSONG)
-                    const slrs = app.state.data.sellers.filter(sl => { 
-                        if(q && !(sl.shopName||'').toLowerCase().includes(q)) return false; 
-                        if(s && sl.state!==s) return false; 
-                        if(d && sl.district!==d) return false; 
-                        return true; 
-                    });
-                    
-                    grid.innerHTML = slrs.length ? slrs.map(sl=>{ 
-                        const c = app.state.data.products.filter(p=>p.sellerWhatsapp===sl.id).length; 
-                        return `
-                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-pointer active:scale-95 transition-transform flex flex-col h-full" onclick="app.viewSingleShop('${sl.id}')">
-                            <div class="h-14 bg-gradient-to-r from-slate-700 to-slate-800 relative"><div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwaDh2OEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')]"></div></div>
-                            <div class="px-2 pb-3 relative flex-1 flex flex-col items-center text-center -mt-6">
-                                <div class="w-14 h-14 bg-white rounded-full p-1 shadow-sm mb-2 z-10"><div class="w-full h-full bg-slate-100 rounded-full flex justify-center items-center text-xl overflow-hidden">${sl.storeLogo ? `<img src="${sl.storeLogo}" loading="lazy" class="w-full h-full object-cover">` : '🏪'}</div></div>
-                                <h4 class="font-extrabold text-slate-800 text-[11px] uppercase line-clamp-2 leading-tight mb-1">${safeStr(sl.shopName) || sl.id}</h4>
-                                <p class="text-[9px] bg-slate-50 border border-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold mb-2">${sl.state || 'Malaysia'}</p>
-                                <div class="mt-auto w-full border-t border-slate-100 pt-2"><p class="text-[10px] text-km-light font-black">🛍️ ${c} Produk</p></div>
-                            </div>
-                        </div>`; 
-                    }).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><span class="text-5xl opacity-30 block mb-2">🏬</span><p class="text-sm font-bold text-slate-500">Tiada kedai ditemui.</p></div>';
-                }
+                        grid.innerHTML = prods.length ? prods.map(p=>{
+                            const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp); 
+                            const sNm = safeStr(slr?.shopName||'Peniaga'); const loc = slr?.state?`${slr.state}`:'Malaysia';
+                            const pPrice = safePrice(p.price); const safeName = safeStr(p.name);
+                            return `<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative pb-2"><div class="h-32 bg-slate-100 relative cursor-pointer" onclick="app.viewSingleShop('${p.sellerWhatsapp}')"><img src="${p.image||''}" loading="lazy" class="w-full h-full object-cover"></div><div class="p-2 flex-1 flex flex-col"><h3 class="font-extrabold text-slate-800 text-[11px] mb-1" onclick="app.viewSingleShop('${p.sellerWhatsapp}')">${safeName||'-'}</h3><div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1"><span class="font-black text-km-main text-sm">RM ${pPrice.toFixed(2)}</span></div><div class="text-[9px] text-slate-400 truncate mb-2 font-medium">🏪 ${sNm} &bull; 📍 ${loc}</div><div class="mt-auto flex flex-col gap-1.5"><div class="flex gap-1.5 w-full"><button onclick="app.addToCart('${p.id}')" class="w-9 bg-orange-50 text-orange-600 border border-orange-200 rounded-lg flex items-center justify-center font-bold active:scale-95" title="Masuk Troli">🛒</button><button onclick="app.buyNow('${p.id}')" class="flex-1 bg-km-main text-white py-1.5 rounded-lg text-[11px] font-bold flex justify-center items-center gap-0.5 shadow-sm active:scale-95">⚡ Beli</button></div></div></div></div>`;
+                        }).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada produk ditemui.</p></div>';
+                    }
+                    else if(t==='kursus') {
+                        grid.className = "grid grid-cols-1 gap-3 px-3";
+                        const crs = app.state.data.courses.filter(c => { if(q && !(c.title||'').toLowerCase().includes(q)) return false; return true; });
+                        grid.innerHTML = crs.length ? crs.map(c=>{
+                            const cFee = safePrice(c.fee);
+                            return `<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?`<img src="${c.image}" loading="lazy" class="w-full h-full object-cover rounded-xl">`:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-base leading-tight mb-1">${safeStr(c.title)}</h3><p class="text-xs text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${cFee.toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${safeStr(c.title)}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30">Daftar</button></div></div></div>`
+                        }).join('') : '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada kursus.</p></div>';
+                    }
+                    else if(t==='kedai') {
+                        grid.className = "grid grid-cols-2 gap-3 px-3";
+                        const slrs = app.state.data.sellers.filter(sl => { 
+                            if(q && !(sl.shopName||'').toLowerCase().includes(q)) return false; 
+                            if(s && sl.state!==s) return false; 
+                            if(d && sl.district!==d) return false; 
+                            if(cov && !(sl.coverage||'').toLowerCase().includes(cov)) return false;
+                            return true; 
+                        });
+                        grid.innerHTML = slrs.length ? slrs.map(sl=>{ 
+                            const c = app.state.data.products.filter(p=>p.sellerWhatsapp===sl.id).length; 
+                            return `<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-pointer active:scale-95 transition-transform flex flex-col h-full" onclick="app.viewSingleShop('${sl.id}')"><div class="h-14 bg-gradient-to-r from-slate-700 to-slate-800 relative"><div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwaDh2OEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')]"></div></div><div class="px-2 pb-3 relative flex-1 flex flex-col items-center text-center -mt-6"><div class="w-14 h-14 bg-white rounded-full p-1 shadow-sm mb-2 z-10"><div class="w-full h-full bg-slate-100 rounded-full flex justify-center items-center text-xl overflow-hidden">${sl.storeLogo ? `<img src="${sl.storeLogo}" loading="lazy" class="w-full h-full object-cover">` : '🏪'}</div></div><h4 class="font-extrabold text-slate-800 text-[11px] uppercase line-clamp-2 leading-tight mb-1">${safeStr(sl.shopName) || sl.id}</h4><p class="text-[9px] bg-slate-50 border border-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold mb-2">${sl.state || 'Malaysia'}</p><div class="mt-auto w-full border-t border-slate-100 pt-2"><p class="text-[10px] text-km-light font-black">🛍️ ${c} Produk</p></div></div></div>`; 
+                        }).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada kedai ditemui.</p></div>';
+                    }
+                } catch(err) { app.showErrorUI("Ralat carian", err.message); }
             },
 
             viewSingleShop: (sId) => {
@@ -748,25 +735,13 @@
                 if(slr.storeLogo) { document.getElementById('shop-logo-img').src=slr.storeLogo; document.getElementById('shop-logo-img').classList.remove('hidden'); document.getElementById('shop-logo-placeholder').classList.add('hidden'); } else { document.getElementById('shop-logo-img').classList.add('hidden'); document.getElementById('shop-logo-placeholder').classList.remove('hidden'); }
                 let iH=''; if(slr.coverage) iH+=`<div><span class="text-slate-400 text-[10px] uppercase tracking-wider block">🚚 Liputan:</span> <span class="font-black text-slate-700 text-sm">${safeStr(slr.coverage)}</span></div>`; if(slr.codCharge!==undefined) iH+=`<div><span class="text-slate-400 text-[10px] uppercase tracking-wider block">💰 Caj COD:</span> <span class="font-black text-slate-700 text-sm">${slr.codCharge>0?`RM${parseFloat(slr.codCharge).toFixed(2)}`:'Percuma'}</span></div>`; document.getElementById('shop-info-box').innerHTML=iH||'<p class="text-center text-slate-400 w-full col-span-2">Tiada info tambahan.</p>';
                 
-                const prods = app.state.data.products.filter(p=>p.sellerWhatsapp===sId);
-                document.getElementById('single-shop-products').innerHTML = prods.length ? prods.map(p=>{
-                    const pPrice = safePrice(p.price);
-                    const safeName = safeStr(p.name);
-                    return `
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col pb-2">
-                        <div class="h-32 bg-slate-100"><img src="${p.image||''}" loading="lazy" class="w-full h-full object-cover"></div>
-                        <div class="p-2 flex-1 flex flex-col">
-                            <h3 class="font-extrabold text-slate-800 text-[11px] mb-1 h-8">${safeName||'-'}</h3>
-                            <span class="font-black text-km-main text-sm mb-2">RM ${pPrice.toFixed(2)}</span>
-                            <div class="mt-auto flex flex-col gap-1.5">
-                                <div class="flex gap-1.5 w-full">
-                                    <button onclick="app.addToCart('${p.id}')" class="w-9 bg-orange-50 text-orange-600 border border-orange-200 rounded-lg flex items-center justify-center font-bold active:scale-95" title="Masuk Troli">🛒</button>
-                                    <button onclick="app.buyNow('${p.id}')" class="flex-1 bg-km-main text-white py-1.5 rounded-lg text-[11px] font-bold flex justify-center items-center gap-0.5 shadow-sm active:scale-95">⚡ Beli</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                }).join('') : '<p class="col-span-2 text-center text-sm text-slate-500 py-8 bg-white rounded-2xl border border-slate-200">Katalog kosong.</p>';
+                try {
+                    const prods = app.state.data.products.filter(p=>p.sellerWhatsapp===sId);
+                    document.getElementById('single-shop-products').innerHTML = prods.length ? prods.map(p=>{
+                        const pPrice = safePrice(p.price); const safeName = safeStr(p.name);
+                        return `<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col pb-2"><div class="h-32 bg-slate-100"><img src="${p.image||''}" loading="lazy" class="w-full h-full object-cover"></div><div class="p-2 flex-1 flex flex-col"><h3 class="font-extrabold text-slate-800 text-[11px] mb-1 h-8">${safeName||'-'}</h3><span class="font-black text-km-main text-sm mb-2">RM ${pPrice.toFixed(2)}</span><div class="mt-auto flex flex-col gap-1.5"><div class="flex gap-1.5 w-full"><button onclick="app.addToCart('${p.id}')" class="w-9 bg-orange-50 text-orange-600 border border-orange-200 rounded-lg flex items-center justify-center font-bold active:scale-95" title="Masuk Troli">🛒</button><button onclick="app.buyNow('${p.id}')" class="flex-1 bg-km-main text-white py-1.5 rounded-lg text-[11px] font-bold flex justify-center items-center gap-0.5 shadow-sm active:scale-95">⚡ Beli</button></div></div></div></div>`
+                    }).join('') : '<p class="col-span-2 text-center text-sm text-slate-500 py-8 bg-white rounded-2xl border border-slate-200">Katalog kosong.</p>';
+                } catch(err) { document.getElementById('single-shop-products').innerHTML = `<p class="col-span-2 text-center text-sm text-red-500 py-8">Ralat paparan produk kedai.</p>`; }
             },
             showMarketplace: () => { document.getElementById('single-shop-view').classList.add('hidden'); document.getElementById('buyer-section').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.remove('hidden'); app.renderMarketplace(); },
 
@@ -774,8 +749,7 @@
                 const p=app.state.data.products.find(x=>x.id===pId); if(!p)return; const sId=p.sellerWhatsapp; 
                 if(!app.state.cart[sId])app.state.cart[sId]=[]; const e=app.state.cart[sId].find(i=>i.product.id===pId); 
                 if(e)e.qty++; else app.state.cart[sId].push({product:p,qty:1}); 
-                app.updateNavHighlight();
-                if(showModal) { app.showCart(); } else { app.showToast("🛒 Masuk troli!"); }
+                app.updateNavHighlight(); if(showModal) { app.showCart(); } else { app.showToast("🛒 Masuk troli!"); }
             },
             buyNow: (pId) => { app.addToCart(pId, true); },
             updateCartQty: (sId, pId, c) => { let i=app.state.cart[sId].find(x=>x.product.id===pId); if(i){i.qty+=c; if(i.qty<=0){app.state.cart[sId]=app.state.cart[sId].filter(x=>x.product.id!==pId); if(app.state.cart[sId].length===0)delete app.state.cart[sId];}} app.showCart(); app.updateNavHighlight(); },
@@ -783,33 +757,33 @@
                 if(!app.state.appUser){ app.showToast("Sila log masuk untuk guna troli."); app.switchMode('auth'); return; }
                 const c=document.getElementById('cart-content'); const s=Object.keys(app.state.cart); 
                 if(s.length===0){c.innerHTML='<div class="text-center py-10"><span class="text-5xl opacity-30 block mb-2">🛒</span><p class="text-sm font-bold text-slate-500">Troli kosong.</p></div>';}
-                else{ c.innerHTML=s.map(sId=>{ 
-                    const slr=app.state.data.sellers.find(x=>x.id===sId)||{shopName:sId}; let t=0; 
-                    const items=app.state.cart[sId].map(i=>{
-                        const pPrice = safePrice(i.product.price);
-                        t+=i.qty*pPrice; 
-                        return `<div class="flex justify-between items-center text-sm py-3 border-b border-slate-100 last:border-0"><div class="flex-1 pr-2"><p class="font-extrabold text-slate-800 line-clamp-1">${safeStr(i.product.name)}</p><p class="text-km-main font-black">RM${pPrice.toFixed(2)}</p></div><div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1 border border-slate-200"><button onclick="app.updateCartQty('${sId}','${i.product.id}',-1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">-</button><span class="font-black w-4 text-center">${i.qty}</span><button onclick="app.updateCartQty('${sId}','${i.product.id}',1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">+</button></div></div>`
-                    }).join(''); 
-                    return `<div class="bg-white p-4 rounded-2xl border border-slate-200 mb-3 shadow-sm"><h4 class="font-black text-base mb-2 border-b border-slate-100 pb-2">🏪 ${safeStr(slr.shopName)||sId}</h4>${items}<div class="mt-3 flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold text-xs text-slate-500">Subtotal: <span class="text-slate-900 text-xl font-black">RM${t.toFixed(2)}</span></span><button onclick="app.prepCheck('${sId}',${t})" class="bg-km-main text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-md active:scale-95">Bayar &rarr;</button></div></div>` }).join(''); 
-                } 
-                app.openModal('cart-modal'); 
+                else{ 
+                    c.innerHTML=s.map(sId=>{ 
+                        const slr=app.state.data.sellers.find(x=>x.id===sId)||{shopName:sId}; let t=0; 
+                        const items=app.state.cart[sId].map(i=>{
+                            const pPrice = safePrice(i.product.price); t+=i.qty*pPrice; 
+                            return `<div class="flex justify-between items-center text-sm py-3 border-b border-slate-100 last:border-0"><div class="flex-1 pr-2"><p class="font-extrabold text-slate-800 line-clamp-1">${safeStr(i.product.name)}</p><p class="text-km-main font-black">RM${pPrice.toFixed(2)}</p></div><div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1 border border-slate-200"><button onclick="app.updateCartQty('${sId}','${i.product.id}',-1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">-</button><span class="font-black w-4 text-center">${i.qty}</span><button onclick="app.updateCartQty('${sId}','${i.product.id}',1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">+</button></div></div>`
+                        }).join(''); 
+                        return `<div class="bg-white p-4 rounded-2xl border border-slate-200 mb-3 shadow-sm"><h4 class="font-black text-base mb-2 border-b border-slate-100 pb-2">🏪 ${safeStr(slr.shopName)||sId}</h4>${items}<div class="mt-3 flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold text-xs text-slate-500">Subtotal: <span class="text-slate-900 text-xl font-black">RM${t.toFixed(2)}</span></span><button onclick="app.prepCheck('${sId}',${t})" class="bg-km-main text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-md active:scale-95">Bayar &rarr;</button></div></div>` 
+                    }).join('');
+                } app.openModal('cart-modal'); 
             },
             
             prepCheck: (sId, t) => { const slr=app.state.data.sellers.find(s=>s.id===sId); const cod=slr?.codCharge||0; app.state.pendingCheckout={id:sId,base:t,cod:cod}; app.closeModal('cart-modal'); document.getElementById('chk-seller').innerText=safeStr(slr?.shopName)||sId; document.getElementById('chk-sub').innerText=`RM ${t.toFixed(2)}`; app.togglePayMethod(); const img=document.getElementById('chk-qr-img'); const noMsg=document.getElementById('chk-no-qr'); if(slr?.qrImage){img.src=slr.qrImage;img.classList.remove('hidden');noMsg.classList.add('hidden');}else{img.classList.add('hidden');noMsg.classList.remove('hidden');} app.openModal('checkout-modal'); },
             togglePayMethod: () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; if(m==='qr'){document.getElementById('chk-qr-sec').classList.remove('hidden');document.getElementById('chk-cash-sec').classList.add('hidden');document.getElementById('chk-cod-row').classList.add('hidden');document.getElementById('chk-total').innerText=`RM ${d.base.toFixed(2)}`;}else{document.getElementById('chk-qr-sec').classList.add('hidden');document.getElementById('chk-cash-sec').classList.remove('hidden');if(d.cod>0){document.getElementById('chk-cod-row').classList.remove('hidden');document.getElementById('chk-cod').innerText=`RM ${d.cod.toFixed(2)}`;} document.getElementById('chk-total').innerText=`RM ${(d.base+d.cod).toFixed(2)}`;} },
-            submitOrder: async () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; const sId=d.id; const ft=m==='cash'?(d.base+d.cod):d.base; const fc=m==='cash'?d.cod:0; const proc=async(r=null)=>{ document.getElementById('global-loader').classList.remove('hidden'); await addDoc(collection(db,'orders'),{buyerWhatsapp:app.state.appUser.whatsapp,buyerName:app.state.appUser.name,sellerWhatsapp:sId,items:app.state.cart[sId].map(i=>({name:i.product.name,price:safePrice(i.product.price),qty:i.qty})),total:ft,codCharge:fc,paymentMethod:m,receipt:r,status:'Menunggu Pengesahan',timestamp:Date.now()}); delete app.state.cart[sId]; document.getElementById('global-loader').classList.add('hidden'); app.updateNavHighlight(); app.closeModal('checkout-modal'); app.showAlert(`Pesanan Selesai! RM ${ft.toFixed(2)}.\n\nSila WA penjual untuk pengesahan.`); }; if(m==='qr'){const f=document.getElementById('chk-receipt'); if(f.files.length===0)return app.showToast("Muat naik resit."); const b=await app.resizeImage(f.files[0]); proc(b); } else { proc(); } },
+            submitOrder: async () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; const sId=d.id; const ft=m==='cash'?(d.base+d.cod):d.base; const fc=m==='cash'?d.cod:0; const proc=async(r=null)=>{ document.getElementById('global-loader').classList.remove('hidden'); await addDoc(collection(db, `${dbPath}/orders`),{buyerWhatsapp:app.state.appUser.whatsapp,buyerName:app.state.appUser.name,sellerWhatsapp:sId,items:app.state.cart[sId].map(i=>({name:i.product.name,price:safePrice(i.product.price),qty:i.qty})),total:ft,codCharge:fc,paymentMethod:m,receipt:r,status:'Menunggu Pengesahan',timestamp:Date.now()}); delete app.state.cart[sId]; document.getElementById('global-loader').classList.add('hidden'); app.updateNavHighlight(); app.closeModal('checkout-modal'); app.showToast(`Pesanan dihantar ke Peniaga!`); }; if(m==='qr'){const f=document.getElementById('chk-receipt'); if(f.files.length===0)return app.showToast("Muat naik resit."); const b=await app.resizeImagePromise(f.files[0]); proc(b); } else { proc(); } },
 
             renderSellerDashboard: () => {
                 const wa=app.state.appUser.whatsapp; const me=app.state.data.sellers.find(s=>s.id===wa); if(me){document.getElementById('seller-name').value=me.shopName||'';if(me.state){document.getElementById('seller-state').value=me.state;app.updateDistricts(me.state,'seller-district');document.getElementById('seller-district').value=me.district||'';}document.getElementById('seller-coverage').value=me.coverage||'';document.getElementById('seller-cod').value=me.codCharge||'';}
-                const ords=app.state.data.orders.filter(o=>o.sellerWhatsapp===wa&&o.status==='Menunggu Pengesahan'); document.getElementById('seller-orders-list').innerHTML=ords.length?ords.map(o=>`<div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><p class="font-extrabold text-base text-slate-800">${safeStr(o.buyerName)} <span class="text-xs text-slate-500 font-bold ml-1 bg-white px-2 py-0.5 rounded border border-slate-200">${o.paymentMethod==='cash'?'COD':'QR Pay'}</span></p><p class="text-km-main font-black text-xl mt-1">RM ${Number(o.total||0).toFixed(2)}</p><button onclick="updateDoc(doc(db,'orders','${o.id}'),{status:'Berjaya'});app.showToast('Disahkan')" class="w-full bg-km-main text-white py-3 text-sm rounded-xl font-black mt-3 shadow-md active:scale-95">Sahkan Selesai</button></div>`).join(''):'<p class="text-sm text-slate-400 font-bold">Tiada pesanan baru.</p>';
+                const ords=app.state.data.orders.filter(o=>o.sellerWhatsapp===wa&&o.status==='Menunggu Pengesahan'); document.getElementById('seller-orders-list').innerHTML=ords.length?ords.map(o=>`<div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><p class="font-extrabold text-base text-slate-800">${safeStr(o.buyerName)} <span class="text-xs text-slate-500 font-bold ml-1 bg-white px-2 py-0.5 rounded border border-slate-200">${o.paymentMethod==='cash'?'COD':'QR Pay'}</span></p><p class="text-km-main font-black text-xl mt-1">RM ${Number(o.total||0).toFixed(2)}</p><button onclick="updateDoc(doc(db,'${dbPath}/orders','${o.id}'),{status:'Berjaya'});app.showToast('Disahkan')" class="w-full bg-km-main text-white py-3 text-sm rounded-xl font-black mt-3 shadow-md active:scale-95">Sahkan Selesai</button></div>`).join(''):'<p class="text-sm text-slate-400 font-bold">Tiada pesanan baru.</p>';
                 const prods=app.state.data.products.filter(p=>p.sellerWhatsapp===wa); const crs=app.state.data.courses.filter(c=>c.providerWhatsapp===wa);
-                let catHtml = prods.length?prods.map(p=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-slate-700 truncate pr-2 flex-1">📦 ${safeStr(p.name)}</span><button onclick="deleteDoc(doc(db,'products','${p.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
-                catHtml += crs.length?crs.map(c=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-yellow-700 truncate pr-2 flex-1">🎓 ${safeStr(c.title)}</span><button onclick="deleteDoc(doc(db,'courses','${c.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
+                let catHtml = prods.length?prods.map(p=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-slate-700 truncate pr-2 flex-1">📦 ${safeStr(p.name)}</span><button onclick="deleteDoc(doc(db,'${dbPath}/products','${p.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
+                catHtml += crs.length?crs.map(c=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-yellow-700 truncate pr-2 flex-1">🎓 ${safeStr(c.title)}</span><button onclick="deleteDoc(doc(db,'${dbPath}/courses','${c.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>`).join(''):'';
                 document.getElementById('seller-catalog-list').innerHTML=catHtml||'<p class="text-slate-400 font-bold text-center py-4">Katalog kosong.</p>';
             },
-            saveProfile: async () => { document.getElementById('global-loader').classList.remove('hidden'); let d={shopName:document.getElementById('seller-name').value,state:document.getElementById('seller-state').value,district:document.getElementById('seller-district').value,coverage:document.getElementById('seller-coverage').value,codCharge:parseFloat(document.getElementById('seller-cod').value)||0}; const f=document.getElementById('seller-qr'); const l=document.getElementById('seller-logo'); if(f.files.length>0)d.qrImage=await app.resizeImage(f.files[0]); if(l.files.length>0)d.storeLogo=await app.resizeImage(l.files[0]); await setDoc(doc(db,'sellers',app.state.appUser.whatsapp),d,{merge:true}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Profil Disimpan"); },
-            addProduct: async () => { const n=document.getElementById('prod-name').value;const p=document.getElementById('prod-price').value;const c=document.getElementById('prod-cat').value;const f=document.getElementById('prod-img'); if(!n||!p||f.files.length===0)return app.showToast("Isi maklumat lengkap"); document.getElementById('global-loader').classList.remove('hidden'); const img=await app.resizeImage(f.files[0]); await addDoc(collection(db,'products'),{sellerWhatsapp:app.state.appUser.whatsapp,name:n,price:parseFloat(p),category:c,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Produk Ditambah"); document.getElementById('prod-name').value=''; document.getElementById('prod-price').value=''; },
-            addCourse: async () => { const t=document.getElementById('course-title').value;const f=document.getElementById('course-fee').value;const d=document.getElementById('course-date').value;const l=document.getElementById('course-loc').value;const i=document.getElementById('course-img'); if(!t)return app.showToast("Isi tajuk kursus"); document.getElementById('global-loader').classList.remove('hidden'); let img=null; if(i.files.length>0)img=await app.resizeImage(i.files[0]); await addDoc(collection(db,'courses'),{providerWhatsapp:app.state.appUser.whatsapp,title:t,fee:parseFloat(f)||0,date:d,location:l,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Kursus Diterbit"); document.getElementById('course-title').value=''; },
+            saveProfile: async () => { document.getElementById('global-loader').classList.remove('hidden'); let d={shopName:document.getElementById('seller-name').value,state:document.getElementById('seller-state').value,district:document.getElementById('seller-district').value,coverage:document.getElementById('seller-coverage').value,codCharge:parseFloat(document.getElementById('seller-cod').value)||0}; const f=document.getElementById('seller-qr'); const l=document.getElementById('seller-logo'); if(f.files.length>0)d.qrImage=await app.resizeImagePromise(f.files[0]); if(l.files.length>0)d.storeLogo=await app.resizeImagePromise(l.files[0]); await setDoc(doc(db,`${dbPath}/sellers`,app.state.appUser.whatsapp),d,{merge:true}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Profil Disimpan"); },
+            addProduct: async () => { const n=document.getElementById('prod-name').value;const p=document.getElementById('prod-price').value;const c=document.getElementById('prod-cat').value;const f=document.getElementById('prod-img'); if(!n||!p||f.files.length===0)return app.showToast("Isi maklumat lengkap"); document.getElementById('global-loader').classList.remove('hidden'); const img=await app.resizeImagePromise(f.files[0]); await addDoc(collection(db, `${dbPath}/products`),{sellerWhatsapp:app.state.appUser.whatsapp,name:n,price:parseFloat(p),category:c,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Produk Ditambah"); document.getElementById('prod-name').value=''; document.getElementById('prod-price').value=''; },
+            addCourse: async () => { const t=document.getElementById('course-title').value;const f=document.getElementById('course-fee').value;const d=document.getElementById('course-date').value;const l=document.getElementById('course-loc').value;const i=document.getElementById('course-img'); if(!t)return app.showToast("Isi tajuk kursus"); document.getElementById('global-loader').classList.remove('hidden'); let img=null; if(i.files.length>0)img=await app.resizeImagePromise(i.files[0]); await addDoc(collection(db, `${dbPath}/courses`),{providerWhatsapp:app.state.appUser.whatsapp,title:t,fee:parseFloat(f)||0,date:d,location:l,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Kursus Diterbit"); document.getElementById('course-title').value=''; },
 
             renderAdmin: () => { 
                 document.getElementById('admin-users-list').innerHTML=app.state.data.users.map(u=>`
@@ -822,22 +796,11 @@
                     </div>
                 `).join(''); 
             },
-            adminResetPwd: (wa) => {
-                document.getElementById('admin-reset-wa').innerText = wa;
-                document.getElementById('admin-reset-new-pwd').value = "123456";
-                app.openModal('admin-reset-modal');
-            },
+            adminResetPwd: (wa) => { document.getElementById('admin-reset-wa').innerText = wa; document.getElementById('admin-reset-new-pwd').value = "123456"; app.openModal('admin-reset-modal'); },
             confirmAdminReset: async () => {
-                const wa = document.getElementById('admin-reset-wa').innerText;
-                const newPwd = document.getElementById('admin-reset-new-pwd').value;
-                if(!newPwd) return app.showToast("Sila masukkan kata laluan baru.");
-                app.closeModal('admin-reset-modal');
-                document.getElementById('global-loader').classList.remove('hidden');
-                try {
-                    const hash = hashString(newPwd);
-                    await updateDoc(doc(db, 'users', wa), { passwordHash: hash });
-                    app.showToast("Kata laluan di-reset ke: " + newPwd);
-                } catch(e) { app.showToast("Gagal reset kata laluan."); }
+                const wa = document.getElementById('admin-reset-wa').innerText; const newPwd = document.getElementById('admin-reset-new-pwd').value;
+                if(!newPwd) return app.showToast("Masukkan kata laluan."); app.closeModal('admin-reset-modal'); document.getElementById('global-loader').classList.remove('hidden');
+                try { const hash = hashString(newPwd); await updateDoc(doc(db, `${dbPath}/users`, wa), { passwordHash: hash }); app.showToast("Berjaya reset pengguna: " + wa); } catch(e) { app.showToast("Ralat."); }
                 document.getElementById('global-loader').classList.add('hidden');
             }
         };
