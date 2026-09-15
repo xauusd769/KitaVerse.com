@@ -57,11 +57,6 @@
         
         .nav-item { transition: all 0.2s; color: #94a3b8; }
         .nav-item.active { color: #2D6A4F; }
-        
-        /* Dropdown Animation */
-        #rider-dropdown { transition: all 0.2s ease-in-out; transform-origin: top right; }
-        .dropdown-hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
-        .dropdown-visible { opacity: 1; transform: scale(1); pointer-events: auto; }
     </style>
 </head>
 <body class="text-slate-800 antialiased selection:bg-km-main selection:text-white">
@@ -83,24 +78,9 @@
                     <span>🛵</span> 
                     <span class="truncate">Hub Rider: Lalamove &bull; BungkusIt &bull; MISI</span>
                 </div>
-                <div class="relative">
-                    <button onclick="app.toggleRiderDropdown()" class="bg-km-rider text-white rounded-md px-2 py-0.5 text-[9px] font-black shadow-sm shrink-0 active:scale-95 flex items-center gap-1">
-                        Daftar <span class="text-[7px]">▼</span>
-                    </button>
-                    <!-- Dropdown Menu Rider -->
-                    <div id="rider-dropdown" class="dropdown-hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-orange-100 overflow-hidden z-50">
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest px-3 py-2 border-b border-slate-50 bg-slate-50">Portal Pendaftaran Rider</p>
-                        <a href="https://www.lalamove.com/ms-my/driver" target="_blank" class="block px-4 py-3 text-xs font-bold text-slate-700 hover:bg-orange-50 active:bg-orange-100 border-b border-slate-50 transition-colors flex items-center gap-2">
-                            <span class="text-orange-500">🚚</span> Lalamove
-                        </a>
-                        <a href="https://play.google.com/store/apps/details?id=com.bungkusit.rider" target="_blank" class="block px-4 py-3 text-xs font-bold text-slate-700 hover:bg-orange-50 active:bg-orange-100 border-b border-slate-50 transition-colors flex items-center gap-2">
-                            <span class="text-blue-500">📦</span> BungkusIt (App)
-                        </a>
-                        <a href="https://misirakyat.com/join_rider" target="_blank" class="block px-4 py-3 text-xs font-bold text-slate-700 hover:bg-orange-50 active:bg-orange-100 transition-colors flex items-center gap-2">
-                            <span class="text-red-500">🛵</span> MISI Rakyat
-                        </a>
-                    </div>
-                </div>
+                <button onclick="app.openModal('rider-modal')" class="bg-km-rider text-white rounded-md px-2 py-0.5 text-[9px] font-black shadow-sm shrink-0 active:scale-95 flex items-center gap-1 cursor-pointer transition-transform">
+                    Daftar <span class="text-[7px]">▼</span>
+                </button>
             </div>
 
             <!-- Logo & Top Actions -->
@@ -415,6 +395,27 @@
             </div>
         </div>
 
+        <!-- Modal Rider -->
+        <div id="rider-modal" class="modal-overlay hidden" onclick="app.closeModal('rider-modal')">
+            <div class="w-full max-w-[300px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col p-6 text-center border border-slate-100" onclick="event.stopPropagation()">
+                <div class="w-16 h-16 bg-orange-50 border border-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-black shadow-inner">🛵</div>
+                <h3 class="font-black text-slate-800 text-lg mb-1">Portal Pendaftaran Rider</h3>
+                <p class="text-xs font-bold text-slate-400 mb-5">Pilih platform pilihan anda:</p>
+                <div class="space-y-3">
+                    <a href="https://www.lalamove.com/ms-my/driver" target="_blank" class="block w-full bg-white border-2 border-orange-100 text-orange-600 hover:bg-orange-50 font-bold py-3 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+                        <span class="text-lg">🚚</span> Daftar Lalamove
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.bungkusit.rider" target="_blank" class="block w-full bg-white border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-bold py-3 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+                        <span class="text-lg">📦</span> Daftar BungkusIt
+                    </a>
+                    <a href="https://misirakyat.com/join_rider" target="_blank" class="block w-full bg-white border-2 border-red-100 text-red-600 hover:bg-red-50 font-bold py-3 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+                        <span class="text-lg">🏍️</span> Daftar MISI Rakyat
+                    </a>
+                </div>
+                <button onclick="app.closeModal('rider-modal')" class="mt-4 bg-slate-100 hover:bg-slate-200 text-slate-500 font-bold py-3 rounded-xl active:scale-95 text-xs w-full transition-colors">Tutup</button>
+            </div>
+        </div>
+
         <!-- Notis Alert -->
         <div id="alert-modal" class="modal-overlay hidden" onclick="app.closeModal('alert-modal')">
             <div class="w-[85%] max-w-sm bg-white p-8 rounded-3xl text-center shadow-2xl border border-slate-100" onclick="event.stopPropagation()"><div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">ℹ️</div><h3 class="font-black text-xl mb-2 text-slate-800">Makluman</h3><p id="alert-msg" class="text-sm text-slate-500 mb-6 font-medium whitespace-pre-line"></p><button onclick="app.closeModal('alert-modal')" class="w-full bg-slate-800 text-white font-black text-lg py-3.5 rounded-2xl active:scale-95 shadow-md">Tutup</button></div>
@@ -456,11 +457,11 @@
                     img.onload=()=>{
                         const c=document.createElement('canvas'); const ctx=c.getContext('2d'); 
                         let w=img.width, h=img.height; 
-                        // Mampatan Maksimum: Hadkan lebar ke 250px sahaja
+                        // Mampatan Maksimum: Hadkan lebar ke 250px sahaja untuk speed ultra
                         if(w>250){h*=250/w;w=250;} 
                         c.width=w;c.height=h;ctx.drawImage(img,0,0,w,h); 
-                        // Mampatan Kualiti: 0.3 untuk kelajuan pantas Firebase
-                        res(c.toDataURL('image/jpeg',0.3));
+                        // Mampatan Kualiti: 0.4 untuk kelajuan pantas Firebase
+                        res(c.toDataURL('image/jpeg',0.4));
                     }; 
                     img.src=e.target.result;
                 }; 
@@ -496,29 +497,6 @@
                     actions += `<button onclick="app.closeModal('account-modal'); app.logout()" class="w-full bg-red-50 text-red-600 font-bold py-3 rounded-xl border border-red-200 mt-2">🚪 Log Keluar</button>`;
                     document.getElementById('acc-modal-actions').innerHTML = actions;
                     app.openModal('account-modal');
-                }
-            },
-            
-            // Rider Dropdown Logic
-            toggleRiderDropdown: () => {
-                const dropdown = document.getElementById('rider-dropdown');
-                if (dropdown.classList.contains('dropdown-hidden')) {
-                    dropdown.classList.remove('dropdown-hidden');
-                    dropdown.classList.add('dropdown-visible');
-                    
-                    // Listener to close if clicked outside
-                    const closeDropdown = (e) => {
-                        if (!e.target.closest('#rider-dropdown') && !e.target.closest('button[onclick="app.toggleRiderDropdown()"]')) {
-                            dropdown.classList.add('dropdown-hidden');
-                            dropdown.classList.remove('dropdown-visible');
-                            document.removeEventListener('click', closeDropdown);
-                        }
-                    };
-                    // Delay adding listener slightly so the click that opened it doesn't immediately close it
-                    setTimeout(() => document.addEventListener('click', closeDropdown), 10);
-                } else {
-                    dropdown.classList.add('dropdown-hidden');
-                    dropdown.classList.remove('dropdown-visible');
                 }
             },
 
@@ -608,7 +586,6 @@
                         if(cat && p.category!==cat) return false; return true;
                     }).sort((a,b)=>b.timestamp-a.timestamp);
                     
-                    // Added loading="lazy" to product images here
                     grid.innerHTML = prods.length ? prods.map(p=>{
                         const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp); const sNm = slr?.shopName||'Peniaga'; const loc = slr?.state?`${slr.state}`:'Malaysia';
                         return `
@@ -663,7 +640,6 @@
                 let iH=''; if(slr.coverage) iH+=`<div><span class="text-slate-400 text-[9px] uppercase tracking-wider block">🚚 Liputan:</span> <span class="font-black text-slate-700">${slr.coverage}</span></div>`; if(slr.codCharge!==undefined) iH+=`<div><span class="text-slate-400 text-[9px] uppercase tracking-wider block">💰 Caj COD:</span> <span class="font-black text-slate-700">${slr.codCharge>0?`RM${slr.codCharge}`:'Percuma'}</span></div>`; document.getElementById('shop-info-box').innerHTML=iH||'<p class="text-center text-slate-400 w-full col-span-2">Tiada info tambahan.</p>';
                 
                 const prods = app.state.data.products.filter(p=>p.sellerWhatsapp===sId);
-                // Added loading="lazy" to products inside single shop view
                 document.getElementById('single-shop-products').innerHTML = prods.length ? prods.map(p=>`
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col pb-2">
                     <div class="h-32 bg-slate-100"><img src="${p.image}" loading="lazy" decoding="async" class="w-full h-full object-cover"></div>
