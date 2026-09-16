@@ -49,17 +49,23 @@
         
         .tab-btn { transition: all 0.2s; }
         .tab-btn.active { background-color: #7c3aed; color: white; box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.3); border-color: #7c3aed; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; transition: opacity 0.2s ease-out; pointer-events: none; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { transform: scale(0.95); transition: transform 0.2s ease-out; max-height: 90vh; overflow-y: auto; width: 100%; max-width: 380px; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
     </style>
 </head>
 <body class="text-slate-800 antialiased selection:bg-kk-main selection:text-white">
 
     <div class="mobile-container">
         <!-- HEADER -->
-        <header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-purple-100">
+        <header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-purple-100 relative">
             <div class="bg-kk-dark text-white text-[10px] py-1.5 px-3 flex justify-center items-center gap-1.5">
                 <span>💍</span>
                 <span class="font-medium tracking-wide truncate">KITA KAHWIN — Direktori & Perancang Majlis</span>
             </div>
+            
             <div class="flex justify-between items-center px-4 py-3">
                 <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='../index.html'">
                     <div class="bg-kk-main text-white rounded-full w-8 h-8 flex items-center justify-center font-black text-lg shadow-sm">K</div>
@@ -68,8 +74,11 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <a href="../market/index.html" class="bg-purple-50 text-kk-main border border-purple-200 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm active:scale-95 flex items-center gap-1">
-                        🛍️ Ke KitaMarket
+                    <button onclick="app.openVendorModal()" class="bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-black px-3 py-1.5 rounded-full shadow-sm active:scale-95 flex items-center gap-1 transition-colors hover:bg-amber-200">
+                        💼 Vendor
+                    </button>
+                    <a href="../market/index.html" class="bg-purple-50 text-kk-main border border-purple-200 text-[10px] font-black px-3 py-1.5 rounded-full shadow-sm active:scale-95 flex items-center gap-1 hover:bg-purple-100 transition-colors">
+                        🛍️ Market
                     </a>
                 </div>
             </div>
@@ -83,7 +92,7 @@
                     <span>🧮</span> Kalkulator Bajet
                 </button>
                 <button id="btn-tab-family" onclick="app.switchTab('family')" class="tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1">
-                    <span>👶</span> Perancang Keluarga
+                    <span>👶</span> Family Planning
                 </button>
             </div>
         </header>
@@ -227,6 +236,46 @@
             </div>
 
         </main>
+        
+        <!-- MODAL LOGIN/DAFTAR VENDOR -->
+        <div id="vendor-modal" class="modal-overlay" onclick="app.closeVendorModal()">
+            <div class="modal-content bg-white rounded-3xl shadow-2xl p-6 border border-slate-100" onclick="event.stopPropagation()">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl shadow-inner border border-amber-100">💼</div>
+                    <button onclick="app.closeVendorModal()" class="text-slate-400 hover:text-slate-700 bg-slate-50 p-2 rounded-full active:scale-90 transition-all"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
+                
+                <h3 class="font-black text-slate-900 text-xl leading-tight">Portal Vendor <br><span class="text-kk-main">KitaKahwin</span></h3>
+                <p class="text-xs text-slate-500 mt-2 mb-6 font-medium">Log masuk untuk kemaskini iklan, atau daftar kedai baru untuk capai ribuan bakal pengantin.</p>
+
+                <!-- Paparan Ejen Affiliate (Hanya muncul jika ada Ref di URL) -->
+                <div id="affiliate-badge" class="hidden mb-4 bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center gap-3 shadow-sm">
+                    <span class="text-2xl">🤝</span>
+                    <div>
+                        <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Disyorkan Oleh Ejen</p>
+                        <p class="text-sm font-black text-emerald-900" id="affiliate-name-display">AGEN-XXXX</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">No. WhatsApp Vendor</label>
+                        <input type="tel" id="vendor-login-wa" placeholder="0123456789" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-kk-main outline-none text-sm font-bold transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wide">Kata Laluan</label>
+                        <input type="password" id="vendor-login-pass" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-kk-main outline-none text-sm font-bold transition-all">
+                    </div>
+                    
+                    <button onclick="app.processVendorAuth()" class="w-full bg-kk-main hover:bg-kk-dark text-white font-black py-3.5 rounded-xl shadow-lg shadow-kk-main/30 active:scale-95 text-sm transition-all mt-2">Log Masuk / Daftar</button>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-slate-100 text-center">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">Maklumat Pendaftaran Baru</p>
+                    <p class="text-xs text-slate-500 leading-relaxed">Pendaftaran iklan baru di direktori dikenakan fi langganan <strong class="text-slate-800">RM150/tahun</strong>. <br>(Sebahagian fi disalurkan kepada Ejen jika ada rujukan).</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="toast-container"></div>
@@ -236,12 +285,9 @@
             state: {
                 activeTab: 'vendor',
                 vendorCategory: '',
+                affiliateRef: null,
                 
-                // ==========================================
                 // DATABASE STATIK KITAKAHWIN (CARA PADAM/TAMBAH IKLAN)
-                // ==========================================
-                // Untuk buang iklan, Tuan hanya perlu padam blok kod di antara tanda { dan },
-                // Untuk tambah iklan, Tuan boleh salin blok { ... } dan tampal di bawah.
                 vendors: [
                     { 
                         name: 'Mahligai Lens Studio', 
@@ -288,6 +334,51 @@
                 c.appendChild(t); setTimeout(()=>t.remove(),2500); 
             },
             
+            // FUNGSI MODAL VENDOR LENGKAP DENGAN AFFILIATE TRACKER
+            openVendorModal: () => {
+                const modal = document.getElementById('vendor-modal');
+                const badge = document.getElementById('affiliate-badge');
+                
+                // Kesan affiliate dari URL bar (Contoh: kitaverse.com/kahwin?ref=agen1001)
+                const urlParams = new URLSearchParams(window.location.search);
+                const ref = urlParams.get('ref');
+                
+                if (ref) {
+                    app.state.affiliateRef = ref.toUpperCase();
+                    document.getElementById('affiliate-name-display').innerText = app.state.affiliateRef;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+                
+                modal.classList.add('active');
+            },
+            closeVendorModal: () => {
+                document.getElementById('vendor-modal').classList.remove('active');
+            },
+            processVendorAuth: () => {
+                const wa = document.getElementById('vendor-login-wa').value;
+                const pass = document.getElementById('vendor-login-pass').value;
+                
+                if(!wa || !pass) {
+                    app.showToast("Sila masukkan no. telefon & kata laluan.");
+                    return;
+                }
+                
+                // Simulate processing
+                app.showToast("Menyemak rekod pangkalan data...");
+                setTimeout(() => {
+                    app.closeVendorModal();
+                    if(app.state.affiliateRef) {
+                        alert(`PERHATIAN KEPADA ADMIN (Sistem Demo):\n\nVendor baru memohon untuk berdaftar!\n\nNo. WA Vendor: ${wa}\nRujukan Affiliate: ${app.state.affiliateRef}\n\nSistem KitaPay akan menolak RM50 dari bayaran RM150 untuk disalurkan ke akaun ejen ${app.state.affiliateRef}.`);
+                    } else {
+                        alert(`PERHATIAN KEPADA ADMIN (Sistem Demo):\n\nVendor baru memohon untuk berdaftar!\n\nNo. WA Vendor: ${wa}\n(Tiada Rujukan Ejen)`);
+                    }
+                    document.getElementById('vendor-login-wa').value = '';
+                    document.getElementById('vendor-login-pass').value = '';
+                }, 1000);
+            },
+            
             switchTab: (tab) => {
                 app.state.activeTab = tab;
                 ['vendor', 'bajet', 'family'].forEach(t => {
@@ -303,7 +394,6 @@
             
             setVendorCategory: (cat) => { 
                 app.state.vendorCategory = cat; 
-                // Kemaskini butang aktif
                 document.querySelectorAll('.cat-pill').forEach(el => {
                     if(el.innerText.includes(cat) || (cat === '' && el.innerText === 'Semua')) {
                         el.className = "cat-pill active shrink-0 bg-kk-main text-white border border-kk-main px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors";
