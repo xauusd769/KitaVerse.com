@@ -33,7 +33,7 @@
                     </div>
                     <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">Sertai Program <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Rakan Affiliate Kami.</span></h1>
                     <p class="text-slate-400 text-base md:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
-                        Bantu kami perkasakan usahawan. Anda dibayar komisen <strong class="text-amber-400">RM50 (KitaKahwin)</strong> dan <strong class="text-cyan-400">RM20 (KitaInvite)</strong> secara automatik.
+                        Bantu kami perkasakan usahawan. Anda dibayar komisen <strong class="text-amber-400">RM50 (KitaKahwin)</strong>, <strong class="text-blue-400">RM20 (KitaWeb)</strong> dan <strong class="text-cyan-400">RM20 (KitaInvite)</strong> secara automatik terus ke akaun anda.
                     </p>
                 </div>
 
@@ -76,6 +76,7 @@
                     <a href="../market/index.html" class="hover:text-cyan-400 transition-colors">KitaMarket</a>
                     <a href="../kahwin/index.html" class="hover:text-cyan-400 transition-colors">KitaKahwin</a>
                     <a href="../invite/index.html" class="hover:text-cyan-400 transition-colors">KitaInvite</a>
+                    <a href="../web/index.html" class="hover:text-cyan-400 transition-colors">KitaWeb</a>
                     <a href="#" class="text-cyan-400 font-bold border-b-2 border-cyan-400 pb-1">Dashboard Ejen</a>
                 </nav>
                 <div class="flex items-center gap-3">
@@ -98,7 +99,7 @@
                 <div class="lg:col-span-2 space-y-6">
                     <div class="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
                         <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="link" class="w-5 h-5 text-cyan-400"></i> Pautan Rujukan Anda</h3>
-                        <p class="text-slate-400 text-sm mb-4">Letakkan ID ejen (<span class="agent-id-span text-white font-bold"></span>) di hujung mana-mana URL KitaVerse. Contohnya: <span class="text-amber-400 font-mono">kitaverse.com/kahwin?ref=<span class="agent-id-span"></span></span></p>
+                        <p class="text-slate-400 text-sm mb-4">Promosi pautan anda. Contohnya: <span class="text-blue-400 font-mono">kitaverse.com/web?ref=<span class="agent-id-span"></span></span> (Komisen RM20) atau <span class="text-amber-400 font-mono">kitaverse.com/kahwin?ref=<span class="agent-id-span"></span></span> (Komisen RM50)</p>
                         <div class="flex flex-col sm:flex-row items-center gap-3">
                             <input type="text" id="referralLink" readonly class="w-full bg-slate-950 border border-slate-700 text-white px-4 py-3.5 rounded-xl outline-none font-mono text-sm">
                             <button onclick="copyReferralLink()" id="copyBtn" class="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-8 py-3.5 rounded-xl shrink-0">Salin Pautan</button>
@@ -183,7 +184,6 @@
                 if (isAuthRegisterMode) {
                     if(snap.exists()) { btn.innerHTML = originalText; return showAffiliateToast("No WhatsApp telah didaftarkan. Sila log masuk."); }
                     const simpleId = 'AGEN' + Math.floor(1000 + Math.random() * 9000);
-                    // Simpan profile ke Firebase
                     await window.firebaseSetDoc(agentRef, { name: name, phone: phone, password: pass, agentId: simpleId, clicks: 0, sales: 0, commission: 0, joinedAt: Date.now() });
                     currentUser = { name: name, id: simpleId, stats: { clicks: 0, sales: 0, commission: 0 } };
                     showAffiliateToast('Pendaftaran berjaya!');
@@ -195,7 +195,6 @@
                     showAffiliateToast('Log masuk berjaya.');
                 }
 
-                // Render Dashboard
                 document.getElementById('headerAgentName').innerText = currentUser.name;
                 document.getElementById('referralLink').value = `https://kitaverse.com/?ref=${currentUser.id.toLowerCase()}`;
                 document.querySelectorAll('.agent-id-span').forEach(el => el.innerText = currentUser.id.toLowerCase());
