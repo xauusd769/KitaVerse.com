@@ -22,12 +22,6 @@ background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
 }
-.text-gradient-crypto {
-background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-/* Toast Notification */
 .toast-enter { transform: translateY(100%); opacity: 0; }
 .toast-enter-active { transform: translateY(0); opacity: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 .toast-leave { transform: translateY(0); opacity: 1; }
@@ -36,60 +30,53 @@ background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
 </head>
 <body class="text-slate-200 antialiased min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
 <!-- NAVIGATION BAR -->
-<nav class="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-sky-500/20">
-<i class="fa-solid fa-users-viewfinder"></i>
+<nav class="sticky top-0 z-50 glass-panel border-b border-slate-800/85">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-sky-500/20 shrink-0">
+<i class="fa-solid fa-users-viewfinder text-base"></i>
 </div>
-<div>
-<h1 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
-KitaAffiliate™ <span class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase border border-sky-500/20">Portal Ejen</span>
+<div class="min-w-0">
+<h1 class="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-2 truncate">
+KitaAffiliate™ <span class="px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase border border-sky-500/25">Ejen</span>
 </h1>
-<p class="text-[10px] text-slate-400">Enjin Hibrid RM & Blockchain KitaPay™</p>
+<p class="text-[10px] text-slate-400 truncate">Komisen Telus & Resit Bayaran</p>
 </div>
 </div>
-<div class="flex items-center gap-3">
-<div class="hidden sm:flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
-<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-<span class="text-xs font-mono text-emerald-400">Split-Payment Aktif</span>
-</div>
-<button onclick="salinLinkAfiliasi()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white shadow-lg shadow-sky-600/20 transition flex items-center gap-2">
-<i class="fa-solid fa-link"></i> Salin Link Unik
+<div class="flex items-center shrink-0">
+<button onclick="bukaModalAuth()" id="btnAuth" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 transition flex items-center gap-2 shadow-md">
+<i class="fa-solid fa-user-lock"></i> <span class="hidden xs:inline">Log Masuk / Daftar</span><span class="xs:hidden">Log Masuk</span>
 </button>
 </div>
 </div>
 </nav>
 <!-- MAIN DASHBOARD -->
 <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative z-10">
-<!-- Welcome Banner & Core Concept -->
+<!-- Welcome Banner -->
 <section class="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
 <div class="absolute top-0 right-0 p-32 bg-sky-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 <div class="space-y-4 max-w-2xl relative z-10">
 <span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-1.5">
-<i class="fa-solid fa-bolt"></i> Automasi Penuh KitaPay™
+<i class="fa-solid fa-shield-heart"></i> Sistem Telus & Berkat
 </span>
 <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-Close Deal Terus Dapat Duit: 
+Jana Pendapatan Bersama, 
 
-<span class="text-gradient-gold">Split-Payment Automatik Sifar Delay!</span>
+<span class="text-gradient-gold">Rekod & Bukti Resit Pindahan Jelas!</span>
 </h2>
 <p class="text-sm sm:text-base text-slate-400 leading-relaxed">
-Sistem KitaPay™ menguruskan agihan komisen secara automatik (real-time). Sebaik sahaja rujukan berjaya melanggan, komisen <strong class="text-amber-400">RM50 (KitaKahwin)</strong>, <strong class="text-blue-400">RM20 (KitaWeb)</strong> dan <strong class="text-sky-400">RM20 (KitaInvite)</strong> terus dikreditkan ke akaun anda tanpa perlu tekan butang tuntut!
+Sistem KitaPay™ merekodkan setiap rujukan dengan tepat. Selepas Tuan (Admin) membuat pindahan DuitNow/TNG kepada ejen, Tuan boleh memuat naik Resit Bayaran ke sistem supaya ejen boleh menyemak bukti komisen mereka masuk!
 </p>
 </div>
 <!-- Quick Earnings Widget -->
 <div class="w-full lg:w-auto glass-panel p-6 rounded-2xl border border-slate-700/80 min-w-[300px] shadow-2xl relative z-10">
-<p class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-1">Jumlah Pendapatan Afiliasi</p>
-<p class="text-3xl sm:text-4xl font-black text-white font-mono" id="totalEarnings">RM1,245.80</p>
+<p class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-1">Komisen Terkumpul Ejen</p>
+<p class="text-3xl sm:text-4xl font-black text-white font-mono" id="totalEarnings">RM140.00</p>
 <div class="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center text-xs">
-<span class="text-slate-400">Status Pengagihan:</span>
+<span class="text-slate-400">Status Pembayaran:</span>
 <span class="font-bold text-emerald-400 font-mono flex items-center gap-1">
-<i class="fa-solid fa-circle-check"></i> Auto-Credited
+<i class="fa-solid fa-circle-check"></i> Resit Dimuat Naik
 </span>
-</div>
-<div class="w-full mt-4 py-3 rounded-xl bg-slate-900/90 border border-emerald-500/30 text-emerald-400 font-bold text-xs shadow-inner flex items-center justify-center gap-2">
-<i class="fa-solid fa-shield-halved"></i> 100% Automatik Melalui KitaPay™
 </div>
 </div>
 </section>
@@ -100,8 +87,8 @@ Sistem KitaPay™ menguruskan agihan komisen secara automatik (real-time). Sebai
 <span>Jumlah Referral</span>
 <i class="fa-solid fa-user-group text-sky-400"></i>
 </div>
-<p class="text-2xl font-black text-white font-mono">48 Orang</p>
-<p class="text-xs text-emerald-400">+12 minggu ini (Aktif)</p>
+<p class="text-2xl font-black text-white font-mono">4 Orang</p>
+<p class="text-xs text-emerald-400">Aktif Minggu Ini</p>
 </div>
 <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
 <div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
@@ -109,84 +96,91 @@ Sistem KitaPay™ menguruskan agihan komisen secara automatik (real-time). Sebai
 <i class="fa-solid fa-percent text-amber-400"></i>
 </div>
 <p class="text-2xl font-black text-amber-400 font-mono">RM20 - RM50</p>
-<p class="text-xs text-slate-400">Masuk Terus Real-Time</p>
+<p class="text-xs text-slate-400">Mengikut Modul Pilihan</p>
 </div>
 <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
 <div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
-<span>Sistem Pembayaran</span>
-<i class="fa-solid fa-bolt text-purple-400"></i>
+<span>Mod Pengesahan</span>
+<i class="fa-solid fa-receipt text-purple-400"></i>
 </div>
-<p class="text-2xl font-black text-gradient-crypto font-mono">Instant Split</p>
-<p class="text-xs text-slate-400">Sifar Masa Menunggu</p>
+<p class="text-2xl font-black text-purple-400 font-mono">Resit DuitNow</p>
+<p class="text-xs text-slate-400">Telus & Sah</p>
 </div>
 </section>
-<!-- SIMULATOR & REFERRAL LIST -->
+<!-- REFERRAL TABLE & ADMIN RECEIPT UPLOAD -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<!-- Link & QR Sharing Box -->
+<!-- Link Sharing Box -->
 <div class="glass-panel p-6 rounded-3xl border border-slate-800 space-y-6">
 <h3 class="font-bold text-white text-base flex items-center gap-2">
-<i class="fa-solid fa-share-nodes text-sky-400"></i> Sebarkan Link Anda
+<i class="fa-solid fa-share-nodes text-sky-400"></i> Link Unik Anda
 </h3>
 <div class="space-y-2">
-<label class="text-xs text-slate-400 uppercase font-semibold">Link Unik KitaAffiliate</label>
+<label class="text-xs text-slate-400 uppercase font-semibold">Link KitaAffiliate</label>
 <div class="flex items-center gap-2">
-<input type="text" readonly value="https://kitaverse.com/?ref=agen1234" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-sky-400 focus:outline-none">
+<input type="text" id="inputLinkUnik" readonly value="https://kitaverse.com/?ref=agen1234" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-sky-400 focus:outline-none">
 <button onclick="salinLinkAfiliasi()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white transition">
 <i class="fa-solid fa-copy"></i>
 </button>
 </div>
 </div>
-<div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs space-y-3">
-<p class="font-bold text-white flex items-center gap-1.5">
-<i class="fa-solid fa-circle-info text-amber-400"></i> Panduan Komisen
+<!-- Admin Upload Receipt Box (Hanya untuk Tuan) -->
+<div class="p-4 rounded-2xl bg-slate-900/90 border border-amber-500/30 text-xs space-y-3">
+<p class="font-bold text-amber-400 flex items-center gap-1.5">
+<i class="fa-solid fa-user-shield"></i> Panel Admin: Muat Naik Resit Ejen
 </p>
-<p class="text-slate-400 leading-relaxed">
-• <strong>KitaKahwin:</strong> RM50
-
-• <strong>KitaWeb:</strong> RM20
-
-• <strong>KitaInvite:</strong> RM20
-
-Terus masuk akaun secara automatik!
+<p class="text-slate-400 leading-tight">
+Selepas Tuan buat transfer DuitNow/TNG kepada ejen, muat naik resit di sini supaya ejen boleh lihat bukti pembayaran.
 </p>
+<input type="file" id="adminReceiptInput" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500 file:text-slate-950 font-bold cursor-pointer">
+<button onclick="simpanDanHantarResit()" class="w-full py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition">
+Simpan & Hantar Resit ke Ejen
+</button>
 </div>
 </div>
-<!-- Live Referral Activity Table -->
+<!-- Live Referral Activity Table with Receipt Link -->
 <div class="lg:col-span-2 glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
 <div class="flex items-center justify-between">
 <h3 class="font-bold text-white text-base flex items-center gap-2">
-<i class="fa-solid fa-list-check text-emerald-400"></i> Senarai Transaksi Rujukan Terkini
+<i class="fa-solid fa-list-check text-emerald-400"></i> Rekod Komisen & Bukti Resit
 </h3>
-<span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Auto-Sync Real-Time</span>
+<span class="text-xs px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">Telus & Rekod Manual</span>
 </div>
 <div class="overflow-x-auto">
 <table class="w-full text-left text-xs">
 <thead class="text-slate-400 uppercase bg-slate-900/80 border-b border-slate-800">
 <tr>
 <th class="px-4 py-3 rounded-l-xl">Modul / Pelanggan</th>
-<th class="px-4 py-3">Tarikh</th>
 <th class="px-4 py-3">Komisen</th>
-<th class="px-4 py-3 rounded-r-xl text-right">Status</th>
+<th class="px-4 py-3">Status Pindahan</th>
+<th class="px-4 py-3 rounded-r-xl text-right">Bukti Resit</th>
 </tr>
 </thead>
-<tbody id="referralTableBody" class="divide-y divide-slate-800/60 font-mono">
+<tbody class="divide-y divide-slate-800/60 font-mono">
 <tr>
 <td class="px-4 py-3 font-sans font-semibold text-white">KitaKahwin Vendor (Makcik Kiah)</td>
-<td class="px-4 py-3 text-slate-300">Hari Ini</td>
 <td class="px-4 py-3 text-amber-400 font-bold">RM50.00</td>
-<td class="px-4 py-3 text-right text-emerald-400"><i class="fa-solid fa-bolt mr-1"></i> Auto-Paid</td>
+<td class="px-4 py-3 text-emerald-400">Selesai Dibayar</td>
+<td class="px-4 py-3 text-right">
+<button onclick="bukaModalResit('Resit DuitNow #TRX9821 - RM50.00 (Makcik Kiah)')" class="px-2.5 py-1 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/30 font-sans font-bold hover:bg-sky-500/20 transition">
+<i class="fa-solid fa-file-image mr-1"></i> Lihat Resit
+</button>
+</td>
 </tr>
 <tr>
 <td class="px-4 py-3 font-sans font-semibold text-white">KitaWeb SaaS (Ahmad Razin)</td>
-<td class="px-4 py-3 text-slate-300">Semalam</td>
 <td class="px-4 py-3 text-blue-400 font-bold">RM20.00</td>
-<td class="px-4 py-3 text-right text-emerald-400"><i class="fa-solid fa-bolt mr-1"></i> Auto-Paid</td>
+<td class="px-4 py-3 text-emerald-400">Selesai Dibayar</td>
+<td class="px-4 py-3 text-right">
+<button onclick="bukaModalResit('Resit DuitNow #TRX9822 - RM20.00 (Ahmad Razin)')" class="px-2.5 py-1 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/30 font-sans font-bold hover:bg-sky-500/20 transition">
+<i class="fa-solid fa-file-image mr-1"></i> Lihat Resit
+</button>
+</td>
 </tr>
 <tr>
 <td class="px-4 py-3 font-sans font-semibold text-white">KitaInvite SaaS (Siti Salmah)</td>
-<td class="px-4 py-3 text-slate-300">3 Hari Lalu</td>
 <td class="px-4 py-3 text-sky-400 font-bold">RM20.00</td>
-<td class="px-4 py-3 text-right text-emerald-400"><i class="fa-solid fa-bolt mr-1"></i> Auto-Paid</td>
+<td class="px-4 py-3 text-amber-400">Dalam Proses</td>
+<td class="px-4 py-3 text-right text-slate-500">Menunggu Transfer</td>
 </tr>
 </tbody>
 </table>
@@ -194,6 +188,50 @@ Terus masuk akaun secara automatik!
 </div>
 </div>
 </main>
+<!-- MODAL LOG MASUK / PENDAFTARAN EJEN -->
+<div id="modalAuth" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+<div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-slate-700 space-y-4 relative">
+<button onclick="tutupModalAuth()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+<i class="fa-solid fa-xmark text-lg"></i>
+</button>
+<div class="text-center space-y-1">
+<div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto text-lg font-bold mb-2">
+<i class="fa-solid fa-user-tag"></i>
+</div>
+<h3 class="text-lg font-bold text-white">Portal Ejen KitaAffiliate</h3>
+<p class="text-xs text-slate-400">Log masuk atau daftar ID unik rujukan anda.</p>
+</div>
+<form onsubmit="prosesAuth(event)" class="space-y-3 pt-2">
+<div>
+<label class="block text-xs text-slate-400 font-semibold mb-1">ID Ejen / No. Telefon</label>
+<input type="text" id="authId" required placeholder="Cth: agen1234" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-sky-500 font-mono">
+</div>
+<div>
+<label class="block text-xs text-slate-400 font-semibold mb-1">Kata Laluan</label>
+<input type="password" id="authPass" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-sky-500">
+</div>
+<button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs transition shadow-lg shadow-sky-600/20">
+Masuk / Daftar Ejen
+</button>
+</form>
+</div>
+</div>
+<!-- MODAL LIHAT RESIT -->
+<div id="modalResit" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+<div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-slate-700 space-y-4 text-center">
+<h4 class="font-bold text-white text-base" id="tajukResit">Bukti Resit Pindahan</h4>
+<div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center min-h-[200px]">
+<div class="space-y-2 text-slate-400 text-xs">
+<i class="fa-solid fa-receipt text-4xl text-emerald-400 mb-2"></i>
+<p id="infoResit" class="font-mono text-white font-bold">Resit DuitNow #TRX9821</p>
+<p class="text-[10px] text-emerald-400">Status: Pembayaran Berjaya Disahkan Admin</p>
+</div>
+</div>
+<button onclick="tutupModalResit()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition">
+Tutup Paparan
+</button>
+</div>
+</div>
 <!-- FOOTER -->
 <footer class="mt-auto py-6 border-t border-slate-800/50 bg-slate-900/50 text-center text-xs text-slate-500">
 <p>© 2026 KitaAffiliate™ • Dikuasakan oleh Ekosistem KitaVerse.</p>
@@ -202,8 +240,38 @@ Terus masuk akaun secara automatik!
 <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
 <script>
 function salinLinkAfiliasi() {
-navigator.clipboard.writeText("https://kitaverse.com/?ref=agen1234");
+const link = document.getElementById('inputLinkUnik').value;
+navigator.clipboard.writeText(link);
 tunjukToast("Link unik KitaAffiliate berjaya disalin ke papan keratan!", "success");
+}
+function bukaModalAuth() {
+document.getElementById('modalAuth').classList.replace('hidden', 'flex');
+}
+function tutupModalAuth() {
+document.getElementById('modalAuth').classList.replace('flex', 'hidden');
+}
+function prosesAuth(e) {
+e.preventDefault();
+const id = document.getElementById('authId').value;
+document.getElementById('inputLinkUnik').value = ⁠https://kitaverse.com/?ref=${id}⁠;
+tutupModalAuth();
+tunjukToast(⁠Selamat datang, ${id}! Pautan unik anda telah dikemas kini.⁠, "success");
+}
+function bukaModalResit(info) {
+document.getElementById('infoResit').innerText = info;
+document.getElementById('modalResit').classList.replace('hidden', 'flex');
+}
+function tutupModalResit() {
+document.getElementById('modalResit').classList.replace('flex', 'hidden');
+}
+function simpanDanHantarResit() {
+const input = document.getElementById('adminReceiptInput');
+if(input.files.length === 0) {
+tunjukToast("Sila pilih fail resit terlebih dahulu!", "info");
+return;
+}
+tunjukToast("Resit berjaya dimuat naik dan dikongsi dengan ejen!", "success");
+input.value = "";
 }
 function tunjukToast(mesej, jenis = "info") {
 const bekas = document.getElementById('toastContainer');
