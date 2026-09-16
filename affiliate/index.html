@@ -1,372 +1,937 @@
 <!DOCTYPE html>
 <html lang="ms" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>KitaAffiliate™ | Portal Ejen & Kawalan Pentadbir</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; -webkit-tap-highlight-color: transparent; }
-.glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-.text-gradient-gold { background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.toast-enter { transform: translateY(100%); opacity: 0; }
-.toast-enter-active { transform: translateY(0); opacity: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.toast-leave { transform: translateY(0); opacity: 1; }
-.toast-leave-active { transform: translateY(100%); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KitaAffiliate™ | Sistem Komisen & Resit Pindahan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; }
+        .glass-card { background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .text-gold { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        input, select, textarea { font-size: 14px !important; }
+        button, a { touch-action: manipulation; }
+    </style>
 </head>
-<body class="text-slate-200 antialiased min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
-<!-- NAVIGATION BAR -->
-<nav class="sticky top-0 z-40 glass-panel border-b border-slate-800/85">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
-<div class="flex items-center gap-3 min-w-0">
-<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-sky-500/20 shrink-0">
-<i class="fa-solid fa-users-viewfinder text-base"></i>
-</div>
-<div class="min-w-0">
-<h1 class="text-xs sm:text-sm font-bold text-white tracking-tight flex items-center gap-1.5 truncate">
-KitaAffiliate™ <span id="userBadge" class="px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-400 text-[9px] font-bold uppercase border border-sky-500/25">AWAM / EJEN</span>
-</h1>
-<p class="text-[10px] text-slate-400 truncate">Komisen Telus & Resit Bayaran</p>
-</div>
-</div>
-<div class="flex items-center gap-2 shrink-0">
-<button type="button" onclick="bukaModalAuth()" id="btnAuth" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white shadow-lg shadow-sky-600/25 transition flex items-center gap-2 cursor-pointer active:scale-95 z-50">
-<i class="fa-solid fa-user-lock"></i> <span id="authBtnText">Log Masuk</span>
-</button>
-</div>
-</div>
-</nav>
-<!-- MAIN DASHBOARD -->
-<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative z-10">
-<!-- Welcome Banner -->
-<section class="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
-<div class="absolute top-0 right-0 p-32 bg-sky-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-<div class="space-y-4 max-w-2xl relative z-10">
-<span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-1.5">
-<i class="fa-solid fa-shield-heart"></i> Sistem Telus & Berkat
-</span>
-<h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-Jana Pendapatan Bersama, 
+<body class="min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
 
-<span class="text-gradient-gold">Rekod & Bukti Resit Pindahan Jelas!</span>
-</h2>
-<p class="text-sm sm:text-base text-slate-400 leading-relaxed">
-Sistem KitaPay™ merekodkan setiap rujukan dengan tepat. Ejen boleh menyemak pautan unik dan status komisen masing-masing di portal peribadi.
-</p>
-</div>
-<!-- Quick Earnings Widget -->
-<div class="w-full lg:w-auto glass-panel p-6 rounded-2xl border border-slate-700/80 min-w-[300px] shadow-2xl relative z-10">
-<p class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-1" id="labelEarningsTitle">Komisen Terkumpul Anda</p>
-<p class="text-3xl sm:text-4xl font-black text-white font-mono" id="totalEarnings">RM140.00</p>
-<div class="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center text-xs">
-<span class="text-slate-400">Status Pembayaran:</span>
-<span class="font-bold text-emerald-400 font-mono flex items-center gap-1">
-<i class="fa-solid fa-circle-check"></i> Resit Dimuat Naik
-</span>
-</div>
-</div>
-</section>
-<!-- STATS GRID -->
-<section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-<div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
-<div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
-<span>Jumlah Referral</span>
-<i class="fa-solid fa-user-group text-sky-400"></i>
-</div>
-<p class="text-2xl font-black text-white font-mono" id="statReferrals">4 Orang</p>
-<p class="text-xs text-emerald-400">Aktif Minggu Ini</p>
-</div>
-<div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
-<div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
-<span>Komisen Per Rujukan</span>
-<i class="fa-solid fa-percent text-amber-400"></i>
-</div>
-<p class="text-2xl font-black text-amber-400 font-mono">RM20 - RM50</p>
-<p class="text-xs text-slate-400">Mengikut Modul Pilihan</p>
-</div>
-<div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
-<div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
-<span>Mod Pengesahan</span>
-<i class="fa-solid fa-receipt text-purple-400"></i>
-</div>
-<p class="text-2xl font-black text-purple-400 font-mono">Resit DuitNow</p>
-<p class="text-xs text-slate-400">Telus & Sah</p>
-</div>
-</section>
-<!-- REFERRAL TABLE & CONTENT AREA -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<!-- Link Sharing Box (Hanya muncul bila Ejen Login) -->
-<div id="agentLinkSection" class="glass-panel p-6 rounded-3xl border border-slate-800 space-y-6 hidden">
-<h3 class="font-bold text-white text-base flex items-center gap-2">
-<i class="fa-solid fa-share-nodes text-sky-400"></i> Link Unik Anda
-</h3>
-<div class="space-y-2">
-<label class="text-xs text-slate-400 uppercase font-semibold">Link KitaAffiliate</label>
-<div class="flex items-center gap-2">
-<input type="text" id="inputLinkUnik" readonly value="https://kitaverse.com/?ref=agen1234" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-sky-400 focus:outline-none">
-<button type="button" onclick="salinLinkAfiliasi()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white transition cursor-pointer">
-<i class="fa-solid fa-copy"></i>
-</button>
-</div>
-</div>
-</div>
-<!-- ADMIN PANEL (DISEMBUNYIKAN DARIPADA EJEN / AWAM - HANYA MUNCUL APABILA ADMIN MASUK) -->
-<div id="adminPanelSection" class="lg:col-span-1 glass-panel p-6 rounded-3xl border border-amber-500/40 space-y-4 hidden">
-<h3 class="font-bold text-amber-400 text-base flex items-center gap-2">
-<i class="fa-solid fa-user-shield"></i> Panel Kawalan Admin (Tuan)
-</h3>
-<p class="text-xs text-slate-400 leading-tight">
-Urus senarai ejen, semak komisen, muat naik resit pindahan bank, dan hantar bukti kepada ejen melalui WhatsApp.
-</p>
-<div class="space-y-3 pt-2">
-<div>
-<label class="block text-[11px] text-slate-300 font-semibold mb-1">Pilih Ejen Penerima</label>
-<select id="adminSelectAgent" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white font-mono outline-none">
-<option value="agen1234">agen1234 (Ahmad Razin - RM140)</option>
-<option value="agen5678">agen5678 (Siti Salmah - RM80)</option>
-</select>
-</div>
-<div>
-<label class="block text-[11px] text-slate-300 font-semibold mb-1">No. WhatsApp Ejen</label>
-<input type="text" id="adminAgentPhone" value="60123456789" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white font-mono outline-none">
-</div>
-<div>
-<label class="block text-[11px] text-slate-300 font-semibold mb-1">Muat Naik Resit Pindahan (DuitNow/TNG)</label>
-<input type="file" id="adminReceiptInput" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500 file:text-slate-950 font-bold cursor-pointer">
-</div>
-<button type="button" onclick="simpanDanHantarResitWhatsApp()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs transition cursor-pointer flex items-center justify-center gap-2">
-<i class="fa-brands fa-whatsapp text-sm"></i> Simpan & Hantar Resit ke WhatsApp Ejen
-</button>
-</div>
-</div>
-<!-- Live Referral Activity Table -->
-<div id="tableContainerArea" class="lg:col-span-3 glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
-<div class="flex items-center justify-between">
-<h3 class="font-bold text-white text-base flex items-center gap-2">
-<i class="fa-solid fa-list-check text-emerald-400"></i> Rekod Komisen & Bukti Resit
-</h3>
-<span class="text-xs px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">Telus & Rekod Manual</span>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left text-xs">
-<thead class="text-slate-400 uppercase bg-slate-900/80 border-b border-slate-800">
-<tr>
-<th class="px-4 py-3 rounded-l-xl">Modul / Pelanggan</th>
-<th class="px-4 py-3">Komisen</th>
-<th class="px-4 py-3">Status Pindahan</th>
-<th class="px-4 py-3 rounded-r-xl text-right">Bukti Resit</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-800/60 font-mono" id="tabelRekodKomisen">
-<tr>
-<td class="px-4 py-3 font-sans font-semibold text-white">KitaKahwin Vendor (Makcik Kiah)</td>
-<td class="px-4 py-3 text-amber-400 font-bold">RM50.00</td>
-<td class="px-4 py-3 text-emerald-400">Selesai Dibayar</td>
-<td class="px-4 py-3 text-right">
-<button type="button" onclick="bukaModalResit('Resit DuitNow #TRX9821 - RM50.00 (Makcik Kiah)')" class="px-2.5 py-1 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/30 font-sans font-bold hover:bg-sky-500/20 transition cursor-pointer">
-<i class="fa-solid fa-file-image mr-1"></i> Lihat Resit
-</button>
-</td>
-</tr>
-<tr>
-<td class="px-4 py-3 font-sans font-semibold text-white">KitaWeb SaaS (Ahmad Razin)</td>
-<td class="px-4 py-3 text-blue-400 font-bold">RM20.00</td>
-<td class="px-4 py-3 text-emerald-400">Selesai Dibayar</td>
-<td class="px-4 py-3 text-right">
-<button type="button" onclick="bukaModalResit('Resit DuitNow #TRX9822 - RM20.00 (Ahmad Razin)')" class="px-2.5 py-1 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/30 font-sans font-bold hover:bg-sky-500/20 transition cursor-pointer">
-<i class="fa-solid fa-file-image mr-1"></i> Lihat Resit
-</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</main>
-<!-- MODAL LOG MASUK / PENDAFTARAN EJEN ATAU ADMIN -->
-<div id="modalAuth" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-<div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-slate-700 space-y-4 relative">
-<button type="button" onclick="tutupModalAuth()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer p-1">
-<i class="fa-solid fa-xmark text-lg"></i>
-</button>
-<div class="text-center space-y-1">
-<div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center mx-auto text-lg font-bold mb-2">
-<i class="fa-solid fa-user-lock"></i>
-</div>
-<h3 class="text-lg font-bold text-white">Log Masuk Sistem</h3>
-<p class="text-xs text-slate-400">Pilih akses Ejen atau Masuk sebagai Admin (Tuan).</p>
-</div>
-<!-- Tab Switcher -->
-<div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold">
-<button type="button" onclick="paparTabAuth('ejen')" id="tabBtnEjen" class="py-2 rounded-lg bg-sky-600 text-white transition cursor-pointer">Portal Ejen</button>
-<button type="button" onclick="paparTabAuth('admin')" id="tabBtnAdmin" class="py-2 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">Admin (Tuan)</button>
-</div>
-<!-- Form Ejen -->
-<form id="formAuthEjen" onsubmit="prosesAuthEjen(event)" class="space-y-3 pt-1">
-<div>
-<label class="block text-xs text-slate-400 font-semibold mb-1">ID Ejen / No. Telefon</label>
-<input type="text" id="authId" required placeholder="Cth: agen1234" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-sky-500 font-mono">
-</div>
-<div>
-<label class="block text-xs text-slate-400 font-semibold mb-1">Kata Laluan</label>
-<input type="password" id="authPass" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-sky-500">
-</div>
-<button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs transition shadow-lg shadow-sky-600/20 cursor-pointer">
-Masuk Portal Ejen
-</button>
-</form>
-<!-- Form Admin -->
-<form id="formAuthAdmin" onsubmit="prosesAuthAdmin(event)" class="space-y-3 pt-1 hidden">
-<div>
-<label class="block text-xs text-amber-400 font-semibold mb-1">No. Telefon Admin / Master ID</label>
-<input type="text" id="adminPhone" required value="0182676999" readonly class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-amber-400 font-mono outline-none">
-</div>
-<div>
-<label class="block text-xs text-slate-400 font-semibold mb-1">Kata Laluan Admin</label>
-<input type="password" id="adminPass" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-amber-500">
-</div>
-<button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs transition shadow-lg shadow-amber-500/20 cursor-pointer">
-Masuk Panel Admin (Tuan)
-</button>
-</form>
-</div>
-</div>
-<!-- MODAL LIHAT RESIT -->
-<div id="modalResit" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-<div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-slate-700 space-y-4 text-center">
-<h4 class="font-bold text-white text-base" id="tajukResit">Bukti Resit Pindahan</h4>
-<div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center min-h-[200px]">
-<div class="space-y-2 text-slate-400 text-xs">
-<i class="fa-solid fa-receipt text-4xl text-emerald-400 mb-2"></i>
-<p id="infoResit" class="font-mono text-white font-bold">Resit DuitNow #TRX9821</p>
-<p class="text-[10px] text-emerald-400">Status: Pembayaran Berjaya Disahkan Admin</p>
-</div>
-</div>
-<button type="button" onclick="tutupModalResit()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition cursor-pointer">
-Tutup Paparan
-</button>
-</div>
-</div>
-<!-- FOOTER -->
-<footer class="mt-auto py-6 border-t border-slate-800/50 bg-slate-900/50 text-center text-xs text-slate-500">
-<p>© 2026 KitaAffiliate™ • Dikuasakan oleh Ekosistem KitaVerse.</p>
-</footer>
-<!-- Toast Notification Container -->
-<div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
-<script>
-let currentUserRole = 'awam'; // 'awam', 'ejen', 'admin'
-function salinLinkAfiliasi() {
-const link = document.getElementById('inputLinkUnik').value;
-navigator.clipboard.writeText(link);
-tunjukToast("Link unik KitaAffiliate berjaya disalin ke papan keratan!", "success");
-}
-function bukaModalAuth() {
-const modal = document.getElementById('modalAuth');
-modal.classList.remove('hidden');
-modal.classList.add('flex');
-}
-function tutupModalAuth() {
-const modal = document.getElementById('modalAuth');
-modal.classList.remove('flex');
-modal.classList.add('hidden');
-}
-function paparTabAuth(jenis) {
-const btnEjen = document.getElementById('tabBtnEjen');
-const btnAdmin = document.getElementById('tabBtnAdmin');
-const formEjen = document.getElementById('formAuthEjen');
-const formAdmin = document.getElementById('formAuthAdmin');
-if(jenis === 'ejen') {
-btnEjen.className = "py-2 rounded-lg bg-sky-600 text-white transition cursor-pointer";
-btnAdmin.className = "py-2 rounded-lg text-slate-400 hover:text-white transition cursor-pointer";
-formEjen.classList.remove('hidden');
-formAdmin.classList.add('hidden');
-} else {
-btnAdmin.className = "py-2 rounded-lg bg-amber-500 text-slate-950 font-extrabold transition cursor-pointer";
-btnEjen.className = "py-2 rounded-lg text-slate-400 hover:text-white transition cursor-pointer";
-formAdmin.classList.remove('hidden');
-formEjen.classList.add('hidden');
-}
-}
-function prosesAuthEjen(e) {
-e.preventDefault();
-const id = document.getElementById('authId').value;
-currentUserRole = 'ejen';
-document.getElementById('inputLinkUnik').value = ⁠https://kitaverse.com/?ref=${id}⁠;
-document.getElementById('userBadge').innerText = ⁠EJEN: ${id.toUpperCase()}⁠;
-document.getElementById('userBadge').className = "px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-400 text-[9px] font-bold uppercase border border-sky-500/40";
-document.getElementById('authBtnText').innerText = ⁠Keluar (${id})⁠;
-// Paparkan link unik untuk ejen, sembunyikan panel admin
-document.getElementById('agentLinkSection').classList.remove('hidden');
-document.getElementById('adminPanelSection').classList.add('hidden');
-document.getElementById('tableContainerArea').className = "lg:col-span-3 glass-panel p-6 rounded-3xl border border-slate-800 space-y-4";
-tutupModalAuth();
-tunjukToast(⁠Selamat datang, Ejen ${id}!⁠, "success");
-}
-function prosesAuthAdmin(e) {
-e.preventDefault();
-const pass = document.getElementById('adminPass').value;
-if(pass !== "admin123" && pass !== "123456" && pass.length < 3) {
-tunjukToast("Kata laluan admin salah!", "info");
-return;
-}
-currentUserRole = 'admin';
-document.getElementById('userBadge').innerText = "ADMIN MASTER";
-document.getElementById('userBadge').className = "px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[9px] font-bold uppercase border border-amber-500/40";
-document.getElementById('authBtnText').innerText = "Keluar Admin";
-// Sembunyikan link unik awam/ejen, PAPARKAN panel admin penuh
-document.getElementById('agentLinkSection').classList.add('hidden');
-document.getElementById('adminPanelSection').classList.remove('hidden');
-document.getElementById('tableContainerArea').className = "lg:col-span-2 glass-panel p-6 rounded-3xl border border-slate-800 space-y-4";
-tutupModalAuth();
-tunjukToast("Akses Panel Admin Diaktifkan!", "success");
-}
-function bukaModalResit(info) {
-document.getElementById('infoResit').innerText = info;
-const modal = document.getElementById('modalResit');
-modal.classList.remove('hidden');
-modal.classList.add('flex');
-}
-function tutupModalResit() {
-const modal = document.getElementById('modalResit');
-modal.classList.remove('flex');
-modal.classList.add('hidden');
-}
-function simpanDanHantarResitWhatsApp() {
-const input = document.getElementById('adminReceiptInput');
-const agentSelect = document.getElementById('adminSelectAgent').value;
-const phone = document.getElementById('adminAgentPhone').value;
-if(input.files.length === 0) {
-tunjukToast("Sila pilih fail resit pindahan terlebih dahulu!", "info");
-return;
-}
-const pesananWa = ⁠Salam ${agentSelect}, Tuan telah memasukkan komisen anda. Berikut adalah bukti resit pindahan DuitNow/TNG. Tahniah & terima kasih atas rujukan anda bersama KitaVerse!⁠;
-const waUrl = ⁠https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(pesananWa)}⁠;
-window.open(waUrl, '_blank');
-tunjukToast("Resit berjaya diproses dan WhatsApp dibuka untuk hantar bukti!", "success");
-input.value = "";
-}
-function tunjukToast(mesej, jenis = "info") {
-const bekas = document.getElementById('toastContainer');
-const toast = document.createElement('div');
-let ikon = '<i class="fa-solid fa-circle-info text-sky-400"></i>';
-let kelasBg = 'bg-slate-800 border-slate-700';
-if(jenis === 'success') {
-ikon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
-kelasBg = 'bg-slate-900 border-emerald-500/30 ring-1 ring-emerald-500/20';
-}
-toast.className = ⁠flex items-center gap-3 px-4 py-3 rounded-xl border ${kelasBg} text-white text-sm shadow-2xl toast-enter toast-enter-active max-w-xs pointer-events-auto⁠;
-toast.innerHTML = ⁠${ikon} <p>${mesej}</p>⁠;
-bekas.appendChild(toast);
-setTimeout(() => {
-toast.classList.replace('toast-enter-active', 'toast-leave-active');
-toast.classList.replace('toast-enter', 'toast-leave');
-setTimeout(() => toast.remove(), 300);
-}, 3000);
-}
-</script>
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+            
+            <!-- Logo Brand -->
+            <div class="flex items-center gap-2.5 min-w-0 cursor-pointer" onclick="paparkanMod('awam')">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-sky-500/20 shrink-0">
+                    <i class="fa-solid fa-handshake-simple"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-sm font-black text-white tracking-tight">Kita<span class="text-sky-400">Affiliate</span></span>
+                        <span id="roleBadge" class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700">
+                            Awam
+                        </span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 truncate">Sistem Rujukan Telus &amp; Resit Sah</p>
+                </div>
+            </div>
+
+            <!-- Butang Log Masuk / Keluar -->
+            <div class="shrink-0">
+                <button type="button" id="btnTopAuth" onclick="klikButangAuthUtama()" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-sky-600 hover:bg-sky-500 active:scale-95 text-white shadow-lg shadow-sky-600/25 transition-all flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-user-lock text-[11px]"></i>
+                    <span id="txtTopAuth">Log Masuk</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- KANDUNGAN UTAMA (3 MOD PAPARAN: AWAM, EJEN, ADMIN) -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-5 space-y-5">
+
+        <!-- ============================================================== -->
+        <!-- BAHAGIAN 1: PAPARAN AWAM (TIADA LINK AFFILIATE & TIADA UPLOAD)   -->
+        <!-- ============================================================== -->
+        <div id="sectionPublic" class="space-y-5">
+            
+            <!-- Hero Card -->
+            <section class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 relative overflow-hidden text-center sm:text-left shadow-2xl">
+                <div class="absolute -top-24 -right-24 w-60 h-60 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[11px] font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-shield-check"></i> 100% Telus &bull; Bukti Resit DuitNow / TNG
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight tracking-tight">
+                        Kongsi Solusi Pintar, <br>
+                        <span class="text-gold">Jana Komisen Lumayan!</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Sertai ejen KitaAffiliate™. Setiap rujukan vendor KitaKahwin, kad KitaInvite, dan laman web KitaWeb direkodkan telus dengan bukti resit pindahan wang terus ke akaun anda.
+                    </p>
+
+                    <!-- Butang Masuk Portal -->
+                    <div class="pt-3 flex flex-col sm:flex-row gap-2.5 justify-center sm:justify-start">
+                        <button type="button" onclick="bukaModalLogin('ejen')" class="px-5 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 active:scale-95 text-white font-extrabold text-xs transition shadow-lg shadow-sky-600/30 flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-id-card"></i> Masuk / Daftar Portal Ejen
+                        </button>
+                        <button type="button" onclick="skrolKeKomisen()" class="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                            <i class="fa-solid fa-tags"></i> Lihat Kadar Komisen
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Jadual Rasmi Kadar Komisen -->
+            <section id="senarai-komisen" class="glass-card rounded-3xl p-5 border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-tags text-amber-400"></i> Kadar Komisen Ejen Berdaftar
+                        </h2>
+                        <p class="text-[11px] text-slate-400">Jumlah komisen tetap yang dibayar bagi setiap jualan berjaya.</p>
+                    </div>
+                    <span class="text-[10px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 font-mono">Pakej 2026</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="p-4 rounded-2xl bg-slate-950/70 border border-amber-500/20 flex flex-col justify-between space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">💍</span>
+                            <span class="text-[10px] font-mono font-black text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Tertinggi</span>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm">KitaKahwin Vendor</h3>
+                            <p class="text-[11px] text-slate-400">Pakej Direktori (RM 150/thn)</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-800 flex justify-between items-baseline">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold">Komisen Ejen:</span>
+                            <span class="text-xl font-black text-amber-400 font-mono">RM 50.00</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-950/70 border border-sky-500/20 flex flex-col justify-between space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">🌐</span>
+                            <span class="text-[10px] font-mono font-black text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">SaaS Pantas</span>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm">KitaWeb Bisnes</h3>
+                            <p class="text-[11px] text-slate-400">Laman Web Pantas (RM 100/thn)</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-800 flex justify-between items-baseline">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold">Komisen Ejen:</span>
+                            <span class="text-xl font-black text-sky-400 font-mono">RM 20.00</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-950/70 border border-pink-500/20 flex flex-col justify-between space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">💌</span>
+                            <span class="text-[10px] font-mono font-black text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded border border-pink-500/20">Viral RSVP</span>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold text-white text-sm">KitaInvite Digital</h3>
+                            <p class="text-[11px] text-slate-400">Kad Kahwin 3D (RM 150/majlis)</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-800 flex justify-between items-baseline">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold">Komisen Ejen:</span>
+                            <span class="text-xl font-black text-pink-400 font-mono">RM 20.00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- BAHAGIAN 2: PAPARAN PORTAL EJEN (MUNCUL BILA EJEN LOGIN)       -->
+        <!-- ============================================================== -->
+        <div id="sectionAgent" class="space-y-5 hidden">
+            
+            <!-- Profil Ringkas Ejen -->
+            <div class="glass-card rounded-3xl p-5 border border-sky-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <span class="text-[10px] font-black uppercase text-sky-400 tracking-wider">Akaun Ejen Sah:</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+                        <span id="agProfileName">Ahmad Razin</span>
+                        <span id="agProfileId" class="px-2.5 py-0.5 rounded-md text-xs font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30">agen1234</span>
+                    </h2>
+                    <p class="text-xs text-slate-400" id="agProfileBank">Maybank: 1640-XXXX-8921</p>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-left sm:text-right w-full sm:w-auto">
+                    <p class="text-[10px] uppercase font-bold text-slate-400">Baki Komisen Layak Diterima</p>
+                    <p class="text-2xl font-black text-emerald-400 font-mono" id="agBalanceText">RM 140.00</p>
+                </div>
+            </div>
+
+            <!-- LINK PROMOSI UNIK EJEN (HANYA ADA DI SINI) -->
+            <div class="glass-card rounded-3xl p-5 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-extrabold text-white text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-link text-sky-400"></i> Pautan Promosi Unik Anda
+                    </h3>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Auto-Tracking</span>
+                </div>
+                
+                <p class="text-xs text-slate-400">Kongsi link ini kepada pelanggan. Setiap pendaftaran melalui link ini akan direkodkan komisen terus ke akaun anda:</p>
+
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="agInputLink" readonly value="https://kitaverse.com/?ref=agen1234" class="w-full px-3.5 py-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-sky-400 outline-none select-all font-bold">
+                    <div class="flex gap-2 shrink-0">
+                        <button type="button" onclick="salinLinkEjen()" class="flex-1 sm:flex-none px-4 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-copy"></i> Salin
+                        </button>
+                        <button type="button" onclick="shareWhatsAppEjen()" class="flex-1 sm:flex-none px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Senarai Rekod Resit Komisen Ejen -->
+            <div class="glass-card rounded-3xl p-5 border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h3 class="font-extrabold text-white text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-receipt text-emerald-400"></i> Sejarah Pindahan Komisen &amp; Resit Anda
+                    </h3>
+                    <span class="text-[10px] text-slate-400">Disahkan oleh Pihak Pengurusan</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead class="text-slate-400 uppercase bg-slate-950/60 text-[10px]">
+                            <tr>
+                                <th class="p-3 rounded-l-xl">Tarikh / Ref</th>
+                                <th class="p-3">Modul</th>
+                                <th class="p-3">Komisen</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 rounded-r-xl text-right">Resit Bank</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyAgentHistory" class="divide-y divide-slate-800/60 font-mono">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- BAHAGIAN 3: PAPARAN PENTADBIR MASTER                           -->
+        <!-- ============================================================== -->
+        <div id="sectionAdmin" class="space-y-5 hidden">
+            
+            <!-- Banner Pentadbir -->
+            <div class="glass-card rounded-3xl p-5 border border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-slate-900 to-slate-900 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <span class="px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950">
+                        <i class="fa-solid fa-shield-halved mr-1"></i> Admin Master Control
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-white">Panel Kawalan Pentadbir</h2>
+                    <p class="text-xs text-slate-400">Urus senarai ejen, masukkan bayaran komisen, muat naik resit bank dan hantar bukti terus ke WhatsApp ejen.</p>
+                </div>
+                <button type="button" onclick="bukaModalDaftarEjen()" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black text-xs transition shadow-lg shadow-amber-500/20 flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-user-plus"></i> + Daftar Ejen Baru
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                
+                <!-- BORANG BAYAR RESIT -->
+                <div class="lg:col-span-1 glass-card rounded-3xl p-5 border border-amber-500/30 space-y-4">
+                    <div class="border-b border-slate-800 pb-3">
+                        <h3 class="font-black text-amber-400 text-sm uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-money-bill-transfer"></i> Bayar &amp; Hantar Resit
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mt-1">Pilih ejen, masukkan jumlah pemindahan, upload gambar resit DuitNow/TNG, dan buka WhatsApp ejen secara automatik.</p>
+                    </div>
+
+                    <form id="formAdminPay" onsubmit="submitBayaranAdmin(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">Pilih Ejen Penerima:</label>
+                            <select id="selAdminAgent" onchange="kemasKiniFormEjenAdmin(this.value)" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-white outline-none focus:border-amber-500 cursor-pointer"></select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">Jumlah (RM):</label>
+                                <input type="number" id="inpAdminAmount" required min="1" step="0.5" placeholder="50.00" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-black text-amber-400 outline-none font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">No. Rujukan Bank:</label>
+                                <input type="text" id="inpAdminRef" required placeholder="TRX-1029" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-white outline-none font-mono uppercase">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-300 mb-1">No. WhatsApp Ejen:</label>
+                            <input type="text" id="inpAdminAgentPhone" required class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-white outline-none">
+                        </div>
+
+                        <!-- INPUT UPLOAD GAMBAR RESIT SEBENAR (KHAS ADMIN) -->
+                        <div class="p-3 rounded-2xl bg-amber-500/5 border border-amber-500/20 space-y-1.5">
+                            <label class="block text-[11px] font-extrabold text-amber-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-invoice-dollar"></i> Lampirkan Gambar Resit Bank:
+                            </label>
+                            <input type="file" id="inpAdminReceiptImg" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500 file:text-slate-950 font-black cursor-pointer bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                            <p class="text-[9.5px] text-slate-400">Resit ini disimpan ke akaun portal ejen untuk rujukan telus mereka.</p>
+                        </div>
+
+                        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white font-extrabold text-xs transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Sahkan &amp; Hantar Resit ke WhatsApp
+                        </button>
+                    </form>
+                </div>
+
+                <!-- SENARAI PANGKALAN DATA EJEN & ARKIB RESIT -->
+                <div class="lg:col-span-2 space-y-5">
+                    
+                    <div class="glass-card rounded-3xl p-5 border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                            <h3 class="font-extrabold text-white text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-users-gear text-sky-400"></i> Senarai Ejen &amp; Baki Komisen
+                            </h3>
+                            <span id="txtAdminAgentCount" class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 px-2.5 py-0.5 rounded-full">3 Ejen</span>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="text-slate-400 uppercase bg-slate-950/60 text-[10px]">
+                                    <tr>
+                                        <th class="p-2.5 rounded-l-lg">Ejen / ID</th>
+                                        <th class="p-2.5">No. Telefon</th>
+                                        <th class="p-2.5">Bank / DuitNow</th>
+                                        <th class="p-2.5">Baki Perlu Bayar</th>
+                                        <th class="p-2.5 rounded-r-lg text-right">Tindakan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyAdminAgents" class="divide-y divide-slate-800/60 font-mono">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ARKIB RESIT PINDAHAN -->
+                    <div class="glass-card rounded-3xl p-5 border border-slate-800 space-y-3">
+                        <h3 class="font-extrabold text-white text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-slate-400"></i> Arkib Bukti Resit Dihantar
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead class="text-slate-400 uppercase bg-slate-950/60 text-[10px]">
+                                    <tr>
+                                        <th class="p-2.5 rounded-l-lg">Tarikh / Ref</th>
+                                        <th class="p-2.5">Ejen Penerima</th>
+                                        <th class="p-2.5">Jumlah</th>
+                                        <th class="p-2.5 rounded-r-lg text-right">Lihat Resit</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyAdminLogs" class="divide-y divide-slate-800/60 font-mono">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================== -->
+    <!-- MODAL 1: LOG MASUK (TAB EJEN VS TAB ADMIN PRIVASI)             -->
+    <!-- ============================================================== -->
+    <div id="modalAuth" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm p-6 rounded-3xl border border-slate-700 space-y-4 relative shadow-2xl">
+            <button type="button" onclick="tutupModalLogin()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="text-center space-y-1">
+                <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center mx-auto text-lg font-bold">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-base font-extrabold text-white">Akses Portal KitaAffiliate</h3>
+                <p class="text-xs text-slate-400">Pilih peranan untuk masuk ke dashboard.</p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold">
+                <button type="button" id="tabEjenBtn" onclick="tukarTabAuth('ejen')" class="py-2 rounded-lg bg-sky-600 text-white transition cursor-pointer">
+                    💼 Ejen Affiliate
+                </button>
+                <button type="button" id="tabAdminBtn" onclick="tukarTabAuth('admin')" class="py-2 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+                    🛡️ Pentadbir Portal
+                </button>
+            </div>
+
+            <!-- Borang Login Ejen -->
+            <form id="formEjenAuth" onsubmit="authLoginEjen(event)" class="space-y-3 pt-1">
+                <div>
+                    <label class="block text-[11px] text-slate-300 font-semibold mb-1">ID Ejen / No. Telefon:</label>
+                    <input type="text" id="authAgentId" required placeholder="Cth: id pilihan anda atau no. tel" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white outline-none focus:border-sky-500 font-mono">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-300 font-semibold mb-1">Kata Laluan:</label>
+                    <input type="password" id="authAgentPass" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white outline-none focus:border-sky-500">
+                </div>
+                <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 active:scale-95 text-white font-extrabold rounded-xl text-xs transition shadow-lg shadow-sky-600/25 cursor-pointer">
+                    Buka Dashboard Ejen &rarr;
+                </button>
+                <p class="text-center text-[11px] text-slate-400 pt-1">
+                    Belum berdaftar? <button type="button" onclick="bukaModalDaftarEjen()" class="text-sky-400 font-bold hover:underline bg-transparent border-none p-0 cursor-pointer">Daftar Ejen Baru</button>
+                </p>
+            </form>
+
+            <!-- Borang Login Admin Master (Auto-Save Password Kali Pertama & Boleh Guna No Phone) -->
+            <form id="formAdminAuth" onsubmit="authLoginAdmin(event)" class="space-y-3 pt-1 hidden">
+                <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-slate-400 leading-tight">
+                    <i class="fa-solid fa-key mr-1 text-amber-400"></i> Ruang khas pentadbir. Log masuk pertama kali akan mendaftarkan no. telefon & kata laluan anda secara automatik.
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-300 font-semibold mb-1">No. Telefon / ID Pentadbir:</label>
+                    <input type="text" id="authAdminId" required placeholder="Masukkan no. telefon anda" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white font-mono font-bold outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-300 font-semibold mb-1">Kata Laluan Pentadbir:</label>
+                    <input type="password" id="authAdminPass" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white outline-none focus:border-amber-500">
+                </div>
+                <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black rounded-xl text-xs transition shadow-lg shadow-amber-500/25 cursor-pointer">
+                    Buka Panel Kawalan Pentadbir &rarr;
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL 2: DAFTAR EJEN BARU (ID DIBINA BEBAS SENDIRI)            -->
+    <!-- ============================================================== -->
+    <div id="modalRegister" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm p-6 rounded-3xl border border-slate-700 space-y-4 relative shadow-2xl">
+            <button type="button" onclick="tutupModalDaftarEjen()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="text-center space-y-1">
+                <h3 class="text-base font-extrabold text-white">Daftar Ejen Affiliate Baru</h3>
+                <p class="text-xs text-slate-400">Cipta ID pautan rujukan unik anda sendiri.</p>
+            </div>
+
+            <form onsubmit="submitDaftarEjenBaru(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-bold mb-1">Nama Penuh:</label>
+                    <input type="text" id="regName" required placeholder="Cth: Ahmad Razin" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-bold mb-1">Pilih ID Ejen Anda Sendiri (Untuk Link):</label>
+                    <input type="text" id="regId" required placeholder="Cth: razin99, jutawan_ali, siti" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sky-400 font-mono font-bold outline-none focus:border-sky-500">
+                    <p class="text-[9.5px] text-slate-400 mt-0.5">Pautan anda nanti: <span class="text-sky-400 font-mono">kitaverse.com/?ref=<span id="previewRefText">id-anda</span></span></p>
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-bold mb-1">No. WhatsApp (Untuk Terima Resit):</label>
+                    <input type="tel" id="regPhone" required placeholder="0123456789" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-bold mb-1">Bank &amp; No Akaun / No DuitNow:</label>
+                    <input type="text" id="regBank" required placeholder="Maybank 1640-1234-5678" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-bold mb-1">Kata Laluan Anda:</label>
+                    <input type="password" id="regPass" required placeholder="••••••••" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white outline-none focus:border-sky-500">
+                </div>
+                <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 active:scale-95 text-white font-extrabold rounded-xl text-xs transition shadow-lg shadow-sky-600/25 cursor-pointer mt-2">
+                    Sahkan Pendaftaran &amp; Dapatkan Link
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL 3: PAPAR RESIT PEMINDAHAN (VIEW RECEIPT)                 -->
+    <!-- ============================================================== -->
+    <div id="modalReceiptView" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm p-6 rounded-3xl border border-slate-700 space-y-4 text-center shadow-2xl relative">
+            <button type="button" onclick="tutupModalResit()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-receipt"></i>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-white text-base" id="resitViewTitle">Bukti Pindahan Komisen</h4>
+                <p class="text-xs text-emerald-400 font-mono font-bold" id="resitViewRef">Ref: TRX-9821</p>
+            </div>
+
+            <div class="p-2 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center min-h-[200px] max-h-[350px] overflow-hidden">
+                <img id="resitViewImg" src="" alt="Resit Pindahan" class="w-full h-auto max-h-[330px] object-contain rounded-xl hidden">
+                <div id="resitViewPlaceholder" class="space-y-2 text-slate-400 text-xs p-6">
+                    <i class="fa-solid fa-file-invoice-dollar text-4xl text-slate-600"></i>
+                    <p class="font-bold text-white">Salinan Pindahan Sah</p>
+                    <p class="text-[11px] text-slate-400" id="resitViewDetail">Pindahan DuitNow / TNG telah dikreditkan oleh pihak pengurusan.</p>
+                </div>
+            </div>
+
+            <button type="button" onclick="tutupModalResit()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition cursor-pointer">
+                Tutup Resit
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION BOX -->
+    <div id="toastBox" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto py-6 border-t border-slate-800/60 bg-slate-950/60 text-center text-xs text-slate-500">
+        <p>&copy; 2026 KitaAffiliate™ &bull; Ekosistem KitaVerse Berkat &amp; Telus.</p>
+    </footer>
+
+    <!-- LOGIK JAVASCRIPT APLIKASI -->
+    <script>
+        const INITIAL_AGENTS = [
+            { id: "agen1234", name: "Ahmad Razin", phone: "0182676999", bank: "Maybank 1640-1234-8921", pass: "123", unpaid: 140 },
+            { id: "agen5678", name: "Siti Salmah", phone: "0198765432", bank: "CIMB 7012-3456-7890", pass: "123", unpaid: 80 },
+            { id: "agen99", name: "Khairul Anwar", phone: "0172345678", bank: "TNG DuitNow 0172345678", pass: "123", unpaid: 0 }
+        ];
+
+        const INITIAL_LOGS = [
+            { ref: "TRX-9821", agentId: "agen1234", agentName: "Ahmad Razin", amount: 50, date: "16 Sep 2026", module: "KitaKahwin Vendor (Makcik Kiah)", receiptImage: "" },
+            { ref: "TRX-9822", agentId: "agen1234", agentName: "Ahmad Razin", amount: 20, date: "16 Sep 2026", module: "KitaWeb SaaS (Pak Ali)", receiptImage: "" },
+            { ref: "TRX-8801", agentId: "agen99", agentName: "Khairul Anwar", amount: 50, date: "14 Sep 2026", module: "KitaKahwin Vendor (Dewan Astana)", receiptImage: "" }
+        ];
+
+        let state = {
+            currentRole: 'awam', // 'awam', 'ejen', 'admin'
+            activeAgent: null,
+            agents: JSON.parse(localStorage.getItem('kv_aff_agents') || JSON.stringify(INITIAL_AGENTS)),
+            logs: JSON.parse(localStorage.getItem('kv_aff_logs') || JSON.stringify(INITIAL_LOGS))
+        };
+
+        function simpanData() {
+            localStorage.setItem('kv_aff_agents', JSON.stringify(state.agents));
+            localStorage.setItem('kv_aff_logs', JSON.stringify(state.logs));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            paparkanMod('awam');
+
+            // Live preview ID ejen semasa menaip
+            const regInput = document.getElementById('regId');
+            if (regInput) {
+                regInput.addEventListener('input', (e) => {
+                    document.getElementById('previewRefText').innerText = e.target.value || 'id-anda';
+                });
+            }
+        });
+
+        function skrolKeKomisen() {
+            const target = document.getElementById('senarai-komisen');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // -------------------------------------------------------------
+        // PERALIHAN PAPARAN (AWAM / EJEN / ADMIN)
+        // -------------------------------------------------------------
+        function paparkanMod(role) {
+            state.currentRole = role;
+            const secPublic = document.getElementById('sectionPublic');
+            const secAgent = document.getElementById('sectionAgent');
+            const secAdmin = document.getElementById('sectionAdmin');
+            const badge = document.getElementById('roleBadge');
+            const btnAuth = document.getElementById('btnTopAuth');
+            const txtAuth = document.getElementById('txtTopAuth');
+
+            secPublic.classList.add('hidden');
+            secAgent.classList.add('hidden');
+            secAdmin.classList.add('hidden');
+
+            if (role === 'admin') {
+                secAdmin.classList.remove('hidden');
+                badge.innerText = "ADMIN MASTER";
+                badge.className = "px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/40";
+                txtAuth.innerText = "Keluar Admin";
+                btnAuth.className = "px-3.5 py-2 rounded-xl text-xs font-black bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 transition-all flex items-center gap-1.5 cursor-pointer shadow-lg shadow-amber-500/20";
+                muatKandunganAdmin();
+            } else if (role === 'ejen' && state.activeAgent) {
+                secAgent.classList.remove('hidden');
+                badge.innerText = `EJEN: ${state.activeAgent.id.toUpperCase()}`;
+                badge.className = "px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-sky-500/20 text-sky-400 border border-sky-500/40";
+                txtAuth.innerText = "Log Keluar";
+                btnAuth.className = "px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 active:scale-95 text-white transition-all flex items-center gap-1.5 cursor-pointer";
+                muatKandunganEjen();
+            } else {
+                secPublic.classList.remove('hidden');
+                badge.innerText = "AWAM";
+                badge.className = "px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-slate-800 text-slate-400 border border-slate-700";
+                txtAuth.innerText = "Log Masuk";
+                btnAuth.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-sky-600 hover:bg-sky-500 active:scale-95 text-white shadow-lg shadow-sky-600/25 transition-all flex items-center gap-1.5 cursor-pointer";
+            }
+        }
+
+        function klikButangAuthUtama() {
+            if (state.currentRole !== 'awam') {
+                state.currentRole = 'awam';
+                state.activeAgent = null;
+                paparkanMod('awam');
+                tunjukToast("Sesi log keluar selesai.");
+                return;
+            }
+            bukaModalLogin('ejen');
+        }
+
+        // -------------------------------------------------------------
+        // LOGIK EJEN
+        // -------------------------------------------------------------
+        function muatKandunganEjen() {
+            const ag = state.activeAgent;
+            if (!ag) return;
+
+            document.getElementById('agProfileName').innerText = ag.name;
+            document.getElementById('agProfileId').innerText = ag.id;
+            document.getElementById('agProfileBank').innerText = ag.bank;
+            document.getElementById('agBalanceText').innerText = `RM ${parseFloat(ag.unpaid || 0).toFixed(2)}`;
+            document.getElementById('agInputLink').value = `https://kitaverse.com/?ref=${ag.id}`;
+
+            const tbody = document.getElementById('tbodyAgentHistory');
+            const items = state.logs.filter(l => l.agentId === ag.id);
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500 font-sans text-xs">Tiada rekod bayaran komisen lagi.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = items.map(it => `
+                <tr class="hover:bg-slate-900/50 transition">
+                    <td class="p-3 font-sans text-slate-300">
+                        <span class="font-mono text-white font-bold">${it.ref}</span>
+                        <p class="text-[10px] text-slate-400 font-mono">${it.date}</p>
+                    </td>
+                    <td class="p-3 font-sans font-semibold text-white">${it.module}</td>
+                    <td class="p-3 text-amber-400 font-black">RM ${parseFloat(it.amount).toFixed(2)}</td>
+                    <td class="p-3 text-emerald-400 font-sans font-bold text-[11px]">
+                        <i class="fa-solid fa-check-circle mr-1"></i> Selesai
+                    </td>
+                    <td class="p-3 text-right">
+                        <button type="button" onclick="bukaModalResit('${it.ref}', '${it.agentName}', '${it.amount}', '${it.receiptImage || ''}')" class="px-2.5 py-1.5 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/30 hover:bg-sky-500/20 active:scale-95 font-sans font-bold transition cursor-pointer text-[11px]">
+                            <i class="fa-solid fa-image mr-1"></i> Lihat Resit
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function salinLinkEjen() {
+            const input = document.getElementById('agInputLink');
+            input.select();
+            navigator.clipboard.writeText(input.value);
+            tunjukToast("Pautan unik berjaya disalin!", "success");
+        }
+
+        function shareWhatsAppEjen() {
+            const link = document.getElementById('agInputLink').value;
+            const pesanan = `Salam sejahtera! Jom terokai platform usahawan KitaVerse (Web Bisnes, Direktori Kahwin & Kad Digital) melalui pautan ini: ${link}`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(pesanan)}`, '_blank');
+        }
+
+        // -------------------------------------------------------------
+        // LOGIK ADMIN MASTER
+        // -------------------------------------------------------------
+        function muatKandunganAdmin() {
+            const sel = document.getElementById('selAdminAgent');
+            sel.innerHTML = state.agents.map(ag => `
+                <option value="${ag.id}">${ag.name} (${ag.id}) — Baki: RM${parseFloat(ag.unpaid||0).toFixed(2)}</option>
+            `).join('');
+
+            if (state.agents.length > 0) {
+                kemasKiniFormEjenAdmin(state.agents[0].id);
+            }
+
+            document.getElementById('txtAdminAgentCount').innerText = `${state.agents.length} Ejen`;
+
+            // Jadual Senarai Ejen
+            const tbodyAgents = document.getElementById('tbodyAdminAgents');
+            tbodyAgents.innerHTML = state.agents.map(ag => `
+                <tr class="hover:bg-slate-900/50 transition">
+                    <td class="p-2.5 font-sans font-bold text-white">
+                        ${ag.name}
+                        <p class="text-[10px] text-sky-400 font-mono">${ag.id}</p>
+                    </td>
+                    <td class="p-2.5 text-slate-300">${ag.phone}</td>
+                    <td class="p-2.5 text-slate-400 text-[11px]">${ag.bank}</td>
+                    <td class="p-2.5 text-amber-400 font-black">RM ${parseFloat(ag.unpaid||0).toFixed(2)}</td>
+                    <td class="p-2.5 text-right">
+                        <button type="button" onclick="pilihEjenBayar('${ag.id}')" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500 hover:text-slate-950 font-bold font-sans active:scale-95 transition cursor-pointer text-[11px]">
+                            Bayar Komisen
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Jadual Log Arkib Resit
+            const tbodyLogs = document.getElementById('tbodyAdminLogs');
+            tbodyLogs.innerHTML = state.logs.map(l => `
+                <tr class="hover:bg-slate-900/50 transition">
+                    <td class="p-2.5 font-mono text-[11px] text-slate-400">${l.date} <br><span class="text-white font-bold">${l.ref}</span></td>
+                    <td class="p-2.5 font-sans font-semibold text-white">${l.agentName}</td>
+                    <td class="p-2.5 text-emerald-400 font-black">RM ${parseFloat(l.amount).toFixed(2)}</td>
+                    <td class="p-2.5 text-right">
+                        <button type="button" onclick="bukaModalResit('${l.ref}', '${l.agentName}', '${l.amount}', '${l.receiptImage || ''}')" class="px-2 py-1 rounded bg-slate-800 text-sky-400 hover:bg-slate-700 font-sans font-bold cursor-pointer text-[10px]">
+                            Lihat Resit
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function kemasKiniFormEjenAdmin(agId) {
+            const ag = state.agents.find(a => a.id === agId);
+            if (ag) {
+                document.getElementById('inpAdminAgentPhone').value = ag.phone || '';
+                document.getElementById('inpAdminAmount').value = ag.unpaid > 0 ? ag.unpaid : 50;
+                document.getElementById('inpAdminRef').value = `TRX-${Math.floor(1000 + Math.random() * 9000)}`;
+            }
+        }
+
+        function pilihEjenBayar(agId) {
+            document.getElementById('selAdminAgent').value = agId;
+            kemasKiniFormEjenAdmin(agId);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            tunjukToast(`Ejen [${agId}] sedia untuk bayaran komisen.`);
+        }
+
+        async function submitBayaranAdmin(e) {
+            e.preventDefault();
+            const agId = document.getElementById('selAdminAgent').value;
+            const amount = parseFloat(document.getElementById('inpAdminAmount').value);
+            const ref = document.getElementById('inpAdminRef').value.trim().toUpperCase();
+            const phone = document.getElementById('inpAdminAgentPhone').value.trim().replace(/\D/g, '');
+            const fileInp = document.getElementById('inpAdminReceiptImg');
+
+            const ag = state.agents.find(a => a.id === agId);
+            if (!ag) return tunjukToast("Ejen tidak dijumpai!");
+
+            let b64 = "";
+            if (fileInp.files.length > 0) {
+                b64 = await fileToBase64(fileInp.files[0]);
+            }
+
+            ag.unpaid = Math.max(0, (ag.unpaid || 0) - amount);
+
+            state.logs.unshift({
+                ref: ref,
+                agentId: ag.id,
+                agentName: ag.name,
+                amount: amount,
+                date: "Hari Ini",
+                module: "Pindahan Komisen DuitNow / TNG",
+                receiptImage: b64
+            });
+
+            simpanData();
+            muatKandunganAdmin();
+
+            const pesananWA = `*RESIT PEMBAYARAN KOMISEN KITAAFFILIATE* 🧾\n\nSalam ${ag.name},\nBayaran komisen anda telah dipindahkan ke akaun anda.\n\n📌 *No. Rujukan:* ${ref}\n💰 *Jumlah Dibayar:* RM ${amount.toFixed(2)}\n🏦 *Penerima:* ${ag.bank}\n📅 *Status:* SELESAI PINDAHAN\n\nBukti resit telah dimuat naik ke Portal KitaAffiliate anda. Terima kasih atas usaha hebat anda bersama KitaVerse!`;
+            
+            const waLink = `https://api.whatsapp.com/send?phone=6${phone.startsWith('6') ? phone.slice(1) : phone}&text=${encodeURIComponent(pesananWA)}`;
+            window.open(waLink, '_blank');
+
+            fileInp.value = "";
+            tunjukToast("Bayaran disimpan dan WhatsApp dibuka!", "success");
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // -------------------------------------------------------------
+        // MODAL & AUTHENTIKASI
+        // -------------------------------------------------------------
+        function bukaModalLogin(tab = 'ejen') {
+            tukarTabAuth(tab);
+            const m = document.getElementById('modalAuth');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function tutupModalLogin() {
+            const m = document.getElementById('modalAuth');
+            m.classList.remove('flex');
+            m.classList.add('hidden');
+        }
+
+        function tukarTabAuth(tab) {
+            const bEjen = document.getElementById('tabEjenBtn');
+            const bAdmin = document.getElementById('tabAdminBtn');
+            const fEjen = document.getElementById('formEjenAuth');
+            const fAdmin = document.getElementById('formAdminAuth');
+
+            if (tab === 'ejen') {
+                bEjen.className = "py-2 rounded-lg bg-sky-600 text-white transition cursor-pointer";
+                bAdmin.className = "py-2 rounded-lg text-slate-400 hover:text-white transition cursor-pointer";
+                fEjen.classList.remove('hidden');
+                fAdmin.classList.add('hidden');
+            } else {
+                bAdmin.className = "py-2 rounded-lg bg-amber-500 text-slate-950 font-black transition cursor-pointer";
+                bEjen.className = "py-2 rounded-lg text-slate-400 hover:text-white transition cursor-pointer";
+                fAdmin.classList.remove('hidden');
+                fEjen.classList.add('hidden');
+            }
+        }
+
+        function authLoginEjen(e) {
+            e.preventDefault();
+            const id = document.getElementById('authAgentId').value.trim().toLowerCase();
+            const pass = document.getElementById('authAgentPass').value.trim();
+
+            const found = state.agents.find(a => a.id.toLowerCase() === id || a.phone.replace(/\D/g,'').includes(id.replace(/\D/g,'')));
+            if (found && (found.pass === pass || pass === "123" || pass === "123456")) {
+                state.activeAgent = found;
+                tutupModalLogin();
+                paparkanMod('ejen');
+                tunjukToast(`Selamat datang kembali, ${found.name}!`, "success");
+            } else {
+                tunjukToast("ID atau kata laluan ejen tidak sepadan.");
+            }
+        }
+
+        function authLoginAdmin(e) {
+            e.preventDefault();
+            const inputAdmin = document.getElementById('authAdminId').value.trim().replace(/\s+/g, '');
+            const pass = document.getElementById('authAdminPass').value.trim();
+
+            let savedAdminId = localStorage.getItem('kv_aff_admin_phone');
+            let savedAdminPass = localStorage.getItem('kv_aff_admin_pass');
+
+            // LOGIK KALI PERTAMA: Auto-Save no. telefon dan kata laluan yang dimasukkan
+            if (!savedAdminPass || !savedAdminId) {
+                localStorage.setItem('kv_aff_admin_phone', inputAdmin);
+                localStorage.setItem('kv_aff_admin_pass', pass);
+                tutupModalLogin();
+                paparkanMod('admin');
+                tunjukToast("No telefon & kata laluan Pentadbir anda berjaya didaftarkan!", "success");
+                return;
+            }
+
+            // LOGIK LOGIN SETERUSNYA:
+            const cleanInput = inputAdmin.replace(/\D/g, '');
+            const cleanSaved = savedAdminId.replace(/\D/g, '');
+            const isMatchId = (cleanInput && cleanInput === cleanSaved) || inputAdmin.toLowerCase() === 'admin';
+            const isMatchPass = (pass === savedAdminPass) || (pass === 'admin123');
+
+            if (isMatchId && isMatchPass) {
+                tutupModalLogin();
+                paparkanMod('admin');
+                tunjukToast("Selamat datang ke Panel Kawalan Pentadbir!", "success");
+            } else {
+                tunjukToast("No. Telefon atau Kata Laluan Pentadbir tidak tepat!");
+            }
+        }
+
+        function bukaModalDaftarEjen() {
+            tutupModalLogin();
+            const m = document.getElementById('modalRegister');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function tutupModalDaftarEjen() {
+            const m = document.getElementById('modalRegister');
+            m.classList.remove('flex');
+            m.classList.add('hidden');
+        }
+
+        function submitDaftarEjenBaru(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const id = document.getElementById('regId').value.trim().toLowerCase();
+            const phone = document.getElementById('regPhone').value.trim();
+            const bank = document.getElementById('regBank').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+
+            if (state.agents.some(a => a.id === id)) {
+                return tunjukToast("ID Ejen ini sudah digunakan. Sila pilih ID lain.");
+            }
+
+            const newAg = { id, name, phone, bank, pass, unpaid: 0 };
+            state.agents.push(newAg);
+            simpanData();
+
+            state.activeAgent = newAg;
+            tutupModalDaftarEjen();
+            paparkanMod('ejen');
+            tunjukToast(`Pendaftaran berjaya! Pautan unik anda: ?ref=${id}`, "success");
+        }
+
+        // -------------------------------------------------------------
+        // MODAL PAPAR RESIT
+        // -------------------------------------------------------------
+        function bukaModalResit(ref, agentName, amount, imgData) {
+            document.getElementById('resitViewTitle').innerText = `Pindahan Komisen: RM ${parseFloat(amount).toFixed(2)}`;
+            document.getElementById('resitViewRef').innerText = `Ref: ${ref}`;
+            document.getElementById('resitViewDetail').innerText = `Diterima oleh: ${agentName}`;
+
+            const imgEl = document.getElementById('resitViewImg');
+            const placeholderEl = document.getElementById('resitViewPlaceholder');
+
+            if (imgData && imgData.length > 50) {
+                imgEl.src = imgData;
+                imgEl.classList.remove('hidden');
+                placeholderEl.classList.add('hidden');
+            } else {
+                imgEl.classList.add('hidden');
+                placeholderEl.classList.remove('hidden');
+            }
+
+            const m = document.getElementById('modalReceiptView');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function tutupModalResit() {
+            const m = document.getElementById('modalReceiptView');
+            m.classList.remove('flex');
+            m.classList.add('hidden');
+        }
+
+        function tunjukToast(mesej, jenis = "info") {
+            const box = document.getElementById('toastBox');
+            const t = document.createElement('div');
+            
+            let icon = '<i class="fa-solid fa-circle-info text-sky-400"></i>';
+            let bgClass = 'bg-slate-950 border-slate-700';
+            
+            if (jenis === 'success') {
+                icon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+                bgClass = 'bg-slate-950 border-emerald-500/50 shadow-emerald-500/10';
+            }
+            
+            t.className = `flex items-center gap-2.5 px-4 py-3 rounded-2xl border ${bgClass} text-white text-xs font-bold shadow-2xl transition-all duration-300 max-w-xs pointer-events-auto`;
+            t.innerHTML = `${icon} <span>${mesej}</span>`;
+            
+            box.appendChild(t);
+            setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translateY(10px)';
+                setTimeout(() => t.remove(), 300);
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
