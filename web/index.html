@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KitaWeb SaaS | Enjin Web Bisnes Multi-Niche</title>
+    
+    <!-- 40 Google Fonts Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;700&family=Archivo:wght@400;700&family=Barlow:wght@400;700&family=Bebas+Neue&family=Bodoni+Moda:wght@400;700&family=Caveat:wght@600&family=Cinzel:wght@600;800&family=Cormorant+Garamond:wght@600;700&family=Courgette&family=DM+Sans:wght@400;700&family=Dancing+Script:wght@600&family=Epilogue:wght@400;700&family=Figtree:wght@400;700&family=Great+Vibes&family=Inter:wght@400;600;700;800&family=Jost:wght@400;700&family=Kanit:wght@400;700&family=Lato:wght@400;700&family=Lexend:wght@400;700&family=Manrope:wght@400;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;700&family=Oswald:wght@500;700&family=Outfit:wght@400;600;700&family=Pacifico&family=Parisienne&family=Playfair+Display:wght@600;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Poppins:wght@400;600;700&family=Raleway:wght@400;700&family=Roboto:wght@400;700&family=Rubik:wght@400;700&family=Satisfy&family=Sora:wght@400;700&family=Space+Grotesk:wght@500;700&family=Syne:wght@600;800&family=Urbanist:wght@400;700&family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Firebase SDKs (Modular Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --custom-font: 'Plus Jakarta Sans', sans-serif;
+            --p: #10b981; --ph: #059669; --a: #34d399;
+            --bg: #090d16; --card: #131c2e; --in: #0b1322;
+            --t: #f8fafc; --m: #94a3b8; --bd: #1e293b;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { margin: 0; padding: 0; width: 100%; min-h: 100dvh; background-color: #030712; color: #f8fafc; font-family: var(--custom-font); -webkit-text-size-adjust: 100%; }
+        input, select, textarea { font-size: 16px !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 40 TEMA KITAWEB */
+        body[data-t="t1"] { --p:#10b981; --ph:#059669; --a:#34d399; --bg:#090d16; --card:#131c2e; --in:#0b1322; --t:#f8fafc; --m:#94a3b8; --bd:#1e293b; }
+        body[data-t="t2"] { --p:#eab308; --ph:#ca8a04; --a:#fde047; --bg:#0a0a0c; --card:#17171c; --in:#0f0f12; --t:#fafaf9; --m:#a8a29e; --bd:#292524; }
+        body[data-t="t3"] { --p:#3b82f6; --ph:#2563eb; --a:#60a5fa; --bg:#0b1329; --card:#152244; --in:#0c1731; --t:#f8fafc; --m:#94a3b8; --bd:#1e293b; }
+        body[data-t="t4"] { --p:#f43f5e; --ph:#e11d48; --a:#fb7185; --bg:#17070b; --card:#281017; --in:#1b080e; --t:#fff1f2; --m:#fda4af; --bd:#3f1422; }
+        body[data-t="t5"] { --p:#8b5cf6; --ph:#7c3aed; --a:#a78bfa; --bg:#120c24; --card:#20173d; --in:#150d2b; --t:#f5f3ff; --m:#c4b5fd; --bd:#2e1065; }
+        body[data-t="t6"] { --p:#06b6d4; --ph:#0891b2; --a:#67e8f9; --bg:#04161b; --card:#082730; --in:#051a21; --t:#ecfeff; --m:#a5f3fc; --bd:#164e63; }
+        body[data-t="t7"] { --p:#f97316; --ph:#ea580c; --a:#fb923c; --bg:#190b05; --card:#2d140a; --in:#1c0c05; --t:#fff7ed; --m:#fdba74; --bd:#431407; }
+        body[data-t="t8"] { --p:#14b8a6; --ph:#0d9488; --a:#5eead4; --bg:#041816; --card:#092a27; --in:#061c1a; --t:#f0fdfa; --m:#99f6e4; --bd:#134e4a; }
+        body[data-t="t9"] { --p:#d946ef; --ph:#c026d3; --a:#e879f9; --bg:#19061c; --card:#2b0c30; --in:#1a051d; --t:#fdf4ff; --m:#f0abfc; --bd:#4a044e; }
+        body[data-t="t10"]{ --p:#cbd5e1; --ph:#94a3b8; --a:#f8fafc; --bg:#030712; --card:#111827; --in:#090d15; --t:#f9fafb; --m:#9ca3af; --bd:#1f2937; }
+
+        body[data-t="t11"]{ --p:#059669; --ph:#047857; --a:#10b981; --bg:#f8fafc; --card:#ffffff; --in:#f1f5f9; --t:#0f172a; --m:#64748b; --bd:#e2e8f0; }
+        body[data-t="t12"]{ --p:#2563eb; --ph:#1d4ed8; --a:#3b82f6; --bg:#f0f7ff; --card:#ffffff; --in:#e0f2fe; --t:#0f172a; --m:#64748b; --bd:#dbeafe; }
+        body[data-t="t13"]{ --p:#e11d48; --ph:#be123c; --a:#fb7185; --bg:#fff1f2; --card:#ffffff; --in:#ffe4e6; --t:#4c0519; --m:#9f1239; --bd:#fecdd3; }
+        body[data-t="t14"]{ --p:#d97706; --ph:#b45309; --a:#f59e0b; --bg:#fffbeb; --card:#ffffff; --in:#fef3c7; --t:#451a03; --m:#78350f; --bd:#fef3c7; }
+        body[data-t="t15"]{ --p:#7c3aed; --ph:#6d28d9; --a:#8b5cf6; --bg:#f5f3ff; --card:#ffffff; --in:#ede9fe; --t:#2e1065; --m:#6b21a8; --bd:#ede9fe; }
+        body[data-t="t16"]{ --p:#0891b2; --ph:#0e7490; --a:#06b6d4; --bg:#ecfeff; --card:#ffffff; --in:#cffafe; --t:#164e63; --m:#155e75; --bd:#cffafe; }
+        body[data-t="t17"]{ --p:#4f46e5; --ph:#4338ca; --a:#6366f1; --bg:#eef2ff; --card:#ffffff; --in:#e0e7ff; --t:#1e1b4b; --m:#3730a3; --bd:#e0e7ff; }
+        body[data-t="t18"]{ --p:#475569; --ph:#334155; --a:#64748b; --bg:#f1f5f9; --card:#ffffff; --in:#e2e8f0; --t:#0f172a; --m:#64748b; --bd:#cbd5e1; }
+        body[data-t="t19"]{ --p:#0d9488; --ph:#0f766e; --a:#14b8a6; --bg:#f0fdfa; --card:#ffffff; --in:#ccfbf1; --t:#134e4a; --m:#115e59; --bd:#ccfbf1; }
+        body[data-t="t20"]{ --p:#c026d3; --ph:#a21caf; --a:#d946ef; --bg:#fdf4ff; --card:#ffffff; --in:#fae8ff; --t:#581c87; --m:#701a75; --bd:#fae8ff; }
+
+        body[data-t="t21"]{ --p:#854d0e; --ph:#713f12; --a:#a16207; --bg:#fefce8; --card:#ffffff; --in:#fef9c3; --t:#422006; --m:#713f12; --bd:#fef08a; }
+        body[data-t="t22"]{ --p:#15803d; --ph:#166534; --a:#22c55e; --bg:#f0fdf4; --card:#ffffff; --in:#dcfce7; --t:#14532d; --m:#166534; --bd:#bbf7d0; }
+        body[data-t="t23"]{ --p:#9a3412; --ph:#7c2d12; --a:#c2410c; --bg:#fff7ed; --card:#ffffff; --in:#ffedd5; --t:#431407; --m:#7c2d12; --bd:#fed7aa; }
+        body[data-t="t24"]{ --p:#64748b; --ph:#475569; --a:#94a3b8; --bg:#1e293b; --card:#0f172a; --in:#0a0f1d; --t:#f8fafc; --m:#94a3b8; --bd:#334155; }
+        body[data-t="t25"]{ --p:#b45309; --ph:#92400e; --a:#d97706; --bg:#1c1917; --card:#292524; --in:#171413; --t:#fafaf9; --m:#a8a29e; --bd:#44403c; }
+        body[data-t="t26"]{ --p:#166534; --ph:#14532d; --a:#15803d; --bg:#052e16; --card:#0c3e1e; --in:#072513; --t:#f0fdf4; --m:#86efac; --bd:#14532d; }
+        body[data-t="t27"]{ --p:#0369a1; --ph:#075985; --a:#0284c7; --bg:#0c4a6e; --card:#082f49; --in:#052338; --t:#f0f9ff; --m:#7dd3fc; --bd:#0284c7; }
+        body[data-t="t28"]{ --p:#831843; --ph:#701a75; --a:#9d174d; --bg:#500724; --card:#370518; --in:#26020f; --t:#fff1f2; --m:#f472b6; --bd:#831843; }
+        body[data-t="t29"]{ --p:#78350f; --ph:#451a03; --a:#92400e; --bg:#451a03; --card:#2e1102; --in:#1f0b01; --t:#fef3c7; --m:#fde68a; --bd:#78350f; }
+        body[data-t="t30"]{ --p:#71717a; --ph:#52525b; --a:#a1a1aa; --bg:#18181b; --card:#27272a; --in:#121214; --t:#fafafa; --m:#a1a1aa; --bd:#3f3f46; }
+
+        body[data-t="t31"]{ --p:#10b981; --ph:#059669; --a:#6ee7b7; --bg:#000000; --card:#111111; --in:#080808; --t:#ffffff; --m:#888888; --bd:#222222; }
+        body[data-t="t32"]{ --p:#6366f1; --ph:#4f46e5; --a:#818cf8; --bg:#030712; --card:#0b0f19; --in:#06080e; --t:#f9fafb; --m:#9ca3af; --bd:#1f2937; }
+        body[data-t="t33"]{ --p:#ec4899; --ph:#db2777; --a:#f472b6; --bg:#18020e; --card:#29041a; --in:#17010e; --t:#fdf2f8; --m:#fbcfe8; --bd:#50072c; }
+        body[data-t="t34"]{ --p:#84cc16; --ph:#65a30d; --a:#a3e635; --bg:#0a1202; --card:#152207; --in:#0d1604; --t:#f7fee7; --m:#bef264; --bd:#24360e; }
+        body[data-t="t35"]{ --p:#06b6d4; --ph:#0891b2; --a:#22d3ee; --bg:#020b0e; --card:#05161b; --in:#020e12; --t:#ecfeff; --m:#67e8f9; --bd:#0e3b44; }
+        body[data-t="t36"]{ --p:#f59e0b; --ph:#d97706; --a:#fbbf24; --bg:#1c1303; --card:#2e2006; --in:#1a1202; --t:#fffbeb; --m:#fcd34d; --bd:#54380a; }
+        body[data-t="t37"]{ --p:#ef4444; --ph:#dc2626; --a:#f87171; --bg:#1a0505; --card:#2c0c0c; --in:#170404; --t:#fef2f2; --m:#fca5a5; --bd:#531717; }
+        body[data-t="t38"]{ --p:#a855f7; --ph:#9333ea; --a:#c084fc; --bg:#13031f; --card:#220836; --in:#140421; --t:#faf5ff; --m:#d8b4fe; --bd:#4c1374; }
+        body[data-t="t39"]{ --p:#14b8a6; --ph:#0d9488; --a:#2dd4bf; --bg:#011413; --card:#042422; --in:#021716; --t:#f0fdfa; --m:#5eead4; --bd:#0d4b47; }
+        body[data-t="t40"]{ --p:#f43f5e; --ph:#e11d48; --a:#fda4af; --bg:#030712; --card:#1f1317; --in:#130a0d; --t:#ffffff; --m:#9ca3af; --bd:#381d24; }
+
+        /* BINGKAI (FRAMES) */
+        body[data-f="f1"] .custom-frame { border: 1px solid var(--bd); border-radius: 18px; }
+        body[data-f="f2"] .custom-frame { border: 3px double var(--p); border-radius: 20px; }
+        body[data-f="f3"] .custom-frame { border: 2px solid var(--bd); border-radius: 28px; }
+        body[data-f="f4"] .custom-frame { border: 1.5px solid var(--a); border-radius: 18px; box-shadow: 0 0 20px -5px var(--p); }
+        body[data-f="f5"] .custom-frame { border: 2px solid var(--bd); border-radius: 36px 12px 36px 12px; }
+        body[data-f="f6"] .custom-frame { border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; }
+        body[data-f="f7"] .custom-frame { border: 2px dashed var(--bd); border-radius: 18px; }
+        body[data-f="f8"] .custom-frame { border: 2.5px dotted var(--bd); border-radius: 20px; }
+        body[data-f="f9"] .custom-frame { border: 4px solid var(--bd); border-radius: 16px; }
+        body[data-f="f10"] .custom-frame { border: 3px ridge var(--p); border-radius: 18px; }
+        body[data-f="f11"] .custom-frame { border: 3px groove var(--p); border-radius: 18px; }
+        body[data-f="f12"] .custom-frame { border: 1.5px solid var(--bd); border-radius: 16px; box-shadow: 5px 5px 0 var(--bd); }
+        body[data-f="f13"] .custom-frame { border: none; border-radius: 18px; box-shadow: inset 0 0 0 2px var(--bd); }
+        body[data-f="f14"] .custom-frame { border: 1px solid var(--bd); border-left: 6px solid var(--p); border-radius: 14px; }
+        body[data-f="f15"] .custom-frame { border: 1px solid var(--bd); border-top: 6px solid var(--p); border-radius: 14px; }
+        body[data-f="f16"] .custom-frame { border: 1px solid var(--bd); border-bottom: 6px solid var(--p); border-radius: 14px; }
+        body[data-f="f17"] .custom-frame { border-left: 4px solid var(--p); border-right: 4px solid var(--p); border-radius: 20px; }
+        body[data-f="f18"] .custom-frame { border-top: 4px solid var(--p); border-bottom: 4px solid var(--p); border-radius: 20px; }
+        body[data-f="f19"] .custom-frame { border: 1px solid rgba(255,255,255,0.25); border-radius: 24px; backdrop-filter: blur(16px); }
+        body[data-f="f20"] .custom-frame { border: none; border-radius: 20px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+
+        /* GAYA BUTANG (BUTTONS) */
+        body[data-b="b1"] .btn-action { border-radius: 9999px !important; }
+        body[data-b="b2"] .btn-action { border-radius: 12px !important; }
+        body[data-b="b3"] .btn-action { border-radius: 4px !important; }
+        body[data-b="b4"] .btn-action { background: transparent !important; border: 1.5px solid var(--p) !important; color: var(--p) !important; }
+        body[data-b="b5"] .btn-action { border-radius: 14px !important; border-bottom: 4px solid rgba(0,0,0,0.4) !important; }
+        body[data-b="b6"] .btn-action { background: transparent !important; color: var(--a) !important; text-shadow: 0 0 8px var(--p); }
+        body[data-b="b7"] .btn-action { border-radius: 12px !important; box-shadow: 0 0 15px var(--p) !important; }
+        body[data-b="b8"] .btn-action { border-radius: 10px !important; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.3) !important; }
+        body[data-b="b9"] .btn-action { background: transparent !important; border-radius: 0 !important; border-bottom: 2px solid var(--p) !important; color: var(--t) !important; }
+        body[data-b="b10"] .btn-action { border-radius: 0 !important; border: 1.5px solid var(--t) !important; box-shadow: 4px 4px 0 var(--t) !important; }
+        body[data-b="b11"] .btn-action { background: rgba(255,255,255,0.12) !important; border: 1px solid rgba(255,255,255,0.3) !important; backdrop-filter: blur(10px); color: var(--t) !important; border-radius: 16px !important; }
+        body[data-b="b12"] .btn-action { border: 2px dashed var(--t) !important; border-radius: 12px !important; }
+        body[data-b="b13"] .btn-action { border: 2px dotted var(--t) !important; border-radius: 12px !important; }
+        body[data-b="b14"] .btn-action { border: 3px double var(--t) !important; border-radius: 16px !important; }
+        body[data-b="b15"] .btn-action { transform: skewX(-8deg) !important; border-radius: 6px !important; }
+        body[data-b="b16"] .btn-action { border-radius: 9999px !important; box-shadow: 0 8px 20px var(--bd) !important; }
+        body[data-b="b17"] .btn-action { border-radius: 12px !important; box-shadow: inset 0 3px 6px rgba(255,255,255,0.3) !important; }
+        body[data-b="b18"] .btn-action { border-radius: 8px !important; background: var(--bg) !important; color: var(--p) !important; border: 1px solid var(--bd) !important; }
+        body[data-b="b19"] .btn-action { background: linear-gradient(135deg, var(--p), var(--a)) !important; border-radius: 10px !important; border: 1px solid #ffffff40 !important; }
+        body[data-b="b20"] .btn-action { border-radius: 14px !important; filter: drop-shadow(0 4px 8px var(--p)) !important; }
+
+        /* UI Helai Khas */
+        .site-bg { background-color: var(--bg); color: var(--t); }
+        .site-card { background-color: var(--card); border-color: var(--bd); color: var(--t); }
+        .site-inner { background-color: var(--in); border-color: var(--bd); color: var(--t); }
+        .site-primary-btn { background-color: var(--p); color: #ffffff; }
+        .site-primary-btn:hover { background-color: var(--ph); }
+        .site-accent-text { color: var(--p); }
+        .site-muted-text { color: var(--m); }
+
+        #toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.95); color: #fff; border: 1px solid rgba(16, 185, 129, 0.5); padding: 10px 18px; border-radius: 999px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6); font-size: 12px; font-weight: 700; transition: all 0.3s ease; opacity: 0; pointer-events: none; }
+        #toast.active { opacity: 1; transform: translateX(-50%) translateY(8px); }
+
+        .modal-subtab-btn { background: var(--in); border: 1px solid var(--bd); color: var(--m); padding: 8px 3px; border-radius: 8px; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-align: center; }
+        .modal-subtab-active { background: var(--p) !important; color: #022c22 !important; font-weight: 900 !important; border-color: var(--p) !important; }
+        .modal-subtab-active i { color: #022c22 !important; }
+    </style>
+</head>
+<body id="mainBody" data-t="t1" data-f="f1" data-b="b1" class="site-bg min-h-screen flex flex-col items-center selection:bg-emerald-500 selection:text-white">
+
+    <div id="toast"><span>✨</span> <span id="toast-msg">Mesej</span></div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app" class="w-full max-w-md min-h-screen flex flex-col relative shadow-2xl border-x border-slate-800/40">
+
+        <!-- VIEW 1: CLIENT LIVE BUSINESS WEBSITE -->
+        <div id="site-live-view" class="flex-1 flex flex-col min-h-screen relative">
+            
+            <header class="sticky top-0 z-40 w-full px-4 py-2.5 backdrop-blur-md border-b border-[var(--bd)] flex items-center justify-between shadow-sm bg-[var(--card)]/90">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="kitaApp.openHubHome()">
+                    <div class="w-7 h-7 rounded-lg bg-[var(--p)] text-slate-950 font-black flex items-center justify-center text-xs shadow-sm">K</div>
+                    <span class="font-extrabold text-xs tracking-tight text-[var(--t)]">Kita<span class="site-accent-text">Web</span></span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="kitaApp.openNewSiteModal()" class="px-2.5 py-1 rounded-full text-[10px] font-bold site-inner border hover:brightness-125 transition">
+                        + Bina Web
+                    </button>
+                    <button onclick="kitaApp.openAdminLoginModal()" class="px-3 py-1.5 rounded-full site-primary-btn btn-action text-[10px] font-black tracking-wide flex items-center gap-1 shadow">
+                        <i data-lucide="settings" class="w-3 h-3"></i><span>EDIT / KLIEN</span>
+                    </button>
+                </div>
+            </header>
+
+            <main id="live-render-target" class="flex-1 pb-20"></main>
+
+            <aside id="floating-whatsapp-btn" class="fixed bottom-5 right-5 z-40 max-w-md">
+                <a id="floating-wa-link" href="#" target="_blank" class="flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-3 rounded-full shadow-2xl active:scale-95 transition-all text-xs font-black shadow-green-600/30">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span>WhatsApp Kami</span>
+                </a>
+            </aside>
+        </div>
+
+        <!-- VIEW 2: LOGIN MODAL (SECURE CLIENT & LOCKED 0182676999 MASTER) -->
+        <div id="login-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+            <div class="site-card custom-frame max-w-sm w-full p-6 text-center shadow-2xl border relative">
+                <button onclick="kitaApp.closeModal('login-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="w-12 h-12 rounded-2xl site-inner border mx-auto flex items-center justify-center site-accent-text mb-3 shadow">
+                    <i data-lucide="shield-lock" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-base font-extrabold text-[var(--t)] uppercase">Portal Pengurusan Laman Web</h3>
+                <p class="text-[11px] site-muted-text mt-1 mb-4">Log masuk selamat untuk menyunting kandungan laman web anda.</p>
+
+                <div class="grid grid-cols-2 gap-1 p-1 site-inner rounded-xl mb-4 border">
+                    <button id="btn-tab-client-login" onclick="kitaApp.switchLoginTab('client')" class="py-1.5 rounded-lg site-primary-btn text-xs font-bold transition-all">💼 Peniaga (Klien)</button>
+                    <button id="btn-tab-ceo-login" onclick="kitaApp.switchLoginTab('ceo')" class="py-1.5 rounded-lg text-xs font-bold text-[var(--m)] hover:text-white transition-all">👑 Pentadbir CEO</button>
+                </div>
+
+                <form id="form-client-login" onsubmit="kitaApp.handleClientLogin(event)" class="space-y-3">
+                    <input type="text" id="login-client-id" required placeholder="ID Laman Web (Contoh: plumbing-pro)" class="w-full px-3 py-2.5 site-inner border rounded-xl text-center text-xs font-mono font-bold text-[var(--p)] uppercase outline-none focus:border-[var(--p)]">
+                    <input type="password" id="login-client-pass" required placeholder="Kata Laluan Khas Anda" class="w-full px-3 py-2.5 site-inner border rounded-xl text-center text-xs outline-none focus:border-[var(--p)]">
+                    <button type="submit" class="w-full py-3 site-primary-btn btn-action rounded-xl text-xs font-black uppercase tracking-wider shadow">
+                        Buka Dashboard Penyunting
+                    </button>
+                </form>
+
+                <form id="form-ceo-login" onsubmit="kitaApp.handleCeoLogin(event)" class="space-y-3 hidden">
+                    <input type="tel" id="login-ceo-phone" required readonly value="0182676999" class="w-full px-3 py-2.5 site-inner border rounded-xl text-center text-xs font-bold font-mono text-amber-400 bg-slate-900/50 outline-none">
+                    <input type="password" id="login-ceo-pass" required placeholder="Kata Laluan Pentadbir (Pertama Kali Didaftar)" class="w-full px-3 py-2.5 site-inner border rounded-xl text-center text-xs outline-none focus:border-[var(--p)]">
+                    <button type="submit" class="w-full py-3 site-primary-btn btn-action rounded-xl text-xs font-black uppercase tracking-wider shadow">
+                        Masuk Mod Kawalan CEO
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIEW 3: FULL DASHBOARD (8 SUB-TABS + ADMIN USER PASSWORD RESET) -->
+        <div id="admin-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-2.5 sm:p-4">
+            <div class="site-card custom-frame rounded-2xl max-w-md w-full max-h-[96vh] overflow-y-auto p-4 shadow-2xl flex flex-col relative border">
+                
+                <div class="flex justify-between items-start border-b border-[var(--bd)] pb-2.5 mb-3 shrink-0">
+                    <div>
+                        <h3 class="text-xs sm:text-sm font-extrabold text-[var(--t)] flex items-center gap-1.5">
+                            <i data-lucide="sliders-horizontal" class="w-4 h-4 site-accent-text"></i>
+                            <span id="dash-role-badge">DASHBOARD PENGURUSAN KITAWEB</span>
+                        </h3>
+                        <p class="text-[9.5px] site-muted-text flex items-center gap-1 mt-0.5">
+                            <i data-lucide="check" class="w-3 h-3 text-emerald-400"></i> Auto-Save: Setiap perubahan dikemas kini terus ke awan.
+                        </p>
+                    </div>
+                    <button onclick="kitaApp.closeModal('admin-modal')" class="text-slate-400 hover:text-white p-1">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-4 gap-1 border-b border-[var(--bd)] pb-2.5 mb-3 shrink-0">
+                    <button onclick="kitaApp.switchModalTab('tabProfile', this)" class="modal-subtab-btn modal-subtab-active">
+                        <i data-lucide="link" class="w-3 h-3 text-cyan-400"></i><span>1. PROFAIL</span>
+                    </button>
+                    <button onclick="kitaApp.switchModalTab('tabModules', this)" class="modal-subtab-btn">
+                        <i data-lucide="toggle-right" class="w-3 h-3 text-yellow-400"></i><span>2. MODUL</span>
+                    </button>
+                    <button onclick="kitaApp.switchModalTab('tabBusiness', this)" class="modal-subtab-btn">
+                        <i data-lucide="briefcase" class="w-3 h-3 text-emerald-400"></i><span>3. BISNES</span>
+                    </button>
+                    <button onclick="kitaApp.switchModalTab('tabCatalog', this)" class="modal-subtab-btn">
+                        <i data-lucide="package" class="w-3 h-3 text-indigo-400"></i><span>4. KATALOG</span>
+                    </button>
+
+                    <button onclick="kitaApp.switchModalTab('tabThemes', this)" class="modal-subtab-btn">
+                        <i data-lucide="palette" class="w-3 h-3 text-amber-400"></i><span>5. 40 TEMA</span>
+                    </button>
+                    <button onclick="kitaApp.switchModalTab('tabStyles', this)" class="modal-subtab-btn">
+                        <i data-lucide="layout-grid" class="w-3 h-3 text-pink-400"></i><span>6. BINGKAI</span>
+                    </button>
+                    <button onclick="kitaApp.switchModalTab('tabFonts', this)" class="modal-subtab-btn">
+                        <i data-lucide="type" class="w-3 h-3 text-orange-400"></i><span>7. 40 FONT</span>
+                    </button>
+                    <button onclick="kitaApp.switchModalTab('tabBankLocation', this)" class="modal-subtab-btn">
+                        <i data-lucide="map-pin" class="w-3 h-3 text-teal-400"></i><span>8. PETA/QR</span>
+                    </button>
+                </div>
+
+                <div id="modal-content-container" class="flex-1 overflow-y-auto pr-1 pb-2">
+                    
+                    <div id="tabProfile" class="modal-panel space-y-3 text-xs">
+                        <div id="ceo-exclusive-panel" class="site-inner rounded-xl p-3 space-y-2 border border-amber-500/40 hidden">
+                            <p class="font-extrabold text-amber-400 text-[11px] uppercase flex items-center gap-1.5">
+                                <i data-lucide="crown" class="w-3.5 h-3.5"></i><span>KAWALAN KHAS CEO KITAWEB (0182676999)</span>
+                            </p>
+                            
+                            <div class="space-y-1.5 pt-1">
+                                <label class="block text-[10px] text-amber-300 font-bold">Muat Naik QR Pembayaran CEO (RM100):</label>
+                                <input type="file" accept="image/*" onchange="kitaApp.handleCeoQrUpload(this)" class="w-full text-[9.5px] site-muted-text file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-amber-500 file:text-slate-950 font-bold">
+                            </div>
+
+                            <label class="block text-[10px] site-muted-text pt-2">Pilih Laman Web Klien Untuk Disunting:</label>
+                            <select id="ceo-client-selector" onchange="kitaApp.loadSelectedClient(this.value)" class="w-full px-2.5 py-1.5 site-card border rounded-lg text-xs font-bold outline-none"></select>
+                            
+                            <div class="pt-2 border-t border-amber-500/30">
+                                <label class="block text-[10px] text-amber-300 font-bold mb-1">Tetapkan Semula Kata Laluan Klien Terpilih:</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="admin-reset-pass-input" placeholder="Kata laluan baru" class="flex-1 p-2 site-card border rounded text-xs font-bold">
+                                    <button onclick="kitaApp.adminResetClientPassword()" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-xs">Reset Pass</button>
+                                </div>
+                            </div>
+                            <button onclick="kitaApp.openNewSiteModal()" class="w-full py-1.5 site-primary-btn rounded-lg text-[10px] font-bold">+ Bina Laman Web Klien Baru</button>
+                        </div>
+
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text flex items-center gap-1.5">
+                                <i data-lucide="globe" class="w-4 h-4"></i><span>PAUTAN WEB ANDA</span>
+                            </p>
+                            <div class="flex gap-1.5">
+                                <input type="text" id="display-client-full-url" readonly class="flex-1 px-2.5 py-1.5 site-card border rounded text-[10px] font-mono select-all">
+                                <button onclick="kitaApp.copyClientUrl()" class="px-3 py-1.5 site-primary-btn btn-action font-bold rounded text-[10px]">Salin</button>
+                            </div>
+                            <button onclick="kitaApp.shareSiteWhatsApp()" class="w-full py-2 bg-emerald-950/80 border border-emerald-500 rounded-lg text-[10px] text-emerald-300 font-bold flex items-center justify-center gap-1.5 hover:bg-emerald-900 transition">
+                                <i data-lucide="share-2" class="w-3.5 h-3.5"></i><span>Kongsi Pautan Web ke WhatsApp</span>
+                            </button>
+                        </div>
+
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <div class="flex items-center justify-between">
+                                <p class="font-bold site-accent-text flex items-center gap-1.5">
+                                    <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i><span>TEMPLAT CHAT WHATSAPP PELANGGAN</span>
+                                </p>
+                                <button onclick="kitaApp.resetWhatsAppTemplate()" class="text-[9px] site-muted-text hover:text-white underline">Reset</button>
+                            </div>
+                            <p class="text-[9.5px] site-muted-text leading-tight">Tag pintar: <span class="font-mono text-emerald-300">{NAMA_BISNES}</span>, <span class="font-mono text-emerald-300">{ITEM_PILIHAN}</span>, <span class="font-mono text-emerald-300">{HARGA}</span></p>
+                            <textarea id="inp-wa-template" rows="3" oninput="kitaApp.syncField('waTemplate', this.value)" class="w-full p-2 site-card border rounded-lg text-[10.5px] outline-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="tabModules" class="modal-panel hidden space-y-3 text-xs">
+                        <div class="site-inner rounded-xl p-3 space-y-2.5 border">
+                            <p class="font-extrabold site-accent-text uppercase">Pilih Modul Yang Mahu Dipaparkan</p>
+                            <div class="grid grid-cols-2 gap-2 mt-2">
+                                <label class="flex items-center gap-2 site-card p-2 rounded-xl border cursor-pointer font-bold"><input type="checkbox" id="mod_catalog" onchange="kitaApp.syncModule('catalog', this.checked)" class="w-4 h-4 accent-emerald-500"> Katalog / Servis</label>
+                                <label class="flex items-center gap-2 site-card p-2 rounded-xl border cursor-pointer font-bold"><input type="checkbox" id="mod_hours" onchange="kitaApp.syncModule('hours', this.checked)" class="w-4 h-4 accent-emerald-500"> Waktu Operasi</label>
+                                <label class="flex items-center gap-2 site-card p-2 rounded-xl border cursor-pointer font-bold"><input type="checkbox" id="mod_features" onchange="kitaApp.syncModule('features', this.checked)" class="w-4 h-4 accent-emerald-500"> Kelebihan Bisnes</label>
+                                <label class="flex items-center gap-2 site-card p-2 rounded-xl border cursor-pointer font-bold"><input type="checkbox" id="mod_reviews" onchange="kitaApp.syncModule('reviews', this.checked)" class="w-4 h-4 accent-emerald-500"> Testimoni / Review</label>
+                                <label class="flex items-center gap-2 site-card p-2 rounded-xl border cursor-pointer font-bold"><input type="checkbox" id="mod_faq" onchange="kitaApp.syncModule('faq', this.checked)" class="w-4 h-4 accent-emerald-500"> Soalan Lazim (FAQ)</label>
+                                <label class="flex items-center gap-2 site-card p-2 rounded-xl border cursor-pointer font-bold"><input type="checkbox" id="mod_bank" onchange="kitaApp.syncModule('bank', this.checked)" class="w-4 h-4 accent-emerald-500"> Info Bank &amp; QR</label>
+                                <label class="flex items-center gap-2 site-card p-2 rounded-xl border cursor-pointer font-bold"><input type="checkbox" id="mod_location" onchange="kitaApp.syncModule('location', this.checked)" class="w-4 h-4 accent-emerald-500"> Peta &amp; Navigasi</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tabBusiness" class="modal-panel hidden space-y-3 text-xs">
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text uppercase">Pilih Preset Niche Industri</p>
+                            <select id="inp-industry-select" onchange="kitaApp.applyIndustryPreset(this.value)" class="w-full px-2.5 py-2 site-card border rounded-xl font-bold site-accent-text outline-none">
+                                <option value="service">🔧 Servis, Baiki Rumah &amp; Kontraktor</option>
+                                <option value="rental">🚗 Kereta Sewa &amp; Pengangkutan</option>
+                                <option value="food">🍔 Makanan, Minuman &amp; Katering</option>
+                                <option value="homestay">🏡 Homestay &amp; Chalet</option>
+                                <option value="beauty">💄 Kecantikan, Spa &amp; Salun</option>
+                                <option value="fashion">👗 Fesyen &amp; Butik</option>
+                                <option value="retail">📦 Kedai Runcit & Produk Am</option>
+                                <option value="custom">✨ Kustom / Bebas</option>
+                            </select>
+                        </div>
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text uppercase">Maklumat Utama Perniagaan</p>
+                            <input type="text" id="inp-biz-title" oninput="kitaApp.syncField('title', this.value)" placeholder="Nama Perniagaan" class="w-full p-2 site-card border rounded-lg font-bold">
+                            <input type="text" id="inp-biz-tagline" oninput="kitaApp.syncField('tagline', this.value)" placeholder="Tagline / Slogan Ringkas" class="w-full p-2 site-card border rounded-lg">
+                            <textarea id="inp-biz-desc" rows="3" oninput="kitaApp.syncField('desc', this.value)" placeholder="Penerangan bisnes..." class="w-full p-2 site-card border rounded-lg"></textarea>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] site-muted-text mb-0.5">No. WhatsApp</label>
+                                    <input type="tel" id="inp-biz-phone" oninput="kitaApp.syncField('phone', this.value)" placeholder="0123456789" class="w-full p-2 site-card border rounded-lg font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] site-muted-text mb-0.5">Teks Butang CTA</label>
+                                    <input type="text" id="inp-biz-cta" oninput="kitaApp.syncField('ctaLabel', this.value)" placeholder="Cth: Tempah Sekarang" class="w-full p-2 site-card border rounded-lg font-bold">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] site-muted-text mb-0.5">Waktu Operasi</label>
+                                <input type="text" id="inp-biz-hours" oninput="kitaApp.syncField('hours', this.value)" placeholder="Cth: Setiap Hari (8.00 AM - 10.00 PM)" class="w-full p-2 site-card border rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] site-muted-text mb-0.5">Logo / Gambar Profil</label>
+                                <input type="file" accept="image/*" onchange="kitaApp.handleImageUpload(this, 'logo')" class="w-full text-[10px] site-muted-text file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-emerald-500 file:text-slate-950 font-bold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tabCatalog" class="modal-panel hidden space-y-3 text-xs">
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <div class="flex justify-between items-center">
+                                <p class="font-bold site-accent-text uppercase">Senarai Produk &amp; Pakej Tawaran</p>
+                                <button onclick="kitaApp.addCatalogItem()" class="px-2.5 py-1 site-primary-btn btn-action font-bold rounded text-[10px]">+ Tambah Item</button>
+                            </div>
+                            <div id="catalog-editor-list" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+                        </div>
+                    </div>
+
+                    <div id="tabThemes" class="modal-panel hidden space-y-3 text-xs">
+                        <div class="site-inner rounded-xl p-3 space-y-2.5 border">
+                            <p class="font-extrabold site-accent-text text-center border-b border-[var(--bd)] pb-1.5 uppercase">DARK LUXURY (1-10)</p>
+                            <div class="grid grid-cols-2 gap-1.5" id="themeGrid1"></div>
+
+                            <p class="font-extrabold site-accent-text text-center border-b border-[var(--bd)] pb-1.5 mt-3 uppercase">CLEAN &amp; LIGHT (11-20)</p>
+                            <div class="grid grid-cols-2 gap-1.5" id="themeGrid2"></div>
+
+                            <p class="font-extrabold site-accent-text text-center border-b border-[var(--bd)] pb-1.5 mt-3 uppercase">EARTHY &amp; RUSTIC (21-30)</p>
+                            <div class="grid grid-cols-2 gap-1.5" id="themeGrid3"></div>
+
+                            <p class="font-extrabold site-accent-text text-center border-b border-[var(--bd)] pb-1.5 mt-3 uppercase">VIBRANT &amp; NEON (31-40)</p>
+                            <div class="grid grid-cols-2 gap-1.5" id="themeGrid4"></div>
+                        </div>
+                    </div>
+
+                    <div id="tabStyles" class="modal-panel hidden space-y-3 text-xs">
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text text-center border-b border-[var(--bd)] pb-1.5 uppercase">20 Pilihan Bingkai Kad (Frame)</p>
+                            <div class="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto pr-1" id="frameStyleGrid"></div>
+                        </div>
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text text-center border-b border-[var(--bd)] pb-1.5 uppercase">20 Pilihan Gaya Butang (Button)</p>
+                            <div class="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto pr-1" id="buttonStyleGrid"></div>
+                        </div>
+                    </div>
+
+                    <div id="tabFonts" class="modal-panel hidden space-y-3 text-xs">
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text text-center border-b border-[var(--bd)] pb-1.5 uppercase">40 Pilihan Font Tipografi</p>
+                            <div class="space-y-1.5 max-h-64 overflow-y-auto pr-1" id="fontSelectionList"></div>
+                        </div>
+                    </div>
+
+                    <div id="tabBankLocation" class="modal-panel hidden space-y-3 text-xs">
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text uppercase">Lokasi Operasi / Alamat Peta</p>
+                            <input type="text" id="inp-loc-name" oninput="kitaApp.syncField('location', this.value)" placeholder="Kawasan Operasi" class="w-full p-2 site-card border rounded-lg">
+                            <input type="text" id="inp-loc-address" oninput="kitaApp.syncField('fullAddress', this.value)" placeholder="Alamat Penuh (Untuk Google Maps)" class="w-full p-2 site-card border rounded-lg">
+                        </div>
+                        <div class="site-inner rounded-xl p-3 space-y-2 border">
+                            <p class="font-bold site-accent-text uppercase">Maklumat Pembayaran / Bank</p>
+                            <input type="text" id="inp-bank-name" oninput="kitaApp.syncField('bankName', this.value)" placeholder="Nama Bank" class="w-full p-2 site-card border rounded-lg">
+                            <input type="text" id="inp-bank-acc" oninput="kitaApp.syncField('bankAcc', this.value)" placeholder="Nombor Akaun Bank" class="w-full p-2 site-card border rounded-lg">
+                            <input type="text" id="inp-bank-holder" oninput="kitaApp.syncField('bankHolder', this.value)" placeholder="Nama Pemegang Akaun" class="w-full p-2 site-card border rounded-lg">
+                            
+                            <div class="pt-2 border-t border-[var(--bd)] space-y-2">
+                                <label class="block text-[10px] font-bold site-accent-text">Muat Naik QR DuitNow / MAE / TNG</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <span class="block text-[9px] site-muted-text mb-1">DuitNow QR</span>
+                                        <input type="file" accept="image/*" onchange="kitaApp.handleImageUpload(this, 'qrImage')" class="w-full text-[9px] site-muted-text file:py-1 file:px-2 file:rounded file:border-0 file:bg-emerald-500 file:text-slate-950 font-bold">
+                                    </div>
+                                    <div>
+                                        <span class="block text-[9px] site-muted-text mb-1">MAE / TNG QR</span>
+                                        <input type="file" accept="image/*" onchange="kitaApp.handleImageUpload(this, 'qrTngImage')" class="w-full text-[9px] site-muted-text file:py-1 file:px-2 file:rounded file:border-0 file:bg-teal-500 file:text-slate-950 font-bold">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="border-t border-[var(--bd)] pt-3 flex gap-2 shrink-0">
+                    <button onclick="kitaApp.previewSite()" class="flex-1 py-2.5 site-inner border rounded-xl text-xs font-bold hover:brightness-125 transition">
+                        👁️ Tutup &amp; Lihat Web
+                    </button>
+                    <button onclick="kitaApp.saveAll()" class="flex-1 py-2.5 site-primary-btn btn-action rounded-xl text-xs font-black uppercase tracking-wider shadow">
+                        💾 Simpan ke Awan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: MODAL BINA LAMAN WEB BARU (RM100/TAHUN + PENGESAHAN BAYARAN) -->
+        <div id="new-site-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+            <div class="site-card custom-frame rounded-2xl max-w-sm w-full p-6 text-center space-y-3 shadow-2xl border relative">
+                <button onclick="kitaApp.closeModal('new-site-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="w-12 h-12 rounded-2xl site-primary-btn mx-auto flex items-center justify-center text-slate-950 font-black shadow mb-1">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <h4 class="text-base font-extrabold text-[var(--t)] uppercase">Daftar Laman Web Bisnes</h4>
+                <p class="text-[11px] site-muted-text">Pilih ID slug unik dan tetapkan kata laluan anda untuk akses suntingan:</p>
+                
+                <!-- QR CEO UNTUK BAYARAN RM100 -->
+                <div class="bg-white p-3 rounded-xl inline-block mx-auto border-2 border-emerald-500 shadow-md">
+                    <img id="new-site-ceo-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=TNG-CEO-KITA" class="w-32 h-32 object-contain mx-auto">
+                    <p class="text-slate-900 text-[10px] font-bold mt-1">Imbas QR TNG / DuitNow (CEO)</p>
+                </div>
+
+                <form onsubmit="kitaApp.handleCreateNewSite(event)" class="space-y-2.5 text-left">
+                    <div>
+                        <label class="block text-[10px] site-muted-text font-bold mb-0.5">Pautan URL Anda (Slug)</label>
+                        <div class="flex items-center site-inner border rounded-xl px-2.5 py-2">
+                            <span class="text-[10px] text-slate-500 select-none">kitaverse.com/web/?id=</span>
+                            <input type="text" id="new-site-slug" required placeholder="sewa-kereta-jb" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9-]/g, '')" class="bg-transparent text-emerald-400 font-mono font-bold text-xs w-full outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] site-muted-text font-bold mb-0.5">Nama Perniagaan</label>
+                        <input type="text" id="new-site-title" required placeholder="Contoh: JB Car Rental Express" class="w-full p-2 site-inner border rounded-xl text-xs font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] site-muted-text font-bold mb-0.5">Kategori Bisnes</label>
+                        <select id="new-site-niche" class="w-full p-2 site-inner border rounded-xl text-xs font-bold outline-none site-accent-text">
+                            <option value="service">🔧 Servis & Kontraktor</option>
+                            <option value="rental">🚗 Kereta Sewa / Pengangkutan</option>
+                            <option value="food">🍔 Makanan & Katering</option>
+                            <option value="homestay">🏡 Homestay & Chalet</option>
+                            <option value="beauty">💄 Kecantikan & Salun</option>
+                            <option value="fashion">👗 Fesyen & Butik</option>
+                            <option value="retail">📦 Kedai Runcit & Gajet</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] site-muted-text font-bold mb-0.5">Kata Laluan Anda (Wajib Simpan)</label>
+                        <input type="password" id="new-site-pass" required placeholder="••••••••" class="w-full p-2 site-inner border rounded-xl text-xs font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-emerald-400 font-bold mb-0.5">Muat Naik Resit Bayaran (RM100)</label>
+                        <input type="file" id="new-site-receipt" accept="image/*" required class="w-full text-[10px] site-muted-text file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-emerald-500 file:text-slate-950 font-bold">
+                    </div>
+                    
+                    <div class="flex justify-between items-center text-xs px-1 pt-1">
+                        <span class="site-muted-text">Pakej Usahawan Pro:</span>
+                        <span class="font-extrabold text-amber-400">RM 100 / Tahun</span>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 site-primary-btn btn-action rounded-xl text-xs font-black uppercase tracking-wider shadow">
+                        🚀 Sahkan Pembayaran &amp; Terbit Web
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MAIN SAAS LOGIC SCRIPT (SECURE + LOCKED 0182676999 ADMIN) -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3Yyo-F6Cp9rP_3btB35K31SDaMwwf2to",
+            authDomain: "pasarkita-eff95.firebaseapp.com",
+            projectId: "pasarkita-eff95",
+            storageBucket: "pasarkita-eff95.firebasestorage.app",
+            messagingSenderId: "47537965550",
+            appId: "1:47537965550:web:2ecd0fe86a4c964af3e6ff"
+        };
+        const dbPath = "artifacts/pasarkita-prod/public/data/kitaweb_sites";
+
+        let db = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            firebase.auth().signInAnonymously().catch(() => {});
+            db = firebase.firestore();
+        } catch (e) {
+            console.warn("Firebase Offline Mode Active");
+        }
+
+        const safeStr = (s) => (s || '').replace(/[\r\n]+/g, ' ').replace(/"/g, '&quot;').replace(/'/g, '&#39;').trim();
+        const showToast = (msg) => {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            t.classList.add('active');
+            setTimeout(() => t.classList.remove('active'), 2500);
+        };
+
+        const resizeImage = (file) => new Promise((resolve, reject) => {
+            if (!file.type.match(/image.*/)) return reject("Bukan fail gambar");
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    let w = img.width, h = img.height;
+                    if (w > 450) { h *= 450 / w; w = 450; }
+                    canvas.width = w; canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
+                    resolve(canvas.toDataURL('image/jpeg', 0.65));
+                };
+                img.onerror = () => reject("Fail gambar rosak");
+                img.src = e.target.result;
+            };
+            reader.onerror = () => reject("Ralat baca fail");
+            reader.readAsDataURL(file);
+        });
+
+        const THEMES_DATA = [
+            { id: 't1', cat: 'c1', name: 'T1. Emerald Night', color: '#10b981' },
+            { id: 't2', cat: 'c1', name: 'T2. Royal Gold', color: '#eab308' },
+            { id: 't3', cat: 'c1', name: 'T3. Midnight Blue', color: '#3b82f6' },
+            { id: 't4', cat: 'c1', name: 'T4. Velvet Crimson', color: '#f43f5e' },
+            { id: 't5', cat: 'c1', name: 'T5. Amethyst Dark', color: '#8b5cf6' },
+            { id: 't6', cat: 'c1', name: 'T6. Cyber Cyan', color: '#06b6d4' },
+            { id: 't7', cat: 'c1', name: 'T7. Bronze Night', color: '#f97316' },
+            { id: 't8', cat: 'c1', name: 'T8. Mystic Teal', color: '#14b8a6' },
+            { id: 't9', cat: 'c1', name: 'T9. Orchid Luxe', color: '#d946ef' },
+            { id: 't10', cat: 'c1', name: 'T10. Obsidian Slate', color: '#cbd5e1' },
+            { id: 't11', cat: 'c2', name: 'T11. Fresh Emerald', color: '#059669' },
+            { id: 't12', cat: 'c2', name: 'T12. Sky Blue Light', color: '#2563eb' },
+            { id: 't13', cat: 'c2', name: 'T13. Sweet Rose', color: '#e11d48' },
+            { id: 't14', cat: 'c2', name: 'T14. Warm Amber', color: '#d97706' },
+            { id: 't15', cat: 'c2', name: 'T15. Lavender Chic', color: '#7c3aed' },
+            { id: 't16', cat: 'c2', name: 'T16. Mint Ocean', color: '#0891b2' },
+            { id: 't17', cat: 'c2', name: 'T17. Pure Indigo', color: '#4f46e5' },
+            { id: 't18', cat: 'c2', name: 'T18. Clean Slate', color: '#475569' },
+            { id: 't19', cat: 'c2', name: 'T19. Sage Breeze', color: '#0d9488' },
+            { id: 't20', cat: 'c2', name: 'T20. Berry Soft', color: '#c026d3' },
+            { id: 't21', cat: 'c3', name: 'T21. Warm Mocha', color: '#854d0e' },
+            { id: 't22', cat: 'c3', name: 'T22. Olive Grove', color: '#15803d' },
+            { id: 't23', cat: 'c3', name: 'T23. Terracotta Rust', color: '#9a3412' },
+            { id: 't24', cat: 'c3', name: 'T24. Deep Charcoal', color: '#64748b' },
+            { id: 't25', cat: 'c3', name: 'T25. Desert Stone', color: '#b45309' },
+            { id: 't26', cat: 'c3', name: 'T26. Forest Pine', color: '#166534' },
+            { id: 't27', cat: 'c3', name: 'T27. Deep Ocean', color: '#0369a1' },
+            { id: 't28', cat: 'c3', name: 'T28. Burgundy Wine', color: '#831843' },
+            { id: 't29', cat: 'c3', name: 'T29. Antique Bronze', color: '#78350f' },
+            { id: 't30', cat: 'c3', name: 'T30. Concrete Metro', color: '#71717a' },
+            { id: 't31', cat: 'c4', name: 'T31. Matrix Green', color: '#10b981' },
+            { id: 't32', cat: 'c4', name: 'T32. Electric Violet', color: '#6366f1' },
+            { id: 't33', cat: 'c4', name: 'T33. Hot Magenta', color: '#ec4899' },
+            { id: 't34', cat: 'c4', name: 'T34. Toxic Lime', color: '#84cc16' },
+            { id: 't35', cat: 'c4', name: 'T35. Aqua Neon', color: '#06b6d4' },
+            { id: 't36', cat: 'c4', name: 'T36. Hyper Gold', color: '#f59e0b' },
+            { id: 't37', cat: 'c4', name: 'T37. Crimson Flame', color: '#ef4444' },
+            { id: 't38', cat: 'c4', name: 'T38. Cyber Purple', color: '#a855f7' },
+            { id: 't39', cat: 'c4', name: 'T39. Electric Teal', color: '#14b8a6' },
+            { id: 't40', cat: 'c4', name: 'T40. Dark Rose Gold', color: '#f43f5e' }
+        ];
+
+        const FONTS_DATA = [
+            { name: "Plus Jakarta Sans (Standard)", val: "'Plus Jakarta Sans', sans-serif" },
+            { name: "Inter (Moden & Bersih)", val: "'Inter', sans-serif" },
+            { name: "Poppins (Geometrik & Mesra)", val: "'Poppins', sans-serif" },
+            { name: "Montserrat (Gaya Korporat)", val: "'Montserrat', sans-serif" },
+            { name: "Outfit (Trendy & Minimalis)", val: "'Outfit', sans-serif" },
+            { name: "DM Sans (Pantas & Kemas)", val: "'DM Sans', sans-serif" },
+            { name: "Manrope (Profesional)", val: "'Manrope', sans-serif" },
+            { name: "Urbanist (Elegan & Tajam)", val: "'Urbanist', sans-serif" },
+            { name: "Sora (Gaya Tech & Web3)", val: "'Sora', sans-serif" },
+            { name: "Space Grotesk (Futuristik)", val: "'Space Grotesk', sans-serif" },
+            { name: "Playfair Display (Mewah)", val: "'Playfair Display', serif" },
+            { name: "Cinzel (Kemegahan Klasik)", val: "'Cinzel', serif" },
+            { name: "Bebas Neue (Gagah & Tegak)", val: "'Bebas Neue', sans-serif" },
+            { name: "Great Vibes (Kaligrafi)", val: "'Great Vibes', cursive" },
+            { name: "Pacifico (Santai Kafe)", val: "'Pacifico', cursive" }
+        ];
+
+        const INDUSTRY_PRESETS = {
+            service: {
+                title: "Pak Ali Servis Plumbing & Elektrik",
+                tagline: "Pakar Baiki Paip Bocor, Sinki Tersumbat & Wiring Rumah",
+                desc: "Perkhidmatan segera dan berpatutan dengan jaminan kerja sehingga 30 hari.",
+                location: "Kuala Lumpur, Shah Alam & Subang",
+                ctaLabel: "Minta Sebut Harga",
+                hours: "24 Jam Setiap Hari",
+                theme: "t3", frame: "f1", btn: "b2", font: "'Plus Jakarta Sans', sans-serif",
+                catalog: [
+                    { id: 1, name: "Baiki Paip Bocor & Pecah", price: "80.00", desc: "Pemeriksaan dan penggantian paip rosak.", image: "" },
+                    { id: 2, name: "Sinki & Tandas Tersumbat", price: "120.00", desc: "Pembersihan menggunakan mesin hydro-jet.", image: "" }
+                ],
+                reviews: [{ name: "Faizal (Subang)", text: "Pantas sampai dalam masa 40 minit lepas call!" }]
+            },
+            rental: {
+                title: "KL Car Rental Express",
+                tagline: "Sewa Kereta Pandu Sendiri Murah & Jimat Minyak",
+                desc: "Kereta baru, bersih dan diselenggara secara berkala.",
+                location: "Lembah Klang & KLIA",
+                ctaLabel: "Sewa Sekarang",
+                hours: "8.00 AM - 11.00 PM",
+                theme: "t12", frame: "f4", btn: "b1", font: "'Bebas Neue', sans-serif",
+                catalog: [
+                    { id: 1, name: "Perodua Axia 1.0 (Auto)", price: "110.00", desc: "Paling jimat petrol untuk bandar.", image: "" }
+                ],
+                reviews: [{ name: "Hafiz (KLIA)", text: "Kereta wangi dan sangat bersih." }]
+            }
+        };
+
+        window.kitaApp = {
+            state: {
+                currentId: 'demo-bisnes',
+                isCeo: false,
+                siteData: {
+                    title: "Pak Ali Servis Plumbing & Elektrik",
+                    tagline: "Pakar Baiki Paip Bocor & Wiring Rumah",
+                    desc: "Perkhidmatan segera dan berpatutan dengan jaminan kerja.",
+                    phone: "0182676999",
+                    location: "Kuala Lumpur & Selangor",
+                    fullAddress: "Shah Alam, Selangor",
+                    ctaLabel: "Minta Sebut Harga",
+                    hours: "24 Jam Setiap Hari",
+                    password: "123",
+                    theme: "t3",
+                    frameStyle: "f1",
+                    btnStyle: "b2",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    logo: "",
+                    qrImage: "",
+                    qrTngImage: "",
+                    bankName: "Maybank Berhad",
+                    bankAcc: "1234 5678 9012",
+                    bankHolder: "Pak Ali Enterprise",
+                    waTemplate: "Salam {NAMA_BISNES},\n\nSaya berminat dengan servis:\n📌 *{ITEM_PILIHAN}* (RM {HARGA})\n\nBoleh saya tahu slot kekosongan terdekat?",
+                    modules: { catalog: true, hours: true, features: true, reviews: true, faq: true, bank: true, location: true },
+                    catalog: [{ id: 1, name: "Baiki Paip Bocor", price: "80.00", desc: "Pemeriksaan pantas.", image: "" }],
+                    reviews: [{ name: "Puan Mariam", text: "Sangat dipercayai!" }]
+                }
+            },
+
+            init: async () => {
+                kitaApp.buildThemeGrids();
+                kitaApp.buildFrameAndButtonGrids();
+                kitaApp.buildFontList();
+
+                const savedCeoQr = localStorage.getItem('kitaweb_ceo_qr');
+                if (savedCeoQr) {
+                    const el = document.getElementById('new-site-ceo-qr');
+                    if(el) el.src = savedCeoQr;
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const requestedId = urlParams.get('id') || urlParams.get('c') || urlParams.get('store');
+
+                if (requestedId) {
+                    kitaApp.state.currentId = requestedId.toLowerCase().trim();
+                    await kitaApp.loadFromFirestore(kitaApp.state.currentId);
+                } else {
+                    kitaApp.loadFromStorage();
+                    kitaApp.applyStylesToBody();
+                    kitaApp.renderLiveView();
+                }
+            },
+
+            loadFromStorage: () => {
+                try {
+                    const saved = localStorage.getItem('kitaweb_current_site_' + kitaApp.state.currentId);
+                    if (saved) kitaApp.state.siteData = JSON.parse(saved);
+                } catch(e){}
+            },
+
+            saveToStorage: () => {
+                try {
+                    localStorage.setItem('kitaweb_current_site_' + kitaApp.state.currentId, JSON.stringify(kitaApp.state.siteData));
+                } catch(e){}
+            },
+
+            loadFromFirestore: async (slug) => {
+                kitaApp.loadFromStorage();
+                kitaApp.applyStylesToBody();
+                kitaApp.renderLiveView();
+
+                if (!db) return;
+                try {
+                    const docSnap = await db.collection(dbPath).doc(slug).get();
+                    if (docSnap.exists) {
+                        kitaApp.state.siteData = docSnap.data();
+                        kitaApp.saveToStorage();
+                        kitaApp.applyStylesToBody();
+                        kitaApp.renderLiveView();
+                    }
+                } catch(e) {
+                    console.error("Firestore Load:", e);
+                }
+            },
+
+            loadSelectedClient: async (slug) => {
+                if (!slug || !db) return;
+                try {
+                    const docSnap = await db.collection(dbPath).doc(slug).get();
+                    if (docSnap.exists) {
+                        kitaApp.state.currentId = slug;
+                        kitaApp.state.siteData = docSnap.data();
+                        kitaApp.applyStylesToBody();
+                        kitaApp.syncDashboardInputs();
+                        kitaApp.renderLiveView();
+                        showToast(`Dimuatkan: ${slug.toUpperCase()}`);
+                    }
+                } catch(e){ showToast("Ralat memuatkan klien"); }
+            },
+
+            handleCeoQrUpload: (input) => {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        localStorage.setItem('kitaweb_ceo_qr', e.target.result);
+                        const el = document.getElementById('new-site-ceo-qr');
+                        if(el) el.src = e.target.result;
+                        showToast("QR CEO Disimpan!");
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            },
+
+            adminResetClientPassword: async () => {
+                const newPass = document.getElementById('admin-reset-pass-input').value.trim();
+                if (!newPass) return showToast("Masukkan kata laluan baru!");
+                kitaApp.state.siteData.password = newPass;
+                kitaApp.saveToStorage();
+                if (db) {
+                    try {
+                        await db.collection(dbPath).doc(kitaApp.state.currentId).update({ password: newPass });
+                    } catch(e){}
+                }
+                document.getElementById('admin-reset-pass-input').value = '';
+                showToast(`Kata laluan [${kitaApp.state.currentId}] berjaya ditukar!`);
+            },
+
+            syncField: (key, val) => {
+                kitaApp.state.siteData[key] = val;
+                kitaApp.saveToStorage();
+                kitaApp.renderLiveView();
+            },
+
+            syncModule: (modKey, isChecked) => {
+                if(!kitaApp.state.siteData.modules) kitaApp.state.siteData.modules = {};
+                kitaApp.state.siteData.modules[modKey] = isChecked;
+                kitaApp.saveToStorage();
+                kitaApp.renderLiveView();
+            },
+
+            applyStylesToBody: () => {
+                const d = kitaApp.state.siteData;
+                const b = document.getElementById('mainBody');
+                b.setAttribute('data-t', d.theme || 't1');
+                b.setAttribute('data-f', d.frameStyle || 'f1');
+                b.setAttribute('data-b', d.btnStyle || 'b1');
+                document.documentElement.style.setProperty('--custom-font', d.fontFamily || "'Plus Jakarta Sans', sans-serif");
+            },
+
+            applyTheme: (themeId, notify=true) => {
+                kitaApp.state.siteData.theme = themeId;
+                kitaApp.applyStylesToBody();
+                kitaApp.saveToStorage();
+                if(notify) showToast(`Tema ditukar ke: ${themeId.toUpperCase()}`);
+            },
+
+            applyFrame: (frameId) => {
+                kitaApp.state.siteData.frameStyle = frameId;
+                kitaApp.applyStylesToBody();
+                kitaApp.saveToStorage();
+                showToast(`Bingkai kad: ${frameId.toUpperCase()}`);
+            },
+
+            applyButton: (btnId) => {
+                kitaApp.state.siteData.btnStyle = btnId;
+                kitaApp.applyStylesToBody();
+                kitaApp.saveToStorage();
+                showToast(`Gaya butang: ${btnId.toUpperCase()}`);
+            },
+
+            applyFont: (fontVal, fontName) => {
+                kitaApp.state.siteData.fontFamily = fontVal;
+                kitaApp.applyStylesToBody();
+                kitaApp.saveToStorage();
+                showToast(`Font ditukar ke: ${fontName}`);
+            },
+
+            applyIndustryPreset: (nicheKey) => {
+                const p = INDUSTRY_PRESETS[nicheKey] || INDUSTRY_PRESETS.service;
+                Object.assign(kitaApp.state.siteData, {
+                    title: p.title, tagline: p.tagline, desc: p.desc, location: p.location,
+                    ctaLabel: p.ctaLabel, hours: p.hours, theme: p.theme, frameStyle: p.frame,
+                    btnStyle: p.btn, fontFamily: p.font,
+                    catalog: JSON.parse(JSON.stringify(p.catalog)),
+                    reviews: JSON.parse(JSON.stringify(p.reviews || []))
+                });
+                kitaApp.applyStylesToBody();
+                kitaApp.syncDashboardInputs();
+                kitaApp.saveToStorage();
+                kitaApp.renderLiveView();
+                showToast("Templat Niche Berjaya Diterapkan!");
+            },
+
+            handleImageUpload: async (input, key) => {
+                if (input.files && input.files[0]) {
+                    try {
+                        const b64 = await resizeImage(input.files[0]);
+                        kitaApp.state.siteData[key] = b64;
+                        kitaApp.saveToStorage();
+                        kitaApp.renderLiveView();
+                        showToast("Gambar / QR berjaya dimuat naik!");
+                    } catch(e) { showToast("Ralat memproses gambar"); }
+                }
+            },
+
+            handleCatalogImageUpload: async (input, idx) => {
+                if (input.files && input.files[0]) {
+                    try {
+                        const b64 = await resizeImage(input.files[0]);
+                        kitaApp.state.siteData.catalog[idx].image = b64;
+                        kitaApp.saveToStorage();
+                        kitaApp.renderCatalogEditor();
+                        kitaApp.renderLiveView();
+                        showToast("Gambar produk disimpan!");
+                    } catch(e) { showToast("Gagal muat naik"); }
+                }
+            },
+
+            addCatalogItem: () => {
+                if(!kitaApp.state.siteData.catalog) kitaApp.state.siteData.catalog = [];
+                kitaApp.state.siteData.catalog.push({ id: Date.now(), name: "Servis Baru", price: "50.00", desc: "Keterangan...", image: "" });
+                kitaApp.saveToStorage(); kitaApp.renderCatalogEditor(); kitaApp.renderLiveView();
+            },
+
+            removeCatalogItem: (idx) => {
+                kitaApp.state.siteData.catalog.splice(idx, 1);
+                kitaApp.saveToStorage(); kitaApp.renderCatalogEditor(); kitaApp.renderLiveView();
+            },
+
+            renderCatalogEditor: () => {
+                const c = document.getElementById('catalog-editor-list');
+                const items = kitaApp.state.siteData.catalog || [];
+                c.innerHTML = items.map((it, idx) => `
+                    <div class="site-card p-2.5 rounded-xl border space-y-2">
+                        <div class="flex justify-between items-center"><span class="text-[9px] font-bold site-accent-text">Pakej #${idx + 1}</span><button onclick="kitaApp.removeCatalogItem(${idx})" class="text-rose-400 text-[10px] font-bold">Padam</button></div>
+                        <div class="grid grid-cols-3 gap-1.5"><input type="text" value="${safeStr(it.name)}" oninput="kitaApp.state.siteData.catalog[${idx}].name = this.value; kitaApp.saveToStorage(); kitaApp.renderLiveView();" placeholder="Nama" class="col-span-2 p-1.5 site-inner border rounded text-xs font-bold"><input type="number" step="0.5" value="${safeStr(it.price)}" oninput="kitaApp.state.siteData.catalog[${idx}].price = this.value; kitaApp.saveToStorage(); kitaApp.renderLiveView();" placeholder="RM" class="p-1.5 site-inner border rounded text-xs font-black site-accent-text"></div>
+                        <input type="text" value="${safeStr(it.desc)}" oninput="kitaApp.state.siteData.catalog[${idx}].desc = this.value; kitaApp.saveToStorage(); kitaApp.renderLiveView();" placeholder="Keterangan..." class="w-full p-1.5 site-inner border rounded text-[10px]">
+                        <input type="file" accept="image/*" onchange="kitaApp.handleCatalogImageUpload(this, ${idx})" class="text-[9px] site-muted-text">
+                    </div>
+                `).join('');
+            },
+
+            syncDashboardInputs: () => {
+                const d = kitaApp.state.siteData;
+                const setVal = (id, v) => { const el = document.getElementById(id); if(el) el.value = v || ''; };
+                const setChk = (id, v) => { const el = document.getElementById(id); if(el) el.checked = !!v; };
+
+                setVal('inp-biz-title', d.title); setVal('inp-biz-tagline', d.tagline); setVal('inp-biz-desc', d.desc);
+                setVal('inp-biz-phone', d.phone); setVal('inp-biz-cta', d.ctaLabel); setVal('inp-biz-hours', d.hours);
+                setVal('inp-loc-name', d.location); setVal('inp-loc-address', d.fullAddress);
+                setVal('inp-bank-name', d.bankName); setVal('inp-bank-acc', d.bankAcc); setVal('inp-bank-holder', d.bankHolder);
+                setVal('inp-wa-template', d.waTemplate);
+
+                const m = d.modules || {};
+                setChk('mod_catalog', m.catalog !== false); setChk('mod_hours', m.hours !== false);
+                setChk('mod_features', m.features !== false); setChk('mod_reviews', m.reviews !== false);
+                setChk('mod_faq', m.faq !== false); setChk('mod_bank', m.bank !== false); setChk('mod_location', m.location !== false);
+
+                document.getElementById('display-client-full-url').value = `${window.location.origin}${window.location.pathname}?id=${kitaApp.state.currentId}`;
+                kitaApp.renderCatalogEditor();
+            },
+
+            renderLiveView: () => {
+                const d = kitaApp.state.siteData;
+                const m = d.modules || {};
+                const cleanPhone = (d.phone || '').replace(/\D/g, '');
+                const waBase = `https://api.whatsapp.com/send?phone=6${cleanPhone.startsWith('6') ? cleanPhone.slice(1) : cleanPhone}`;
+
+                document.getElementById('floating-wa-link').href = `${waBase}&text=${encodeURIComponent('Salam ' + (d.title || '') + ', saya berminat.')}`;
+
+                const target = document.getElementById('live-render-target');
+                target.innerHTML = `
+                    <div class="space-y-4 px-3.5 pt-4">
+                        <div class="site-card custom-frame p-6 text-center shadow-lg border relative overflow-hidden flex flex-col items-center">
+                            <div class="w-24 h-24 rounded-3xl site-inner border-2 overflow-hidden shadow mb-3 flex items-center justify-center bg-black/10">
+                                ${d.logo ? `<img src="${d.logo}" class="w-full h-full object-cover">` : `<span class="text-4xl">🏢</span>`}
+                            </div>
+                            <h1 class="text-xl font-extrabold tracking-tight">${safeStr(d.title)}</h1>
+                            ${d.tagline ? `<p class="text-xs font-bold site-accent-text mt-0.5">${safeStr(d.tagline)}</p>` : ''}
+                            ${d.location ? `<p class="text-[11px] site-muted-text mt-1 flex items-center gap-1"><span>📍</span> ${safeStr(d.location)}</p>` : ''}
+                            ${d.desc ? `<p class="text-xs site-muted-text mt-3 leading-relaxed max-w-sm px-2">${safeStr(d.desc)}</p>` : ''}
+                            <div class="w-full mt-4">
+                                <a href="${waBase}&text=${encodeURIComponent('Salam ' + (d.title || '') + ', saya mahu tempah.')}" target="_blank" class="w-full site-primary-btn btn-action py-3.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-lg">
+                                    <span>📲</span> <span>${safeStr(d.ctaLabel || 'Hubungi Kami')}</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        ${m.catalog !== false && (d.catalog || []).length > 0 ? `
+                        <div class="space-y-2.5 pt-1">
+                            <div class="flex justify-between items-center px-1"><h2 class="text-xs font-black uppercase tracking-wider site-muted-text">Pilihan Pakej &amp; Servis</h2></div>
+                            <div class="space-y-2.5">
+                                ${d.catalog.map(it => `
+                                    <div class="site-card custom-frame p-3.5 rounded-2xl border flex items-center justify-between gap-3 shadow-sm">
+                                        ${it.image ? `<img src="${it.image}" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-[var(--bd)]">` : ''}
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="font-extrabold text-xs line-clamp-1">${safeStr(it.name)}</h3>
+                                            <p class="font-black text-sm site-accent-text mt-1">RM ${parseFloat(it.price || 0).toFixed(2)}</p>
+                                        </div>
+                                        <button onclick="kitaApp.orderViaWhatsApp('${safeStr(it.name)}', '${parseFloat(it.price || 0).toFixed(2)}')" class="site-primary-btn btn-action px-3 py-2 rounded-xl text-xs font-bold shrink-0 border-none">
+                                            ${safeStr(d.ctaLabel || 'Pilih')}
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>` : ''}
+
+                        ${m.bank !== false && (d.qrImage || d.qrTngImage || d.bankAcc) ? `
+                        <div class="site-card custom-frame p-4 rounded-2xl border space-y-3 text-center">
+                            <h3 class="text-xs font-black uppercase tracking-wider site-accent-text">Maklumat Pembayaran & QR</h3>
+                            <p class="text-[11px] font-bold">${safeStr(d.bankName)} - <span class="font-mono text-emerald-400">${safeStr(d.bankAcc)}</span> (${safeStr(d.bankHolder)})</p>
+                            <div class="flex justify-center gap-3 pt-2">
+                                ${d.qrImage ? `<div class="bg-white p-2 rounded-xl border"><img src="${d.qrImage}" class="w-28 h-28 object-contain mx-auto"><span class="text-[9px] text-slate-900 font-bold block mt-1">DuitNow QR</span></div>` : ''}
+                                ${d.qrTngImage ? `<div class="bg-white p-2 rounded-xl border"><img src="${d.qrTngImage}" class="w-28 h-28 object-contain mx-auto"><span class="text-[9px] text-slate-900 font-bold block mt-1">MAE / TNG QR</span></div>` : ''}
+                            </div>
+                        </div>` : ''}
+
+                        <footer class="text-center py-6 border-t border-[var(--bd)] mt-6 space-y-2">
+                            <p class="text-[10.5px] site-muted-text font-semibold">Dikuasakan oleh <span class="font-extrabold site-accent-text">KitaVerse</span></p>
+                            <a href="../index.html" class="inline-block text-xs font-black text-white bg-slate-900 px-4 py-2 rounded-full border border-slate-700 hover:border-emerald-500 shadow transition">
+                                🚀 Dapatkan Web Bisnes Anda (RM100/Tahun) &rarr;
+                            </a>
+                        </footer>
+                    </div>
+                `;
+                lucide.createIcons();
+            },
+
+            orderViaWhatsApp: (itemName, itemPrice) => {
+                const d = kitaApp.state.siteData;
+                const cleanPhone = (d.phone || '').replace(/\D/g, '');
+                let msg = d.waTemplate || "Salam {NAMA_BISNES}, saya berminat dengan {ITEM_PILIHAN} (RM {HARGA}).";
+                msg = msg.replace(/\{NAMA_BISNES\}/gi, d.title || '').replace(/\{ITEM_PILIHAN\}/gi, itemName).replace(/\{HARGA\}/gi, itemPrice);
+                window.open(`https://api.whatsapp.com/send?phone=6${cleanPhone.slice(-10)}&text=${encodeURIComponent(msg)}`, '_blank');
+            },
+
+            openAdminLoginModal: () => {
+                document.getElementById('login-client-id').value = kitaApp.state.currentId;
+                document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('login-modal').classList.add('flex');
+            },
+
+            closeModal: (id) => {
+                const m = document.getElementById(id);
+                m.classList.add('hidden'); m.classList.remove('flex');
+            },
+
+            switchLoginTab: (role) => {
+                const isClient = role === 'client';
+                document.getElementById('form-client-login').classList.toggle('hidden', !isClient);
+                document.getElementById('form-ceo-login').classList.toggle('hidden', isClient);
+                document.getElementById('btn-tab-client-login').className = isClient ? 'py-1.5 rounded-lg site-primary-btn text-xs font-bold transition-all' : 'py-1.5 rounded-lg text-xs font-bold text-[var(--m)] hover:text-white transition-all';
+                document.getElementById('btn-tab-ceo-login').className = !isClient ? 'py-1.5 rounded-lg site-primary-btn text-xs font-bold transition-all' : 'py-1.5 rounded-lg text-xs font-bold text-[var(--m)] hover:text-white transition-all';
+            },
+
+            handleClientLogin: async (e) => {
+                e.preventDefault();
+                const inputId = document.getElementById('login-client-id').value.trim().toLowerCase();
+                const pass = document.getElementById('login-client-pass').value.trim();
+
+                let targetData = kitaApp.state.siteData;
+                if (db) {
+                    try {
+                        const snap = await db.collection(dbPath).doc(inputId).get();
+                        if (snap.exists) targetData = snap.data();
+                    } catch(err){}
+                }
+
+                if (targetData.password && targetData.password === pass) {
+                    kitaApp.state.currentId = inputId;
+                    kitaApp.state.siteData = targetData;
+                    kitaApp.state.isCeo = false;
+                    document.getElementById('dash-role-badge').innerText = `PORTAL KLIEN: ${inputId.toUpperCase()}`;
+                    document.getElementById('ceo-exclusive-panel').classList.add('hidden');
+                    kitaApp.closeModal('login-modal');
+                    kitaApp.openDashboardModal();
+                    showToast(`Selamat datang ${targetData.title}!`);
+                } else {
+                    showToast("Kata laluan salah!");
+                }
+            },
+
+            handleCeoLogin: async (e) => {
+                e.preventDefault();
+                const phone = document.getElementById('login-ceo-phone').value.trim();
+                const pass = document.getElementById('login-ceo-pass').value.trim();
+
+                if (phone === '0182676999') {
+                    let savedMasterPass = localStorage.getItem('kitaweb_ceo_pass');
+                    if (!savedMasterPass) {
+                        localStorage.setItem('kitaweb_ceo_pass', pass);
+                        savedMasterPass = pass;
+                        showToast("Kata laluan Master CEO didaftarkan!");
+                    }
+
+                    if (pass === savedMasterPass) {
+                        kitaApp.state.isCeo = true;
+                        document.getElementById('dash-role-badge').innerText = "PORTAL KAWALAN CEO MASTER (0182676999)";
+                        document.getElementById('ceo-exclusive-panel').classList.remove('hidden');
+                        
+                        if (db) {
+                            try {
+                                const allSnaps = await db.collection(dbPath).get();
+                                const sel = document.getElementById('ceo-client-selector');
+                                sel.innerHTML = allSnaps.docs.map(docSnap => `<option value="${docSnap.id}">${docSnap.id.toUpperCase()} (${docSnap.data().title || ''})</option>`).join('');
+                            } catch(e){}
+                        }
+
+                        kitaApp.closeModal('login-modal');
+                        kitaApp.openDashboardModal();
+                        showToast("Akses Master CEO Berjaya!");
+                    } else {
+                        showToast("Kata laluan Master salah!");
+                    }
+                } else {
+                    showToast("Akses Ditolak!");
+                }
+            },
+
+            openDashboardModal: () => {
+                kitaApp.syncDashboardInputs();
+                document.getElementById('admin-modal').classList.remove('hidden');
+                document.getElementById('admin-modal').classList.add('flex');
+            },
+
+            switchModalTab: (tabId, btn) => {
+                document.querySelectorAll('.modal-panel').forEach(p => p.classList.add('hidden'));
+                document.getElementById(tabId).classList.remove('hidden');
+                document.querySelectorAll('.modal-subtab-btn').forEach(b => b.classList.remove('modal-subtab-active'));
+                btn.classList.add('modal-subtab-active');
+            },
+
+            saveAll: async () => {
+                kitaApp.saveToStorage();
+                if (db) {
+                    try {
+                        await db.collection(dbPath).doc(kitaApp.state.currentId).set({
+                            ...kitaApp.state.siteData, updatedAt: Date.now()
+                        }, { merge: true });
+                        showToast("Disimpan ke Database Awan!");
+                    } catch(e) { showToast("Disimpan secara lokal."); }
+                }
+                kitaApp.renderLiveView();
+                kitaApp.closeModal('admin-modal');
+            },
+
+            previewSite: () => {
+                kitaApp.saveToStorage();
+                kitaApp.renderLiveView();
+                kitaApp.closeModal('admin-modal');
+                showToast("Paparan Dikemas Kini!");
+            },
+
+            openNewSiteModal: () => {
+                document.getElementById('new-site-modal').classList.remove('hidden');
+                document.getElementById('new-site-modal').classList.add('flex');
+            },
+
+            handleCreateNewSite: async (e) => {
+                e.preventDefault();
+                const slug = document.getElementById('new-site-slug').value.trim().toLowerCase();
+                const title = document.getElementById('new-site-title').value.trim();
+                const niche = document.getElementById('new-site-niche').value;
+                const pass = document.getElementById('new-site-pass').value.trim();
+                const receiptInput = document.getElementById('new-site-receipt');
+
+                if (receiptInput.files.length === 0) return showToast("Sila muat naik resit bayaran RM100.");
+
+                if (db) {
+                    const checkSnap = await db.collection(dbPath).doc(slug).get();
+                    if (checkSnap.exists) {
+                        return showToast("⚠️ ID Slug ini telah digunakan orang lain. Sila pilih nama lain.");
+                    }
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const refCode = urlParams.get('ref') || null;
+
+                const preset = INDUSTRY_PRESETS[niche] || INDUSTRY_PRESETS.service;
+                const newPayload = {
+                    title: title, tagline: preset.tagline, desc: preset.desc,
+                    phone: "0182676999", location: preset.location, fullAddress: preset.location,
+                    ctaLabel: preset.ctaLabel, hours: preset.hours, password: pass,
+                    theme: preset.theme, frameStyle: preset.frame, btnStyle: preset.btn, fontFamily: preset.font,
+                    logo: "", qrImage: "", qrTngImage: "", bankName: "Maybank Berhad", bankAcc: "1234 5678 9012", bankHolder: title,
+                    waTemplate: "Salam {NAMA_BISNES}, saya berminat dengan {ITEM_PILIHAN} (RM {HARGA}).",
+                    modules: { catalog: true, hours: true, features: true, reviews: true, faq: true, bank: true, location: true },
+                    catalog: JSON.parse(JSON.stringify(preset.catalog)),
+                    reviews: JSON.parse(JSON.stringify(preset.reviews || [])),
+                    status: 'active', plan: 'pro_annual_100',
+                    affiliateRef: refCode,
+                    createdAt: Date.now()
+                };
+
+                kitaApp.state.currentId = slug;
+                kitaApp.state.siteData = newPayload;
+                kitaApp.saveToStorage();
+
+                if (db) {
+                    try {
+                        await db.collection(dbPath).doc(slug).set(newPayload);
+
+                        if (refCode) {
+                            const agentQuery = await db.collection("artifacts/pasarkita-prod/public/data/affiliates").where("agentId", "==", refCode.toUpperCase()).get();
+                            if (!agentQuery.empty) {
+                                const agentDoc = agentQuery.docs[0];
+                                const agentData = agentDoc.data();
+                                await agentDoc.ref.update({
+                                    sales: (agentData.sales || 0) + 1,
+                                    commission: (agentData.commission || 0) + 20.00
+                                });
+                            }
+                        }
+                    } catch(err){ console.error(err); }
+                }
+
+                window.history.pushState({}, '', `?id=${slug}`);
+                kitaApp.applyStylesToBody();
+                kitaApp.renderLiveView();
+                kitaApp.closeModal('new-site-modal');
+                showToast(`Laman Web [${slug}] Berjaya Didaftar!`);
+            },
+
+            copyClientUrl: () => {
+                const input = document.getElementById('display-client-full-url');
+                input.select(); document.execCommand('copy');
+                showToast("🔗 Pautan disalin!");
+            },
+
+            shareSiteWhatsApp: () => {
+                const url = document.getElementById('display-client-full-url').value;
+                const d = kitaApp.state.siteData;
+                const text = `Salam sejahtera,\n\nLayari laman web rasmi kami:\n🏢 *${d.title}*\n✨ ${d.tagline}\n🔗 ${url}\n\nTempahan & pertanyaan boleh dibuat terus melalui laman web ini. Terima kasih!`;
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+            },
+
+            openHubHome: () => { window.location.href = "../index.html"; },
+
+            buildThemeGrids: () => {
+                const buildCat = (catId, containerId) => {
+                    const el = document.getElementById(containerId);
+                    if (!el) return;
+                    const list = THEMES_DATA.filter(t => t.cat === catId);
+                    el.innerHTML = list.map(t => `
+                        <button onclick="kitaApp.applyTheme('${t.id}')" class="site-inner p-2 rounded-xl border text-left flex items-center gap-2 hover:border-[var(--p)] transition active:scale-95">
+                            <span class="w-3.5 h-3.5 rounded-full border border-white/20 shrink-0" style="background-color:${t.color};"></span>
+                            <span class="text-[9.5px] font-bold truncate">${t.name}</span>
+                        </button>
+                    `).join('');
+                };
+                buildCat('c1', 'themeGrid1'); buildCat('c2', 'themeGrid2'); buildCat('c3', 'themeGrid3'); buildCat('c4', 'themeGrid4');
+            },
+
+            buildFrameAndButtonGrids: () => {
+                const frameNames = ['Klasik', 'Double Garis', 'Bulat Lebar', 'Glow Neon', 'Asimetrik', 'Minimalis', 'Garis Putus', 'Titik Diraja', 'Tebal Padu', 'Ridge Berlekuk', 'Groove Melengkung', 'Offset Shadow', 'Inset Dalam', 'Garis Kiri', 'Garis Atas', 'Garis Bawah', 'Kurungan Sisi', 'Kurungan Mendatar', 'Kaca Lembut', 'Bayang Mengapung'];
+                const fGrid = document.getElementById('frameStyleGrid');
+                if (fGrid) {
+                    fGrid.innerHTML = frameNames.map((n, i) => `
+                        <button onclick="kitaApp.applyFrame('f${i+1}')" class="site-inner p-2 rounded-xl border text-left hover:border-[var(--p)] transition active:scale-95">
+                            <span class="text-[9.5px] font-bold truncate">F${i+1}. ${n}</span>
+                        </button>
+                    `).join('');
+                }
+
+                const btnNames = ['Kapsul', 'Rounded', 'Petak', 'Outline', '3D Pop', 'Glow', 'Neon', 'Elevated', 'Underline', 'Retro', 'Glass', 'Dashed', 'Dotted', 'Double', 'Condong', 'Floating', 'Inset', 'Subtle', 'Gradient', 'Drop Shadow'];
+                const bGrid = document.getElementById('buttonStyleGrid');
+                if (bGrid) {
+                    bGrid.innerHTML = btnNames.map((n, i) => `
+                        <button onclick="kitaApp.applyButton('b${i+1}')" class="site-inner p-2 rounded-xl border text-left hover:border-[var(--p)] transition active:scale-95">
+                            <span class="text-[9.5px] font-bold truncate">B${i+1}. ${n}</span>
+                        </button>
+                    `).join('');
+                }
+            },
+
+            buildFontList: () => {
+                const fList = document.getElementById('fontSelectionList');
+                if (!fList) return;
+                fList.innerHTML = FONTS_DATA.map((f, i) => `
+                    <button onclick="kitaApp.applyFont('${f.val}', '${f.name.split('(')[0].trim()}')" class="w-full site-inner p-2.5 rounded-xl border text-left hover:border-[var(--p)] transition flex items-center justify-between">
+                        <span class="text-xs font-bold" style="font-family: ${f.val};">${i+1}. Contoh Tulisan (${f.name})</span>
+                    </button>
+                `).join('');
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', () => { kitaApp.init(); });
+    </script>
+</body>
+</html>
