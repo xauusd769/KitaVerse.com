@@ -1,231 +1,228 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="ms" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KitaAffiliate | Daftar & Papan Pemuka Ejen</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-auth { background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KitaAffiliate™ | Ekosistem Rezeki Ummah KitaVerse</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; }
+.glass-panel {
+background: rgba(15, 23, 42, 0.7);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.text-gradient-gold {
+background: linear-gradient(to right, #fbbf24, #f59e0b, #d97706);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.text-gradient-crypto {
+background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+/* Toast Notification */
+.toast-enter { transform: translateY(100%); opacity: 0; }
+.toast-enter-active { transform: translateY(0); opacity: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.toast-leave { transform: translateY(0); opacity: 1; }
+.toast-leave-active { transform: translateY(100%); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+</style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-cyan-500 selection:text-white overflow-x-hidden">
+<body class="text-slate-200 antialiased min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+<!-- NAVIGATION BAR -->
+<nav class="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-sky-500/20">
+<i class="fa-solid fa-users-viewfinder"></i>
+</div>
+<div>
+<h1 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+KitaAffiliate™ <span class="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase border border-sky-500/20">Portal Ejen</span>
+</h1>
+<p class="text-[10px] text-slate-400">Enjin Hibrid RM & Blockchain KitaPay™</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden sm:flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-xs font-mono text-emerald-400">Split-Payment Aktif</span>
+</div>
+<button onclick="salinLinkAfiliasi()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white shadow-lg shadow-sky-600/20 transition flex items-center gap-2">
+<i class="fa-solid fa-link"></i> Salin Link Unik
+</button>
+</div>
+</div>
+</nav>
+<!-- MAIN DASHBOARD -->
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 relative z-10">
+<!-- Welcome Banner & Core Concept -->
+<section class="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
+<div class="absolute top-0 right-0 p-32 bg-sky-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="space-y-4 max-w-2xl relative z-10">
+<span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-1.5">
+<i class="fa-solid fa-bolt"></i> Automasi Penuh KitaPay™
+</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+Close Deal Terus Dapat Duit: 
 
-    <div id="toastNotif" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[100] bg-cyan-500 text-slate-950 px-6 py-2.5 rounded-full font-bold text-xs sm:text-sm opacity-0 pointer-events-none transition-all duration-300 shadow-lg shadow-cyan-500/30 translate-y-[-20px] text-center w-[90%] max-w-sm">Mesej</div>
+<span class="text-gradient-gold">Split-Payment Automatik Sifar Delay!</span>
+</h2>
+<p class="text-sm sm:text-base text-slate-400 leading-relaxed">
+Sistem KitaPay™ menguruskan agihan komisen secara automatik (real-time). Sebaik sahaja rujukan berjaya melanggan, komisen <strong class="text-amber-400">RM50 (KitaKahwin)</strong>, <strong class="text-blue-400">RM20 (KitaWeb)</strong> dan <strong class="text-sky-400">RM20 (KitaInvite)</strong> terus dikreditkan ke akaun anda tanpa perlu tekan butang tuntut!
+</p>
+</div>
+<!-- Quick Earnings Widget -->
+<div class="w-full lg:w-auto glass-panel p-6 rounded-2xl border border-slate-700/80 min-w-[300px] shadow-2xl relative z-10">
+<p class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-1">Jumlah Pendapatan Afiliasi</p>
+<p class="text-3xl sm:text-4xl font-black text-white font-mono" id="totalEarnings">RM1,245.80</p>
+<div class="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center text-xs">
+<span class="text-slate-400">Status Pengagihan:</span>
+<span class="font-bold text-emerald-400 font-mono flex items-center gap-1">
+<i class="fa-solid fa-circle-check"></i> Auto-Credited
+</span>
+</div>
+<div class="w-full mt-4 py-3 rounded-xl bg-slate-900/90 border border-emerald-500/30 text-emerald-400 font-bold text-xs shadow-inner flex items-center justify-center gap-2">
+<i class="fa-solid fa-shield-halved"></i> 100% Automatik Melalui KitaPay™
+</div>
+</div>
+</section>
+<!-- STATS GRID -->
+<section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+<div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
+<span>Jumlah Referral</span>
+<i class="fa-solid fa-user-group text-sky-400"></i>
+</div>
+<p class="text-2xl font-black text-white font-mono">48 Orang</p>
+<p class="text-xs text-emerald-400">+12 minggu ini (Aktif)</p>
+</div>
+<div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
+<span>Komisen Per Rujukan</span>
+<i class="fa-solid fa-percent text-amber-400"></i>
+</div>
+<p class="text-2xl font-black text-amber-400 font-mono">RM20 - RM50</p>
+<p class="text-xs text-slate-400">Masuk Terus Real-Time</p>
+</div>
+<div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-slate-400 text-xs uppercase font-semibold">
+<span>Sistem Pembayaran</span>
+<i class="fa-solid fa-bolt text-purple-400"></i>
+</div>
+<p class="text-2xl font-black text-gradient-crypto font-mono">Instant Split</p>
+<p class="text-xs text-slate-400">Sifar Masa Menunggu</p>
+</div>
+</section>
+<!-- SIMULATOR & REFERRAL LIST -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Link & QR Sharing Box -->
+<div class="glass-panel p-6 rounded-3xl border border-slate-800 space-y-6">
+<h3 class="font-bold text-white text-base flex items-center gap-2">
+<i class="fa-solid fa-share-nodes text-sky-400"></i> Sebarkan Link Anda
+</h3>
+<div class="space-y-2">
+<label class="text-xs text-slate-400 uppercase font-semibold">Link Unik KitaAffiliate</label>
+<div class="flex items-center gap-2">
+<input type="text" readonly value="https://kitaverse.com/?ref=agen1234" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-sky-400 focus:outline-none">
+<button onclick="salinLinkAfiliasi()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white transition">
+<i class="fa-solid fa-copy"></i>
+</button>
+</div>
+</div>
+<div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs space-y-3">
+<p class="font-bold text-white flex items-center gap-1.5">
+<i class="fa-solid fa-circle-info text-amber-400"></i> Panduan Komisen
+</p>
+<p class="text-slate-400 leading-relaxed">
+• <strong>KitaKahwin:</strong> RM50
 
-    <div id="auth-view" class="min-h-screen flex flex-col relative overflow-hidden bg-slate-950">
-        <header class="w-full max-w-7xl mx-auto px-6 h-20 flex items-center justify-between z-10 relative border-b border-slate-800/50">
-            <a href="../index.html" class="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-400 flex items-center justify-center font-extrabold text-slate-950 text-xl shadow-lg shadow-cyan-500/20">K</div>
-                <span class="text-xl font-bold tracking-tight text-white">Kita<span class="text-cyan-400">Affiliate</span></span>
-            </a>
-            <a href="../index.html" class="text-sm font-semibold text-slate-400 hover:text-white transition-colors hidden sm:block">Kembali ke Laman Utama</a>
-        </header>
+• <strong>KitaWeb:</strong> RM20
 
-        <main class="flex-grow flex items-center justify-center p-6 z-10">
-            <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="order-2 lg:order-1 text-center lg:text-left space-y-6">
-                    <div class="inline-flex items-center space-x-2 bg-cyan-500/10 border border-cyan-500/20 px-4 py-2 rounded-full text-cyan-400 text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0">
-                        <i data-lucide="trending-up" class="w-4 h-4"></i><span>Jana Pendapatan Pasif</span>
-                    </div>
-                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">Sertai Program <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Rakan Affiliate Kami.</span></h1>
-                    <p class="text-slate-400 text-base md:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
-                        Bantu kami perkasakan usahawan. Anda dibayar komisen <strong class="text-amber-400">RM50 (KitaKahwin)</strong>, <strong class="text-blue-400">RM20 (KitaWeb)</strong> dan <strong class="text-cyan-400">RM20 (KitaInvite)</strong> secara automatik terus ke akaun anda.
-                    </p>
-                </div>
+• <strong>KitaInvite:</strong> RM20
 
-                <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
-                    <div class="glass-auth p-8 rounded-3xl w-full max-w-md relative overflow-hidden">
-                        <div class="flex bg-slate-900 rounded-xl p-1 mb-8 border border-slate-700">
-                            <button id="btnTabLogin" onclick="toggleAuthForm('login')" class="flex-1 py-2 text-sm font-bold rounded-lg bg-slate-800 text-white shadow-sm transition-all">Log Masuk</button>
-                            <button id="btnTabRegister" onclick="toggleAuthForm('register')" class="flex-1 py-2 text-sm font-bold rounded-lg text-slate-400 hover:text-white transition-all">Daftar Ejen</button>
-                        </div>
-
-                        <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
-                            <div id="fieldNama" class="hidden">
-                                <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase">Nama Penuh</label>
-                                <div class="relative"><i data-lucide="user" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 w-4 h-4"></i><input type="text" id="inputName" placeholder="Contoh: Ahmad Faiz" class="w-full bg-slate-900/80 border border-slate-700 focus:border-cyan-500 text-white rounded-xl pl-11 pr-4 py-3 outline-none text-sm"></div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase">No. WhatsApp</label>
-                                <div class="relative"><i data-lucide="phone" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 w-4 h-4"></i><input type="tel" id="inputPhone" required placeholder="0123456789" class="w-full bg-slate-900/80 border border-slate-700 focus:border-cyan-500 text-white rounded-xl pl-11 pr-4 py-3 outline-none text-sm"></div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase">Kata Laluan</label>
-                                <div class="relative"><i data-lucide="lock" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 w-4 h-4"></i><input type="password" id="inputPass" required placeholder="••••••••" class="w-full bg-slate-900/80 border border-slate-700 focus:border-cyan-500 text-white rounded-xl pl-11 pr-4 py-3 outline-none text-sm"></div>
-                            </div>
-                            <button type="submit" id="btnSubmitAuth" class="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black py-3.5 rounded-xl transition-all text-sm mt-4 flex items-center justify-center gap-2"><span>Masuk Papan Pemuka</span></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <div id="dashboard-view" class="hidden min-h-screen flex-col bg-slate-950">
-        <header class="border-b border-slate-800/80 bg-slate-950/95 sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                <div class="flex items-center space-x-3 cursor-pointer">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-400 flex items-center justify-center font-extrabold text-slate-950 text-xl shadow-lg shadow-cyan-500/20">K</div>
-                    <span class="text-xl font-bold tracking-tight text-white hidden sm:block">Kita<span class="text-cyan-400">Affiliate</span></span>
-                </div>
-                <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium text-slate-300">
-                    <a href="../market/index.html" class="hover:text-cyan-400 transition-colors">KitaMarket</a>
-                    <a href="../kahwin/index.html" class="hover:text-cyan-400 transition-colors">KitaKahwin</a>
-                    <a href="../invite/index.html" class="hover:text-cyan-400 transition-colors">KitaInvite</a>
-                    <a href="../web/index.html" class="hover:text-cyan-400 transition-colors">KitaWeb</a>
-                    <a href="#" class="text-cyan-400 font-bold border-b-2 border-cyan-400 pb-1">Dashboard Ejen</a>
-                </nav>
-                <div class="flex items-center gap-3">
-                    <div class="hidden sm:block text-right"><p class="text-xs text-slate-400 font-medium">Ejen Sah</p><p id="headerAgentName" class="text-sm font-bold text-white">Ahmad Faiz</p></div>
-                    <button onclick="logoutAgent()" class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-rose-400 active:scale-95 shadow-lg" title="Log Keluar"><i data-lucide="log-out" class="w-5 h-5"></i></button>
-                </div>
-            </div>
-        </header>
-
-        <main class="flex-grow w-full max-w-7xl mx-auto px-6 py-10">
-            <div class="mb-8"><h1 class="text-3xl font-extrabold text-white tracking-tight">Papan Pemuka Ejen</h1><p class="text-slate-400 mt-2 text-sm">Pantau hasil jualan rujukan anda secara *Real-Time* dari Firebase.</p></div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl relative overflow-hidden"><p class="text-slate-400 text-sm font-medium">Klik Pautan Anda</p><h3 class="text-3xl font-bold text-white mt-1" id="statClicks">0</h3></div>
-                <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl relative overflow-hidden"><p class="text-slate-400 text-sm font-medium">Jualan Berjaya Didaftar</p><h3 class="text-3xl font-bold text-white mt-1" id="statSales">0</h3></div>
-                <div class="bg-gradient-to-br from-cyan-900/40 to-blue-900/40 border border-cyan-500/30 p-6 rounded-2xl relative shadow-lg"><p class="text-cyan-200/80 text-sm font-medium">Komisen Terkumpul</p><h3 class="text-3xl font-extrabold text-cyan-300 mt-1" id="statCommission">RM 0.00</h3></div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-                        <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="link" class="w-5 h-5 text-cyan-400"></i> Pautan Rujukan Anda</h3>
-                        <p class="text-slate-400 text-sm mb-4">Promosi pautan anda. Contohnya: <span class="text-blue-400 font-mono">kitaverse.com/web?ref=<span class="agent-id-span"></span></span> (Komisen RM20) atau <span class="text-amber-400 font-mono">kitaverse.com/kahwin?ref=<span class="agent-id-span"></span></span> (Komisen RM50)</p>
-                        <div class="flex flex-col sm:flex-row items-center gap-3">
-                            <input type="text" id="referralLink" readonly class="w-full bg-slate-950 border border-slate-700 text-white px-4 py-3.5 rounded-xl outline-none font-mono text-sm">
-                            <button onclick="copyReferralLink()" id="copyBtn" class="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-8 py-3.5 rounded-xl shrink-0">Salin Pautan</button>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
-                        <div class="p-6 border-b border-slate-800"><h3 class="text-lg font-bold text-white">Sejarah Transaksi / Leads</h3></div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-slate-400 min-w-[500px]">
-                                <thead class="bg-slate-950 text-slate-300 uppercase text-[10px] tracking-wider"><tr><th class="px-6 py-4">Tarikh</th><th class="px-6 py-4">Transaksi / Modul</th><th class="px-6 py-4 text-center">Komisen</th><th class="px-6 py-4 text-right">Status</th></tr></thead>
-                                <tbody class="divide-y divide-slate-800/60" id="salesTableBody">
-                                    <tr><td colspan="4" class="px-6 py-8 text-center text-slate-500">Tiada rekod buat masa ini.</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyB3Yyo-F6Cp9rP_3btB35K31SDaMwwf2to",
-            authDomain: "pasarkita-eff95.firebaseapp.com",
-            projectId: "pasarkita-eff95",
-            storageBucket: "pasarkita-eff95.firebasestorage.app",
-            messagingSenderId: "47537965550",
-            appId: "1:47537965550:web:2ecd0fe86a4c964af3e6ff"
-        };
-        const fApp = initializeApp(firebaseConfig);
-        const auth = getAuth(fApp);
-        const db = getFirestore(fApp);
-        
-        window.firebaseDb = db;
-        window.firebaseDbPath = "artifacts/pasarkita-prod/public/data";
-        window.firebaseSetDoc = setDoc;
-        window.firebaseGetDoc = getDoc;
-        window.firebaseDoc = doc;
-
-        signInAnonymously(auth);
-    </script>
-
-    <script>
-        lucide.createIcons();
-        let isAuthRegisterMode = false, currentUser = null;
-
-        function showAffiliateToast(msg) {
-            const toast = document.getElementById('toastNotif'); toast.innerText = msg;
-            toast.classList.replace('opacity-0', 'opacity-100'); toast.classList.replace('translate-y-[-20px]', 'translate-y-0');
-            setTimeout(() => { toast.classList.replace('opacity-100', 'opacity-0'); toast.classList.replace('translate-y-0', 'translate-y-[-20px]'); }, 3000);
-        }
-
-        function toggleAuthForm(mode) {
-            isAuthRegisterMode = (mode === 'register');
-            document.getElementById('btnTabRegister').className = isAuthRegisterMode ? "flex-1 py-2 text-sm font-bold rounded-lg bg-slate-800 text-white shadow-sm transition-all" : "flex-1 py-2 text-sm font-bold rounded-lg text-slate-400 hover:text-white transition-all";
-            document.getElementById('btnTabLogin').className = isAuthRegisterMode ? "flex-1 py-2 text-sm font-bold rounded-lg text-slate-400 hover:text-white transition-all" : "flex-1 py-2 text-sm font-bold rounded-lg bg-slate-800 text-white shadow-sm transition-all";
-            document.getElementById('fieldNama').style.display = isAuthRegisterMode ? 'block' : 'none';
-            document.getElementById('btnSubmitAuth').innerHTML = isAuthRegisterMode ? `<span>Daftar Ejen Percuma</span>` : `<span>Masuk Papan Pemuka</span>`;
-        }
-
-        async function handleAuthSubmit(e) {
-            e.preventDefault();
-            if(!window.firebaseDb) return showAffiliateToast("Sistem database sedang dimuatkan, sila tunggu...");
-            
-            const phone = document.getElementById('inputPhone').value;
-            const pass = document.getElementById('inputPass').value;
-            let name = document.getElementById('inputName').value || "Ejen " + phone.substring(phone.length - 4);
-            const btn = document.getElementById('btnSubmitAuth');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = "Memproses...";
-
-            try {
-                const agentRef = window.firebaseDoc(window.firebaseDb, `${window.firebaseDbPath}/affiliates`, phone);
-                const snap = await window.firebaseGetDoc(agentRef);
-
-                if (isAuthRegisterMode) {
-                    if(snap.exists()) { btn.innerHTML = originalText; return showAffiliateToast("No WhatsApp telah didaftarkan. Sila log masuk."); }
-                    const simpleId = 'AGEN' + Math.floor(1000 + Math.random() * 9000);
-                    await window.firebaseSetDoc(agentRef, { name: name, phone: phone, password: pass, agentId: simpleId, clicks: 0, sales: 0, commission: 0, joinedAt: Date.now() });
-                    currentUser = { name: name, id: simpleId, stats: { clicks: 0, sales: 0, commission: 0 } };
-                    showAffiliateToast('Pendaftaran berjaya!');
-                } else {
-                    if(!snap.exists()) { btn.innerHTML = originalText; return showAffiliateToast("Akaun tidak dijumpai. Sila daftar ejen percuma."); }
-                    const data = snap.data();
-                    if(data.password !== pass) { btn.innerHTML = originalText; return showAffiliateToast("Kata laluan salah."); }
-                    currentUser = { name: data.name, id: data.agentId, stats: { clicks: data.clicks||0, sales: data.sales||0, commission: data.commission||0 } };
-                    showAffiliateToast('Log masuk berjaya.');
-                }
-
-                document.getElementById('headerAgentName').innerText = currentUser.name;
-                document.getElementById('referralLink').value = `https://kitaverse.com/?ref=${currentUser.id.toLowerCase()}`;
-                document.querySelectorAll('.agent-id-span').forEach(el => el.innerText = currentUser.id.toLowerCase());
-                document.getElementById('statClicks').innerText = currentUser.stats.clicks;
-                document.getElementById('statSales').innerText = currentUser.stats.sales;
-                document.getElementById('statCommission').innerText = `RM ${currentUser.stats.commission.toFixed(2)}`;
-
-                document.getElementById('auth-view').classList.add('hidden');
-                document.getElementById('dashboard-view').classList.remove('hidden');
-                document.getElementById('dashboard-view').classList.add('flex');
-            } catch(error) {
-                console.error(error); showAffiliateToast("Ralat pangkalan data.");
-            }
-            btn.innerHTML = originalText;
-        }
-
-        function logoutAgent() {
-            document.getElementById('inputPass').value = '';
-            document.getElementById('dashboard-view').classList.add('hidden');
-            document.getElementById('dashboard-view').classList.remove('flex');
-            document.getElementById('auth-view').classList.remove('hidden');
-            showAffiliateToast('Telah log keluar dengan jayanya.');
-        }
-
-        function copyReferralLink() {
-            const linkInput = document.getElementById('referralLink'); const copyBtn = document.getElementById('copyBtn');
-            linkInput.select(); navigator.clipboard.writeText(linkInput.value).then(() => {
-                copyBtn.innerText = "Disalin!"; copyBtn.classList.replace('bg-cyan-500', 'bg-emerald-500'); showAffiliateToast('Pautan disalin!');
-                setTimeout(() => { copyBtn.innerText = "Salin Pautan"; copyBtn.classList.replace('bg-emerald-500', 'bg-cyan-500'); }, 2000);
-            });
-        }
-    </script>
+Terus masuk akaun secara automatik!
+</p>
+</div>
+</div>
+<!-- Live Referral Activity Table -->
+<div class="lg:col-span-2 glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-white text-base flex items-center gap-2">
+<i class="fa-solid fa-list-check text-emerald-400"></i> Senarai Transaksi Rujukan Terkini
+</h3>
+<span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Auto-Sync Real-Time</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead class="text-slate-400 uppercase bg-slate-900/80 border-b border-slate-800">
+<tr>
+<th class="px-4 py-3 rounded-l-xl">Modul / Pelanggan</th>
+<th class="px-4 py-3">Tarikh</th>
+<th class="px-4 py-3">Komisen</th>
+<th class="px-4 py-3 rounded-r-xl text-right">Status</th>
+</tr>
+</thead>
+<tbody id="referralTableBody" class="divide-y divide-slate-800/60 font-mono">
+<tr>
+<td class="px-4 py-3 font-sans font-semibold text-white">KitaKahwin Vendor (Makcik Kiah)</td>
+<td class="px-4 py-3 text-slate-300">Hari Ini</td>
+<td class="px-4 py-3 text-amber-400 font-bold">RM50.00</td>
+<td class="px-4 py-3 text-right text-emerald-400"><i class="fa-solid fa-bolt mr-1"></i> Auto-Paid</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-sans font-semibold text-white">KitaWeb SaaS (Ahmad Razin)</td>
+<td class="px-4 py-3 text-slate-300">Semalam</td>
+<td class="px-4 py-3 text-blue-400 font-bold">RM20.00</td>
+<td class="px-4 py-3 text-right text-emerald-400"><i class="fa-solid fa-bolt mr-1"></i> Auto-Paid</td>
+</tr>
+<tr>
+<td class="px-4 py-3 font-sans font-semibold text-white">KitaInvite SaaS (Siti Salmah)</td>
+<td class="px-4 py-3 text-slate-300">3 Hari Lalu</td>
+<td class="px-4 py-3 text-sky-400 font-bold">RM20.00</td>
+<td class="px-4 py-3 text-right text-emerald-400"><i class="fa-solid fa-bolt mr-1"></i> Auto-Paid</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- FOOTER -->
+<footer class="mt-auto py-6 border-t border-slate-800/50 bg-slate-900/50 text-center text-xs text-slate-500">
+<p>© 2026 KitaAffiliate™ • Dikuasakan oleh Ekosistem KitaVerse.</p>
+</footer>
+<!-- Toast Notification Container -->
+<div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+<script>
+function salinLinkAfiliasi() {
+navigator.clipboard.writeText("https://kitaverse.com/?ref=agen1234");
+tunjukToast("Link unik KitaAffiliate berjaya disalin ke papan keratan!", "success");
+}
+function tunjukToast(mesej, jenis = "info") {
+const bekas = document.getElementById('toastContainer');
+const toast = document.createElement('div');
+let ikon = '<i class="fa-solid fa-circle-info text-sky-400"></i>';
+let kelasBg = 'bg-slate-800 border-slate-700';
+if(jenis === 'success') {
+ikon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+kelasBg = 'bg-slate-900 border-emerald-500/30 ring-1 ring-emerald-500/20';
+}
+toast.className = ⁠flex items-center gap-3 px-4 py-3 rounded-xl border ${kelasBg} text-white text-sm shadow-2xl toast-enter toast-enter-active max-w-xs⁠;
+toast.innerHTML = ⁠${ikon} <p>${mesej}</p>⁠;
+bekas.appendChild(toast);
+setTimeout(() => {
+toast.classList.replace('toast-enter-active', 'toast-leave-active');
+toast.classList.replace('toast-enter', 'toast-leave');
+setTimeout(() => toast.remove(), 300);
+}, 3000);
+}
+</script>
 </body>
 </html>
