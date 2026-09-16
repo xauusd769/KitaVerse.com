@@ -1,821 +1,930 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>KitaMarket | Hab Usahawan Komuniti & Kursus</title>
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = {
-theme: {
-extend: {
-fontFamily: { sans: ['Inter', 'sans-serif'] },
-colors: {
-km: {
-dark: '#1B4332',
-main: '#2D6A4F',
-light: '#40916C',
-rider: '#EFA146',
-bg: '#f8fafc'
-}
-}
-}
-}
-}
-</script>
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
-<style>
-/* Anti-Zoom Strict Settings untuk iOS */
-html, body {
--webkit-text-size-adjust: 100%;
-margin: 0; padding: 0; width: 100%;
-overflow-x: hidden;
-touch-action: pan-y;
-}
-body { background-color: #e2e8f0; display: flex; justify-content: center; font-family: 'Inter', sans-serif; }
-/* Mencegah iPhone auto-zoom pada input field (PENTING) */
-input, select, textarea { font-size: 16px !important; }
-/* Layout Pembetulan untuk Sticky Nav */
-.mobile-container { width: 100%; max-width: 440px; background-color: #f8fafc; height: 100vh; height: 100dvh; position: relative; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; margin: 0 auto; overflow: hidden; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-.loader { border: 3px solid #f3f4f6; border-top: 3px solid #2D6A4F; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-#toast-container { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
-.toast { background: rgba(31, 41, 55, 0.95); color: white; padding: 12px 16px; border-radius: 12px; text-align: center; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); animation: fadeDown 0.3s ease-out; font-weight: 600; font-size: 13px; backdrop-filter: blur(4px); }
-@keyframes fadeDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; transition: opacity 0.2s ease-out; pointer-events: none; }
-.modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-content { transform: scale(0.95); transition: transform 0.2s ease-out; max-height: 90vh; overflow-y: auto; }
-.modal-overlay.active .modal-content { transform: scale(1); }
-.tab-btn { transition: all 0.2s; }
-.tab-btn.active-beli { background-color: #2D6A4F; color: white; border-color: #2D6A4F; box-shadow: 0 4px 6px -1px rgba(45, 106, 79, 0.3); }
-.tab-btn.active-kursus { background-color: #FEF3C7; color: #92400E; border-color: #FDE68A; box-shadow: 0 4px 6px -1px rgba(253, 230, 138, 0.5); }
-.tab-btn.active-kedai { background-color: #1E293B; color: white; border-color: #1E293B; box-shadow: 0 4px 6px -1px rgba(30, 41, 59, 0.3); }
-.nav-item { transition: all 0.2s; color: #94a3b8; }
-.nav-item.active { color: #2D6A4F; }
-/* Sticky Bottom Navigation - Diperbaiki Supaya Kekal di Bawah */
-#mobile-bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; align-items: center; z-index: 50; box-shadow: 0 -5px 15px rgba(0,0,0,0.03); }
-/* Main scroll area padding to prevent content being covered by sticky nav */
-#main-scroll-area { padding-bottom: 90px; }
-/* Animasi Butang Interaksi */
-.interaction-btn { transition: transform 0.1s ease, color 0.2s ease; }
-.interaction-btn:active { transform: scale(0.85); }
-.liked { color: #ef4444; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KitaMarket | Hab Usahawan Komuniti & Kursus</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        km: {
+                            dark: '#1B4332',
+                            main: '#2D6A4F',
+                            light: '#40916C',
+                            rider: '#EFA146',
+                            bg: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+    
+    <style>
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            margin: 0; padding: 0; width: 100%;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+        body { background-color: #e2e8f0; display: flex; justify-content: center; font-family: 'Inter', sans-serif; }
+        
+        input, select, textarea { font-size: 16px !important; }
+        
+        .mobile-container { width: 100%; max-width: 440px; background-color: #f8fafc; height: 100vh; height: 100dvh; position: relative; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; margin: 0 auto; overflow: hidden; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .loader { border: 3px solid #f3f4f6; border-top: 3px solid #2D6A4F; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        #toast-container { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast { background: rgba(31, 41, 55, 0.95); color: white; padding: 12px 16px; border-radius: 12px; text-align: center; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); animation: fadeDown 0.3s ease-out; font-weight: 600; font-size: 13px; backdrop-filter: blur(4px); }
+        @keyframes fadeDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; transition: opacity 0.2s ease-out; pointer-events: none; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { transform: scale(0.95); transition: transform 0.2s ease-out; max-height: 90vh; overflow-y: auto; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        
+        .tab-btn { transition: all 0.2s; }
+        .tab-btn.active-beli { background-color: #2D6A4F; color: white; border-color: #2D6A4F; box-shadow: 0 4px 6px -1px rgba(45, 106, 79, 0.3); }
+        .tab-btn.active-kursus { background-color: #FEF3C7; color: #92400E; border-color: #FDE68A; box-shadow: 0 4px 6px -1px rgba(253, 230, 138, 0.5); }
+        .tab-btn.active-kedai { background-color: #1E293B; color: white; border-color: #1E293B; box-shadow: 0 4px 6px -1px rgba(30, 41, 59, 0.3); }
+        
+        .nav-item { transition: all 0.2s; color: #94a3b8; }
+        .nav-item.active { color: #2D6A4F; }
+        
+        #mobile-bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; align-items: center; z-index: 50; box-shadow: 0 -5px 15px rgba(0,0,0,0.03); }
+        #main-scroll-area { padding-bottom: 90px; }
+
+        .interaction-btn { transition: transform 0.1s ease, color 0.2s ease; }
+        .interaction-btn:active { transform: scale(0.85); }
+        .liked { color: #ef4444; }
+    </style>
 </head>
 <body class="text-slate-800 antialiased selection:bg-km-main selection:text-white">
-<div class="mobile-container" id="app-wrapper">
-<!-- HEADER SECTION -->
-<header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-gray-100 relative">
-<div class="bg-km-dark text-white text-[10px] py-1.5 px-3 flex justify-center items-center gap-1.5">
-<span class="text-yellow-300">✨</span>
-<span class="font-medium tracking-wide truncate">KITA Market — Hab Usahawan Komuniti & Kursus KEMAS</span>
-</div>
-<!-- Hub Rider Banner (Dropdown Popup) -->
-<div class="bg-orange-50 border-b border-orange-100 p-1.5 flex justify-between items-center px-3 relative">
-<div class="flex items-center gap-1.5 text-[10px] font-bold text-orange-900 truncate">
-<span>🛵</span>
-<span class="truncate">Hub Rider: Lalamove • BungkusIt • MISI</span>
-</div>
-<button onclick="app.openModal('rider-modal')" class="bg-km-rider hover:bg-orange-500 text-white rounded-md px-2 py-0.5 text-[10px] font-black shadow-sm shrink-0 active:scale-95 flex items-center gap-1 cursor-pointer transition-colors border-none outline-none">
-Daftar <span class="text-[7px]">▼</span>
-</button>
-</div>
-<div class="flex justify-between items-center px-4 py-3">
-<div class="flex items-center gap-2 shrink-0 cursor-pointer active:scale-95" onclick="app.resetToHome()">
-<div class="bg-km-main text-white rounded-full w-8 h-8 flex items-center justify-center font-black text-lg shadow-sm">K</div>
-<div class="font-black text-lg tracking-tight text-gray-900 leading-none">
-KITA<span class="text-km-main">MARKET</span>
-</div>
-</div>
-<div id="top-auth-btn">
-<button onclick="app.switchMode('auth')" class="bg-gray-100 border border-gray-200 text-gray-700 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1 active:scale-95">
-🔑 Log Masuk
-</button>
-</div>
-</div>
-<div id="main-tabs-container" class="grid grid-cols-3 gap-2 px-3 pb-3">
-<button id="tab-beli" onclick="app.switchMainTab('beli')" class="tab-btn active-beli rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95">
-<span>🛍️</span> Beli Barang
-</button>
-<button id="tab-kursus" onclick="app.switchMainTab('kursus')" class="tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95">
-<span>🎓</span> Kursus KEMAS
-</button>
-<button id="tab-kedai" onclick="app.switchMainTab('kedai')" class="tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95">
-<span>🏪</span> Kedai Seller
-</button>
-</div>
-</header>
-<!-- MAIN CONTENT AREA (Scrollable) -->
-<main class="flex-1 overflow-y-auto relative no-scrollbar bg-slate-50" id="main-scroll-area">
-<div id="global-loader" class="hidden absolute inset-0 z-50 bg-slate-50/80 backdrop-blur-sm flex flex-col items-center justify-center">
-<div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center">
-<div class="loader mb-3"></div>
-<p class="text-sm font-bold text-gray-800">Sila tunggu...</p>
-</div>
-</div>
-<div id="system-error-msg" class="hidden bg-red-100 text-red-700 p-3 m-3 rounded-xl text-xs font-bold border border-red-200 whitespace-pre-line"></div>
-<!-- MOD PEMBELI -->
-<div id="buyer-section" class="pb-6">
-<!-- Butang Wishlist / Disukai -->
-<div class="px-3 pt-3">
-<button onclick="app.showWishlist()" class="w-full bg-white border border-red-100 text-red-500 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 hover:bg-red-50 transition-colors">
-<span class="text-sm">❤️</span> Lihat Produk Pilihan Anda (<span id="wishlist-count">0</span>)
-</button>
-</div>
-<div id="unified-search-card" class="bg-white m-3 p-4 rounded-3xl shadow-sm border border-slate-100">
-<div class="relative mb-3">
-<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">🔍</div>
-<input type="text" id="global-search" onkeyup="app.debounceRender()" class="block w-full pl-9 pr-3 py-3 border border-slate-200 rounded-2xl text-xs font-bold focus:ring-1 focus:ring-km-main focus:border-km-main bg-slate-50 outline-none placeholder-slate-400" placeholder="Cari produk, makanan...">
-</div>
-<div class="grid grid-cols-2 gap-2 mb-3" id="location-filters">
-<div class="relative">
-<select id="global-state" onchange="app.updateDistricts(this.value, 'global-district', true); app.debounceRender();" class="block w-full pl-8 pr-8 py-2.5 border border-slate-200 rounded-xl text-xs appearance-none font-bold text-slate-700 bg-white outline-none focus:border-km-main">
-<option value="">Semua Negeri</option>
-<option value="Johor">Johor</option><option value="Kedah">Kedah</option><option value="Kelantan">Kelantan</option><option value="Melaka">Melaka</option><option value="Negeri Sembilan">Negeri Sembilan</option><option value="Pahang">Pahang</option><option value="Perak">Perak</option><option value="Perlis">Perlis</option><option value="Pulau Pinang">Pulau Pinang</option><option value="Sabah">Sabah</option><option value="Sarawak">Sarawak</option><option value="Selangor">Selangor</option><option value="Terengganu">Terengganu</option><option value="W.P. Kuala Lumpur">W.P. KL</option>
-</select>
-<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-xs">🌐</div>
-<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">⬇️</div>
-</div>
-<div class="relative">
-<select id="global-district" onchange="app.debounceRender()" class="block w-full pl-8 pr-8 py-2.5 border border-slate-200 rounded-xl text-xs appearance-none font-bold text-slate-700 bg-white outline-none focus:border-km-main">
-<option value="">Semua Daerah</option>
-</select>
-<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-xs">📍</div>
-<div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">⬇️</div>
-</div>
-</div>
-<!-- FILTER KAWASAN LIPUTAN -->
-<div class="relative mb-3">
-<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">🚚</div>
-<input type="text" id="global-coverage" onkeyup="app.debounceRender()" class="block w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-xs font-bold focus:ring-1 focus:ring-km-main focus:border-km-main bg-white outline-none placeholder-slate-400" placeholder="Kawasan liputan COD... (Cth: Skudai)">
-</div>
-<!-- KATEGORI BARANGAN (Auto-Generate) -->
-<div id="product-categories" class="mb-1">
-<p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kategori Barangan:</p>
-<div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="dynamic-category-filters">
-<button onclick="app.setCategoryFilter('')" class="cat-pill active shrink-0 bg-km-main text-white px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors border border-transparent" data-cat="">Semua</button>
-</div>
-</div>
-</div>
-<div id="dynamic-grid-container" class="grid grid-cols-2 gap-3 px-3">
-<!-- Diisi oleh JS -->
-</div>
-</div>
-<!-- SINGLE SHOP -->
-<div id="single-shop-view" class="hidden pb-6">
-<div class="sticky top-0 bg-white/90 backdrop-blur border-b border-gray-200 p-3 z-30 flex items-center justify-between">
-<button class="bg-gray-100 px-3 py-2 rounded-xl font-bold text-xs flex items-center gap-1 active:scale-95 text-slate-700" onclick="app.showMarketplace()">⬅️ Kembali</button>
-<button id="btn-follow-shop" class="bg-orange-100 text-orange-600 px-3 py-2 rounded-xl font-bold text-xs shadow-sm active:scale-95 border border-orange-200">⭐ Follow</button>
-</div>
-<div class="bg-white border-b border-gray-200 p-5 mb-3 flex flex-col items-center text-center relative overflow-hidden">
-<div class="w-20 h-20 bg-km-main text-white rounded-full flex items-center justify-center text-3xl font-black shadow-md border-4 border-white mb-2 shrink-0 z-10" id="shop-logo-placeholder">🏪</div>
-<img id="shop-logo-img" loading="lazy" class="hidden w-20 h-20 rounded-full object-cover border-4 border-white shadow-md mb-2 shrink-0 z-10">
-<div class="z-10">
-<h2 id="shop-name" class="font-black text-slate-800 text-xl leading-tight mb-1">Nama Kedai</h2>
-<p id="shop-location" class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md inline-block"></p>
-</div>
-</div>
-<div class="px-3 mb-4">
-<div id="shop-info-box" class="bg-white border border-slate-200 p-4 rounded-2xl text-xs text-slate-700 grid grid-cols-1 gap-2.5 font-medium shadow-sm"></div>
-</div>
-<div class="px-3 pb-2 mb-2 flex items-center gap-2">
-<span class="text-lg">🛍️</span><h3 class="font-black text-slate-800 text-base">Produk Jualan</h3>
-</div>
-<div id="single-shop-products" class="grid grid-cols-2 gap-3 px-3"></div>
-</div>
-<!-- AUTHENTICATION -->
-<div id="auth-section" class="hidden px-4 py-8 pb-6">
-<div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-<div class="text-center mb-8">
-<div class="w-14 h-14 bg-km-main text-white rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-black shadow-inner">K</div>
-<h2 class="text-2xl font-black text-slate-900">Log Masuk</h2>
-<p class="text-sm text-slate-500 mt-1 font-medium">Beli, Jual, dan Urus Kursus</p>
-</div>
-<div id="auth-default-fields" class="space-y-4">
-<div>
-<label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">No. WhatsApp</label>
-<input type="tel" id="auth-wa" placeholder="0123456789" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-km-main outline-none text-base font-bold transition-colors">
-</div>
-<div>
-<div class="flex justify-between items-end mb-1.5">
-<label class="block text-xs font-bold text-slate-500 uppercase tracking-wide">Kata Laluan</label>
-</div>
-<input type="password" id="auth-pwd" placeholder="••••••••" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-km-main outline-none text-base font-bold transition-colors">
-<div class="text-right mt-1.5">
-<button type="button" onclick="app.showResetPwd()" class="text-[11px] font-bold text-red-500 hover:text-red-600 transition-colors bg-transparent border-none p-0 cursor-pointer outline-none">Lupa Kata Laluan?</button>
-</div>
-</div>
-<div id="auth-register-fields" class="hidden bg-emerald-50 p-5 rounded-2xl border border-emerald-100 mt-2 space-y-4">
-<p class="text-[11px] font-black text-km-main uppercase tracking-widest text-center border-b border-emerald-200 pb-2">Pendaftaran Baru</p>
-<div><label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase">Nama Penuh</label><input type="text" id="auth-name" placeholder="Ali Bin Abu" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none text-sm font-bold"></div>
-<div><label class="block text-[11px] font-bold text-km-main mb-1.5 uppercase">PIN Keselamatan (4-Digit)</label><input type="number" id="auth-pin" placeholder="1234" class="w-full px-4 py-3 rounded-xl border-2 border-emerald-200 bg-white outline-none text-lg font-black text-center tracking-[0.5em]" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);"></div>
-</div>
-<button onclick="app.handleAuth()" class="w-full bg-km-main hover:bg-km-dark text-white font-black py-4 rounded-xl shadow-lg shadow-km-main/30 active:scale-95 text-base mt-4 transition-all">Log Masuk / Daftar →</button>
-<button onclick="app.switchMode('buyer')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl active:scale-95 text-sm transition-colors">Kembali Cuci Mata</button>
-</div>
-<div id="auth-reset-fields" class="hidden space-y-4">
-<div class="bg-red-50 p-5 rounded-2xl border border-red-100 mt-2 space-y-4 shadow-sm">
-<p class="text-[11px] font-black text-red-600 uppercase tracking-widest text-center border-b border-red-200 pb-2 flex justify-center items-center gap-1"><span>🔓</span> Set Semula Kata Laluan</p>
-<div><label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase">No. WhatsApp Anda</label><input type="tel" id="reset-wa" placeholder="0123456789" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none text-sm font-bold"></div>
-<div><label class="block text-[11px] font-bold text-red-600 mb-1.5 uppercase">PIN (4-Digit) Didaftarkan</label><input type="number" id="reset-pin" placeholder="1234" class="w-full px-4 py-3 rounded-xl border-2 border-red-200 bg-white outline-none text-lg font-black text-center tracking-[0.5em] text-red-600" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);"></div>
-<div><label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase">Kata Laluan Baru</label><input type="password" id="reset-new-pwd" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none text-sm font-bold"></div>
-</div>
-<button onclick="app.handleResetPwd()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-xl shadow-lg shadow-red-500/30 active:scale-95 text-base transition-all">Sahkan Reset</button>
-<button onclick="app.hideResetPwd()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl active:scale-95 text-sm transition-colors">Batal</button>
-</div>
-</div>
-</div>
-<!-- SELLER DASHBOARD -->
-<div id="seller-section" class="hidden pb-6">
-<div class="bg-slate-900 px-5 py-8 text-white border-b-4 border-km-main relative overflow-hidden">
-<div class="absolute -right-10 -top-10 w-32 h-32 bg-slate-700 rounded-full blur-2xl opacity-50"></div>
-<h2 class="text-2xl font-black relative z-10">Papan Pemuka Anda</h2>
-<p class="text-sm text-slate-300 font-medium relative z-10">Urus profil, katalog dan pesanan.</p>
-</div>
-<div class="p-4 space-y-4 -mt-4 relative z-20">
-<div class="bg-white rounded-3xl shadow-sm border-t-4 border-t-orange-500 p-5">
-<h3 class="font-black text-slate-800 text-base mb-3 flex items-center gap-2"><span>📦</span> Pesanan Baru (Perlu Sah)</h3>
-<div id="seller-orders-list" class="space-y-3"></div>
-</div>
-<div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden text-sm">
-<details class="group border-b border-slate-100">
-<summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">⚙️ Tetapan Kedai & COD <span class="transition group-open:rotate-180">⬇️</span></summary>
-<div class="p-5 space-y-4 bg-white border-t border-slate-100 text-sm">
-<div><label class="block font-bold text-slate-500 mb-1.5">Nama Kedai</label><input type="text" id="seller-name" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none font-bold focus:border-km-main"></div>
-<div class="grid grid-cols-2 gap-3">
-<div><label class="block font-bold text-slate-500 mb-1.5">Negeri</label><select id="seller-state" onchange="app.updateDistricts(this.value, 'seller-district')" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"><option value="">Pilih...</option><option value="Johor">Johor</option><option value="Kedah">Kedah</option><option value="Kelantan">Kelantan</option><option value="Melaka">Melaka</option><option value="Negeri Sembilan">Negeri Sembilan</option><option value="Pahang">Pahang</option><option value="Perak">Perak</option><option value="Perlis">Perlis</option><option value="Pulau Pinang">Pulau Pinang</option><option value="Sabah">Sabah</option><option value="Sarawak">Sarawak</option><option value="Selangor">Selangor</option><option value="Terengganu">Terengganu</option><option value="W.P. Kuala Lumpur">W.P. KL</option></select></div>
-<div><label class="block font-bold text-slate-500 mb-1.5">Daerah</label><select id="seller-district" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"><option value="">Negeri Dahulu</option></select></div>
-</div>
-<div><label class="block font-bold text-slate-500 mb-1.5">Kawasan Liputan</label><input type="text" id="seller-coverage" placeholder="Cth: Skudai, Kempas" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none font-bold"></div>
-<div><label class="block font-bold text-slate-500 mb-1.5">Caj COD (RM)</label><input type="number" id="seller-cod" placeholder="0.00" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none font-bold text-km-main"></div>
-<div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100"><label class="block font-bold text-emerald-800 mb-1.5">QR Pay (DuitNow/TnG)</label><input type="file" id="seller-qr" accept="image/*" class="text-xs w-full bg-white p-1.5 rounded-lg border border-emerald-200"></div>
-<div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><label class="block font-bold text-slate-700 mb-1.5">Logo Kedai</label><input type="file" id="seller-logo" accept="image/*" class="text-xs w-full bg-white p-1.5 rounded-lg border border-slate-200"></div>
-<button onclick="app.saveProfile()" class="w-full bg-slate-800 text-white font-bold py-3.5 rounded-xl mt-2 active:scale-95 shadow-md text-base">Simpan Profil</button>
-</div>
-</details>
-<details class="group border-b border-slate-100" open>
-<summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">➕ Tambah Produk <span class="transition group-open:rotate-180">⬇️</span></summary>
-<div class="p-5 space-y-4 bg-white border-t border-slate-100 text-sm">
-<div><label class="block font-bold text-slate-500 mb-1.5">Nama Produk</label><input type="text" id="prod-name" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold focus:border-km-main outline-none"></div>
-<div class="grid grid-cols-2 gap-3">
-<div><label class="block font-bold text-slate-500 mb-1.5">Harga (RM)</label><input type="number" id="prod-price" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-black text-km-main focus:border-km-main outline-none"></div>
-<div>
-<label class="block font-bold text-slate-500 mb-1.5">Kategori</label>
-<select id="prod-cat" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none">
-<option value="Lauk & Kuih">Lauk & Kuih</option>
-<option value="Kerepek & Biskut">Kerepek & Biskut</option>
-<option value="Pakaian & Fesyen">Pakaian & Fesyen</option>
-<option value="Kraf & Gubahan">Kraf & Gubahan</option>
-<option value="Lain-lain">Lain-lain</option>
-</select>
-</div>
-</div>
-<div><label class="block font-bold text-slate-500 mb-1.5">Gambar Produk</label><input type="file" id="prod-img" accept="image/*" class="w-full text-xs p-2 border border-slate-200 rounded-xl bg-slate-50"></div>
-<button onclick="app.addProduct()" class="w-full bg-km-main text-white font-bold py-3.5 rounded-xl mt-2 shadow-md active:scale-95 text-base">Simpan Produk</button>
-</div>
-</details>
-<details class="group border-b border-slate-100">
-<summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-yellow-50 text-yellow-900 hover:bg-yellow-100 transition-colors">🎓 Tawar Kursus KEMAS <span class="transition group-open:rotate-180">⬇️</span></summary>
-<div class="p-5 space-y-4 bg-white border-t border-yellow-100 text-sm">
-<div><label class="block font-bold text-slate-500 mb-1.5">Tajuk Kursus / Kelas</label><input type="text" id="course-title" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold focus:border-yellow-500 outline-none"></div>
-<div class="grid grid-cols-2 gap-3">
-<div><label class="block font-bold text-slate-500 mb-1.5">Yuran (RM)</label><input type="number" id="course-fee" placeholder="10.00" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-black text-yellow-700 outline-none"></div>
-<div><label class="block font-bold text-slate-500 mb-1.5">Tarikh / Masa</label><input type="text" id="course-date" placeholder="Cth: 20 Okt, 9 Pagi" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"></div>
-</div>
-<div><label class="block font-bold text-slate-500 mb-1.5">Lokasi Kelas</label><input type="text" id="course-loc" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"></div>
-<div><label class="block font-bold text-slate-500 mb-1.5">Poster (Pilihan)</label><input type="file" id="course-img" accept="image/*" class="w-full text-xs p-2 border border-slate-200 rounded-xl bg-slate-50"></div>
-<button onclick="app.addCourse()" class="w-full bg-yellow-500 text-white font-bold py-3.5 rounded-xl mt-2 shadow-md active:scale-95 text-base shadow-yellow-500/30">Terbitkan Kursus</button>
-</div>
-</details>
-<details class="group">
-<summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">📋 Urus Katalog <span class="transition group-open:rotate-180">⬇️</span></summary>
-<div class="p-5 bg-white border-t border-slate-100 text-sm max-h-72 overflow-y-auto" id="seller-catalog-list"></div>
-</details>
-</div>
-</div>
-</div>
-<!-- ADMIN -->
-<div id="admin-section" class="hidden pb-6 px-4 pt-6">
-<div class="bg-indigo-600 text-white p-6 rounded-3xl shadow-lg mb-6 relative overflow-hidden">
-<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-500 rounded-full opacity-50 blur-xl"></div>
-<h2 class="font-black text-2xl relative z-10">🛡️ Panel Admin</h2>
-<p class="text-sm opacity-80 mt-1 relative z-10 font-medium">Kawalan sistem & pengguna.</p>
-</div>
-<div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-<h3 class="font-extrabold mb-4 border-b border-slate-100 pb-3 text-slate-800 flex items-center gap-2 text-base"><span>👥</span> Senarai Pengguna</h3>
-<div id="admin-users-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2"></div>
-</div>
-</div>
-</main>
-<!-- FOOTER NAV (Fixed/Sticky at the bottom) -->
-<nav id="mobile-bottom-nav">
-<button onclick="app.resetToHome()" class="nav-item active flex flex-col items-center justify-center gap-1 w-14 active:scale-95" id="nav-home">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-<span class="text-[10px] font-bold">Home</span>
-</button>
-<button onclick="app.showCart()" class="nav-item flex flex-col items-center justify-center gap-1 w-14 active:scale-95 relative" id="nav-cart">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-<span class="text-[10px] font-bold">Troli</span>
-<span id="cart-badge" class="hidden absolute top-0 right-2 bg-red-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-white">0</span>
-</button>
-<button onclick="app.switchMode('seller')" class="nav-item flex flex-col items-center justify-center gap-1 w-14 active:scale-95" id="nav-seller">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-<span class="text-[10px] font-bold">Kedai</span>
-</button>
-<button onclick="app.handleAkaunClick()" class="nav-item flex flex-col items-center justify-center gap-1 w-14 active:scale-95" id="nav-account">
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-<span class="text-[10px] font-bold">Akaun</span>
-</button>
-</nav>
-<!-- MODALS -->
-<!-- WISHLIST MODAL -->
-<div id="wishlist-modal" class="modal-overlay" onclick="app.closeModal('wishlist-modal')">
-<div class="modal-content w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
-<div class="p-5 border-b border-slate-100 bg-red-50 flex justify-between items-center">
-<h2 class="font-black text-red-600 text-xl flex items-center gap-2">❤️ Produk Disukai</h2>
-<button onclick="app.closeModal('wishlist-modal')" class="bg-white p-2 rounded-full text-slate-400 shadow-sm border border-slate-200 active:scale-90">
-<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-</button>
-</div>
-<div id="wishlist-content" class="p-5 overflow-y-auto flex-1 bg-slate-50/50 space-y-3">
-<!-- Kandungan dijana oleh JS -->
-</div>
-</div>
-</div>
-<div id="rider-modal" class="modal-overlay" onclick="app.closeModal('rider-modal')">
-<div class="modal-content w-[90%] max-w-[320px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col p-6 text-center border border-slate-100" onclick="event.stopPropagation()">
-<div class="w-16 h-16 bg-orange-50 border border-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-black shadow-inner">🛵</div>
-<h3 class="font-black text-slate-800 text-xl mb-1">Pendaftaran Rider</h3>
-<p class="text-xs font-bold text-slate-500 mb-5">Pilih platform untuk mendaftar. Tambah pendapatan bantu komuniti!</p>
-<div class="space-y-3">
-<a href="https://www.lalamove.com/ms-my/driver" target="_blank" class="block w-full bg-white border-2 border-orange-100 text-orange-600 hover:bg-orange-50 font-bold py-3.5 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
-<span class="text-xl">🚚</span> Lalamove Driver
-</a>
-<a href="https://play.google.com/store/apps/details?id=com.bungkusit.rider" target="_blank" class="block w-full bg-white border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-bold py-3.5 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
-<span class="text-xl">📦</span> BungkusIt Rider
-</a>
-<a href="https://misirakyat.com/join_rider" target="_blank" class="block w-full bg-white border-2 border-red-100 text-red-600 hover:bg-red-50 font-bold py-3.5 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
-<span class="text-xl">🏍️</span> MISI Rakyat
-</a>
-</div>
-<button onclick="app.closeModal('rider-modal')" class="mt-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl active:scale-95 text-sm w-full transition-colors">Tutup</button>
-</div>
-</div>
-<div id="account-modal" class="modal-overlay" onclick="app.closeModal('account-modal')">
-<div class="modal-content w-full max-w-[300px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col p-6 text-center border border-slate-100" onclick="event.stopPropagation()">
-<div class="w-16 h-16 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-black">👤</div>
-<h3 class="font-black text-slate-800 text-xl mb-1" id="acc-modal-name">Nama</h3>
-<p class="text-sm font-bold text-slate-400 mb-6" id="acc-modal-phone">012-3456789</p>
-<div class="space-y-3" id="acc-modal-actions"></div>
-<button onclick="app.closeModal('account-modal')" class="mt-4 text-sm font-bold text-slate-400 p-2">Tutup</button>
-</div>
-</div>
-<div id="cart-modal" class="modal-overlay" onclick="app.closeModal('cart-modal')">
-<div class="modal-content w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
-<div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center"><h2 class="font-black text-slate-800 text-xl flex items-center gap-2">🛒 Troli Saya</h2><button onclick="app.closeModal('cart-modal')" class="bg-white p-2 rounded-full text-slate-400 shadow-sm border border-slate-200 active:scale-90"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>
-<div id="cart-content" class="p-5 overflow-y-auto flex-1 bg-slate-50/50"></div>
-</div>
-</div>
-<div id="checkout-modal" class="modal-overlay" onclick="app.closeModal('checkout-modal')">
-<div class="modal-content w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" onclick="event.stopPropagation()">
-<div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center"><h2 class="font-black text-slate-800 text-xl flex items-center gap-2">💳 Pembayaran</h2><button onclick="app.closeModal('checkout-modal')" class="bg-white p-2 rounded-full text-slate-400 shadow-sm border border-slate-200 active:scale-90"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>
-<div class="p-5 overflow-y-auto flex-1 text-sm space-y-5 bg-slate-50/30">
-<div class="text-center border-b border-slate-100 pb-4"><p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Bayar Kepada</p><p id="chk-seller" class="font-black text-2xl text-km-main"></p></div>
-<div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm"><div class="flex justify-between font-bold text-slate-600 text-base"><p>Subtotal</p><span id="chk-sub"></span></div><div id="chk-cod-row" class="hidden flex justify-between text-orange-600 font-bold mt-1 text-base"><p>Caj Penghantaran</p><span id="chk-cod"></span></div><div class="flex justify-between text-xl font-black mt-3 pt-3 border-t border-slate-100 text-slate-800"><p>Jumlah</p><span id="chk-total" class="text-km-main"></span></div></div>
-<div>
-<label class="block text-xs font-bold mb-2 uppercase text-slate-500 tracking-wide">Kaedah Bayaran</label>
-<div class="space-y-3">
-<label class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-2xl bg-white cursor-pointer has-[:checked]:border-km-main has-[:checked]:bg-green-50/50 transition-colors shadow-sm"><input type="radio" name="payMethod" value="qr" checked onchange="app.togglePayMethod()" class="w-5 h-5 text-km-main"><span class="font-bold text-slate-800 text-base">📱 QR Pay (Upload Resit)</span></label>
-<label class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-2xl bg-white cursor-pointer has-[:checked]:border-km-main has-[:checked]:bg-green-50/50 transition-colors shadow-sm"><input type="radio" name="payMethod" value="cash" onchange="app.togglePayMethod()" class="w-5 h-5 text-km-main"><span class="font-bold text-slate-800 text-base">🤝 Tunai (COD)</span></label>
-</div>
-</div>
-<div id="chk-qr-sec" class="bg-white p-5 rounded-2xl border border-slate-200 text-center shadow-sm">
-<img id="chk-qr-img" loading="lazy" class="w-40 h-40 object-cover mx-auto rounded-xl shadow-sm hidden mb-4 border border-slate-100">
-<p id="chk-no-qr" class="text-red-500 text-sm font-bold hidden mb-4 p-4 bg-red-50 rounded-xl border border-red-100">Penjual belum muat naik QR.</p>
-<input type="file" id="chk-receipt" accept="image/*" class="w-full text-xs font-bold file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-km-main/10 file:text-km-main bg-slate-50 p-1.5 rounded-xl border border-slate-200 cursor-pointer">
-</div>
-<div id="chk-cash-sec" class="hidden bg-orange-50 p-5 rounded-2xl border border-orange-200 text-center shadow-sm"><p class="text-base font-black text-orange-700 flex flex-col items-center gap-2"><span class="text-3xl">⚠️</span>Sediakan wang tunai mencukupi semasa menerima barang.</p></div>
-<button onclick="app.submitOrder()" class="w-full bg-km-main hover:bg-km-dark text-white font-black text-xl py-4 rounded-2xl active:scale-95 shadow-lg shadow-km-main/30 transition-all border-b-4 border-km-dark">Sahkan Pesanan</button>
-</div>
-</div>
-</div>
-<div id="admin-reset-modal" class="modal-overlay" onclick="app.closeModal('admin-reset-modal')">
-<div class="modal-content w-[90%] max-w-xs bg-white rounded-3xl p-6 text-center shadow-2xl border border-slate-100" onclick="event.stopPropagation()">
-<h3 class="font-black text-slate-800 text-lg mb-2">Reset Kata Laluan</h3>
-<p class="text-xs text-slate-500 mb-4 font-medium">Masukkan kata laluan baharu untuk pelanggan 
-<span id="admin-reset-wa" class="font-bold text-red-600 text-base block mt-1"></span></p>
-<input type="text" id="admin-reset-new-pwd" placeholder="123456" class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 mb-4 text-center font-black text-lg tracking-[0.2em] outline-none focus:border-indigo-500">
-<button onclick="app.confirmAdminReset()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3.5 rounded-xl active:scale-95 shadow-md mb-2 transition-colors">Sahkan Reset</button>
-<button onclick="app.closeModal('admin-reset-modal')" class="w-full bg-slate-100 text-slate-600 font-bold py-3 rounded-xl active:scale-95">Batal</button>
-</div>
-</div>
-</div>
-<div id="toast-container"></div>
-<!-- JAVASCRIPT -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-const firebaseConfig = {
-apiKey: "AIzaSyB3Yyo-F6Cp9rP_3btB35K31SDaMwwf2to",
-authDomain: "pasarkita-eff95.firebaseapp.com",
-projectId: "pasarkita-eff95",
-storageBucket: "pasarkita-eff95.firebasestorage.app",
-messagingSenderId: "47537965550",
-appId: "1:47537965550:web:2ecd0fe86a4c964af3e6ff",
-measurementId: "G-5QT6B08L2M"
-};
-const dbPath = "artifacts/pasarkita-prod/public/data";
-let firebaseApp, auth, db;
-try {
-firebaseApp = initializeApp(firebaseConfig);
-auth = getAuth(firebaseApp);
-db = getFirestore(firebaseApp);
-} catch (error) { console.error("Firebase Error:", error); }
-function hashString(str) { let hash=0; for(let i=0;i<str.length;i++){ hash=(hash<<5)-hash+str.charCodeAt(i); hash|=0; } return hash.toString(16); }
-const safeStr = (s) => { if (!s) return ''; return String(s).replace(/[\r\n]+/g, ' ').replace(/"/g, '"').replace(/'/g, ''').trim(); };
-const safePrice = (p) => {
-if(p === undefined || p === null || p === '') return 0.00;
-if(typeof p === 'number') return isNaN(p) ? 0.00 : p;
-if(typeof p === 'string') { const num = parseFloat(p.replace(/[^0-9.-]+/g,"")); return isNaN(num) ? 0.00 : num; }
-return parseFloat(p) || 0.00;
-};
-window.app = {
-state: {
-appUser: null, currentMode: 'buyer', currentMainTab: 'beli', activeCategory: '',
-data: { users: [], sellers: [], products: [], courses: [], orders: [] }, cart: {}, pendingCheckout: null, unsubs: [],
-likedProducts: JSON.parse(localStorage.getItem('kitamarket_likes') || '[]'),
-malaysiaDistricts: { "Johor": ["Batu Pahat", "Johor Bahru", "Kluang", "Kota Tinggi", "Kulai", "Mersing", "Muar", "Pontian", "Segamat", "Tangkak"], "Kedah": ["Baling", "Bandar Baharu", "Kota Setar", "Kuala Muda", "Kubang Pasu", "Kulim", "Langkawi", "Padang Terap", "Pendang", "Pokok Sena", "Sik", "Yan"], "Kelantan": ["Bachok", "Gua Musang", "Jeli", "Kota Bharu", "Kuala Krai", "Machang", "Pasir Mas", "Pasir Puteh", "Tanah Merah", "Tumpat"], "Melaka": ["Alor Gajah", "Jasin", "Melaka Tengah"], "Negeri Sembilan": ["Jelebu", "Jempol", "Kuala Pilah", "Port Dickson", "Rembau", "Seremban", "Tampin"], "Pahang": ["Bera", "Bentong", "Cameron Highlands", "Jerantut", "Kuantan", "Lipis", "Maran", "Pekan", "Raub", "Rompin", "Temerloh"], "Perak": ["Bagan Datuk", "Batang Padang", "Hilir Perak", "Hulu Perak", "Kampar", "Kerian", "Kinta", "Kuala Kangsar", "Larut Matang Selama", "Manjung", "Muallim", "Perak Tengah"], "Perlis": ["Arau", "Kangar", "Padang Besar"], "Pulau Pinang": ["Barat Daya", "Seberang Perai Selatan", "Seberang Perai Tengah", "Seberang Perai Utara", "Timur Laut"], "Sabah": ["Beaufort", "Beluran", "Keningau", "Kinabatangan", "Kota Belud", "Kota Kinabalu", "Kota Marudu", "Kuala Penyu", "Kudat", "Kunak", "Lahad Datu", "Nabawan", "Papar", "Penampang", "Putatan", "Pitas", "Ranau", "Sandakan", "Semporna", "Sipitang", "Tambunan", "Tawau", "Tenom", "Tongod", "Tuaran"], "Sarawak": ["Asajaya", "Bau", "Belaga", "Beluru", "Betong", "Bintulu", "Bukit Mabong", "Dalat", "Daro", "Julau", "Kabong", "Kanowit", "Kapit", "Kuching", "Lawas", "Limbang", "Lubok Antu", "Lundu", "Marudi", "Matu", "Meradong", "Miri", "Mukah", "Pakan", "Pusa", "Sarikei", "Sebauh", "Selangau", "Serian", "Sibu", "Simunjan", "Song", "Sri Aman", "Subis", "Tanjung Manis", "Tatau", "Tebedu", "Telang Usan"], "Selangor": ["Gombak", "Hulu Langat", "Hulu Selangor", "Klang", "Kuala Langat", "Kuala Selangor", "Petaling", "Sabak Bernam", "Sepang"], "Terengganu": ["Besut", "Dungun", "Hulu Terengganu", "Kemaman", "Kuala Nerus", "Kuala Terengganu", "Marang", "Setiu"], "W.P. Kuala Lumpur": ["Batu", "Bukit Bintang", "Bandar Tun Razak", "Cheras", "Kepong", "Lembah Pantai", "Segambut", "Seputeh", "Titiwangsa", "Wangsa Maju"], "W.P. Labuan": ["Labuan"], "W.P. Putrajaya": ["Putrajaya"] }
-},
-showErrorUI: (msg, detail="") => {
-const box=document.getElementById('system-error-msg');
-box.innerText=⁠🚨 Ralat:\n${msg}\n${detail}⁠; box.classList.remove('hidden');
-},
-hideErrorUI: () => { document.getElementById('system-error-msg').classList.add('hidden'); },
-showToast: (msg) => { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); },
-closeModal: (id) => document.getElementById(id).classList.remove('active'),
-openModal: (id) => document.getElementById(id).classList.add('active'),
-resizeImage: (file) => new Promise((res, rej) => {
-if(!file.type.match(/image./)) rej("Bukan gambar");
-const r=new FileReader();
-r.onload=(e)=>{
-const img=new Image();
-img.onload=()=>{
-const c=document.createElement('canvas'); const ctx=c.getContext('2d');
-let w=img.width, h=img.height;
-if(w>400){h=400/w;w=400;}
-c.width=w;c.height=h;ctx.drawImage(img,0,0,w,h); res(c.toDataURL('image/jpeg',0.5));
-};
-img.onerror = () => rej("Gambar rosak"); img.src=e.target.result;
-}; r.onerror = () => rej("Gagal baca fail"); r.readAsDataURL(file);
-}),
-resizeImagePromise: (file) => app.resizeImage(file),
-copyTextToClipboard: (text, successMsg = "Disalin!") => { const tempInput = document.createElement("textarea"); tempInput.value = text; document.body.appendChild(tempInput); tempInput.select(); document.execCommand("copy"); document.body.removeChild(tempInput); if(successMsg) app.showToast(successMsg); },
-openWhatsAppLink: (text, phone = null) => {
-const url = phone ? ⁠https://api.whatsapp.com/send?phone=6${phone.replace(/\D/g, '')}&text=${encodeURIComponent(text)}⁠ : ⁠https://api.whatsapp.com/send?text=${encodeURIComponent(text)}⁠;
-window.open(url, '_blank');
-},
-copyProductLink: (sellerId, productId) => {
-const productUrl = ⁠${window.location.protocol}//${window.location.host}${window.location.pathname}?store=${sellerId}&product=${productId}⁠;
-app.copyTextToClipboard(productUrl, "🔗 Pautan disalin!");
-},
-shareProductWA: (sellerId, productId, productName, productPrice, shopName) => {
-const shortId = productId.substring(0, 5).toUpperCase();
-const productUrl = ⁠${window.location.protocol}//${window.location.host}${window.location.pathname}?store=${sellerId}&product=${productId}⁠;
-const message = ⁠Salam ${shopName},\n\nSaya berminat dengan produk ini di KITA Market:\n📦 *${productName}*\n🔢 *Kod Produk:* #KM-${shortId}\n💰 *Harga:* RM ${parseFloat(productPrice).toFixed(2)}\n🔗 *Pautan:* ${productUrl}\n\nAdakah stok masih ada?⁠;
-app.openWhatsAppLink(message, sellerId);
-},
-updateWishlistCount: () => {
-const count = app.state.likedProducts.length;
-const badge = document.getElementById('wishlist-count');
-if (badge) badge.innerText = count;
-},
-toggleLike: (productId, btnElement) => {
-const index = app.state.likedProducts.indexOf(productId);
-if (index > -1) {
-app.state.likedProducts.splice(index, 1);
-if (btnElement) {
-btnElement.classList.remove('liked');
-btnElement.innerHTML = '🤍';
-}
-} else {
-app.state.likedProducts.push(productId);
-if (btnElement) {
-btnElement.classList.add('liked');
-btnElement.innerHTML = '❤️';
-}
-app.showToast("❤️ Ditambah ke Wishlist!");
-}
-localStorage.setItem('kitamarket_likes', JSON.stringify(app.state.likedProducts));
-app.updateWishlistCount();
-const modal = document.getElementById('wishlist-modal');
-if (modal && modal.classList.contains('active')) {
-app.showWishlist();
-}
-app.debounceRender();
-},
-showWishlist: () => {
-const c = document.getElementById('wishlist-content');
-if (app.state.likedProducts.length === 0) {
-c.innerHTML = '<div class="text-center py-10"><span class="text-5xl opacity-30 block mb-2">❤️</span><p class="text-sm font-bold text-slate-500">Anda belum menyukai apa-apa produk.</p></div>';
-} else {
-const likedProds = app.state.data.products.filter(p => app.state.likedProducts.includes(p.id));
-if(likedProds.length === 0) {
-c.innerHTML = '<div class="text-center py-10"><p class="text-sm font-bold text-slate-500">Produk yang disukai tiada dalam pangkalan data.</p></div>';
-} else {
-c.innerHTML = likedProds.map(p => {
-const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp);
-const sNm = safeStr(slr?.shopName||'Peniaga');
-const pPrice = safePrice(p.price);
-return ⁠<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex gap-3 items-center relative"> <img src="${p.image||''}" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-100"> <div class="flex-1"> <h4 class="font-extrabold text-sm text-slate-800 line-clamp-1 mb-1">${safeStr(p.name)}</h4> <p class="text-xs text-slate-500 mb-1">🏪 ${sNm}</p> <p class="text-km-main font-black text-sm">RM ${pPrice.toFixed(2)}</p> </div> <div class="flex flex-col gap-2 shrink-0"> <button onclick="app.buyNow('${p.id}'); app.closeModal('wishlist-modal');" class="bg-km-main text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95">Beli</button> <button onclick="app.toggleLike('${p.id}')" class="text-red-500 text-xs font-bold hover:underline">Padam</button> </div> </div>⁠;
-}).join('');
-}
-}
-app.openModal('wishlist-modal');
-},
-updateNavHighlight: () => {
-document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-if(app.state.currentMode === 'buyer' && !document.getElementById('single-shop-view').classList.contains('hidden')) { }
-else if(app.state.currentMode === 'buyer') { document.getElementById('nav-home').classList.add('active'); }
-else if(app.state.currentMode === 'seller') { document.getElementById('nav-seller').classList.add('active'); }
-else if(app.state.currentMode === 'auth') { document.getElementById('nav-account').classList.add('active'); }
-const cartCount = Object.values(app.state.cart).reduce((sum, shop) => sum + shop.length, 0);
-const badge = document.getElementById('cart-badge');
-if(cartCount > 0) { badge.innerText = cartCount; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
-},
-handleAkaunClick: () => {
-if(!app.state.appUser) { app.switchMode('auth'); }
-else {
-document.getElementById('acc-modal-name').innerText = app.state.appUser.name;
-document.getElementById('acc-modal-phone').innerText = app.state.appUser.whatsapp;
-let actions = '';
-if(app.state.appUser.role === 'admin') actions += ⁠<button onclick="app.closeModal('account-modal'); app.switchMode('admin')" class="w-full bg-indigo-50 text-indigo-700 font-bold py-3.5 rounded-xl border border-indigo-200 text-sm">🛡️ Admin Dashboard</button>⁠;
-actions += ⁠<button onclick="app.closeModal('account-modal'); app.switchMode('seller')" class="w-full bg-slate-50 text-slate-700 font-bold py-3.5 rounded-xl border border-slate-200 text-sm mt-2">🏪 Urus Kedai Saya</button>⁠;
-actions += ⁠<button onclick="app.closeModal('account-modal'); app.logout()" class="w-full bg-red-50 text-red-600 font-bold py-3.5 rounded-xl border border-red-200 mt-2 text-sm">🚪 Log Keluar</button>⁠;
-document.getElementById('acc-modal-actions').innerHTML = actions;
-app.openModal('account-modal');
-}
-},
-init: async () => {
-try { await signInAnonymously(auth); } catch (e) { console.error("Auth error:", e); }
-app.setupListeners(); app.switchMainTab('beli'); app.renderNav(); app.updateWishlistCount();
-},
-setupListeners: () => {
-app.state.unsubs.forEach(u => u()); app.state.unsubs = [];
-const errHandler = (err) => { console.error(err); };
-try {
-app.state.unsubs.push(onSnapshot(collection(db, ⁠${dbPath}/sellers⁠), s => { app.hideErrorUI(); app.state.data.sellers = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
-app.state.unsubs.push(onSnapshot(collection(db, ⁠${dbPath}/products⁠), s => { app.hideErrorUI(); app.state.data.products = s.docs.map(d=>({id: d.id, ...d.data()})); app.extractCategories(); app.debounceRender(); }, errHandler));
-app.state.unsubs.push(onSnapshot(collection(db, ⁠${dbPath}/courses⁠), s => { app.hideErrorUI(); app.state.data.courses = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
-if(app.state.appUser) {
-app.state.unsubs.push(onSnapshot(collection(db, ⁠${dbPath}/orders⁠), s => { app.state.data.orders = s.docs.map(d=>({id: d.id, ...d.data()})); if(app.state.currentMode==='seller') app.renderSellerDashboard(); }, errHandler));
-if(app.state.appUser.role==='admin') {
-app.state.unsubs.push(onSnapshot(collection(db, ⁠${dbPath}/users⁠), s => { app.state.data.users = s.docs.map(d=>({id: d.id, ...d.data()})); app.renderAdmin(); }, errHandler));
-}
-}
-} catch(e) { console.log(e); }
-},
-extractCategories: () => {
-const catContainer = document.getElementById('dynamic-category-filters');
-if(!catContainer) return;
-const categories = new Set();
-app.state.data.products.forEach(p => {
-const c = safeStr(p.category);
-if(c && c.toLowerCase() !== 'lain-lain') categories.add(c);
-});
-const sortedCategories = Array.from(categories).sort();
-let html = ⁠<button onclick="app.setCategoryFilter('')" class="cat-pill ${app.state.activeCategory === '' ? 'active bg-km-main text-white' : 'bg-white text-slate-600'} shrink-0 px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors border ${app.state.activeCategory === '' ? 'border-transparent' : 'border-slate-200'}">Semua</button>⁠;
-sortedCategories.forEach(cat => {
-const isActive = app.state.activeCategory === cat;
-html += ⁠<button onclick="app.setCategoryFilter('${cat}')" class="cat-pill ${isActive ? 'active bg-km-main text-white border-transparent' : 'bg-white text-slate-600 border-slate-200 hover:border-km-main'} shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors border">${cat}</button>⁠;
-});
-const isLainActive = app.state.activeCategory === 'Lain-lain';
-html += ⁠<button onclick="app.setCategoryFilter('Lain-lain')" class="cat-pill ${isLainActive ? 'active bg-km-main text-white border-transparent' : 'bg-white text-slate-600 border-slate-200 hover:border-km-main'} shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors border">Lain-lain</button>⁠;
-catContainer.innerHTML = html;
-},
-debounceRender: () => { clearTimeout(app.state.renderTimer); app.state.renderTimer = setTimeout(app.renderMarketplace, 100); },
-updateDistricts: (st, tId, isFilter=false) => { const s=document.getElementById(tId); s.innerHTML=isFilter?'<option value="">Semua Daerah</option>':'<option value="">Pilih...</option>'; if(st&&app.state.malaysiaDistricts[st]) app.state.malaysiaDistricts[st].forEach(d=>s.innerHTML+=⁠<option value="${d}">${d}</option>⁠); },
-handleAuth: async () => {
-const wa = document.getElementById('auth-wa').value.trim(); const pwd = document.getElementById('auth-pwd').value; const reg = document.getElementById('auth-register-fields');
-if(!wa || !pwd) return app.showToast("Isi nombor & kata laluan");
-document.getElementById('global-loader').classList.remove('hidden');
-try {
-const uRef = doc(db, ⁠${dbPath}/users⁠, wa); const snap = await getDoc(uRef); const hash = hashString(pwd); const isMaster = (wa.replace(/\D/g, '') === "0182676999");
-if(snap.exists()) {
-if(snap.data().passwordHash === hash || (isMaster && pwd === "admin123")) {
-app.state.appUser = {whatsapp: wa, name: snap.data().name || 'Pengguna', role: isMaster?'admin':'dual'}; app.loginSuccess();
-} else { app.showToast("Katalaluan salah"); }
-} else {
-if(reg.classList.contains('hidden')){ reg.classList.remove('hidden'); } else {
-const nm = document.getElementById('auth-name').value; const pin = document.getElementById('auth-pin').value;
-if(!nm || pin.length!==4) { document.getElementById('global-loader').classList.add('hidden'); return app.showToast("Isi Nama & 4-digit PIN"); }
-await setDoc(uRef, {whatsapp: wa, name: nm, pin: pin, passwordHash: hash, role: isMaster?'admin':'dual', created: Date.now()});
-app.state.appUser = {whatsapp: wa, name: nm, role: isMaster?'admin':'dual'}; app.showToast("Berjaya Daftar!"); app.loginSuccess();
-}
-}
-} catch(e){ console.error(e); app.showToast("Gagal log masuk."); } document.getElementById('global-loader').classList.add('hidden');
-},
-showResetPwd: () => { document.getElementById('auth-default-fields').classList.add('hidden'); document.getElementById('auth-reset-fields').classList.remove('hidden'); },
-hideResetPwd: () => { document.getElementById('auth-reset-fields').classList.add('hidden'); document.getElementById('auth-default-fields').classList.remove('hidden'); },
-handleResetPwd: async () => {
-const wa = document.getElementById('reset-wa').value.trim(); const pin = document.getElementById('reset-pin').value; const newPwd = document.getElementById('reset-new-pwd').value;
-if(!wa || pin.length!==4 || !newPwd) return app.showToast("Lengkapkan maklumat reset.");
-document.getElementById('global-loader').classList.remove('hidden');
-try {
-const uRef = doc(db, ⁠${dbPath}/users⁠, wa); const snap = await getDoc(uRef);
-if(snap.exists() && snap.data().pin === pin) {
-const hash = hashString(newPwd); await updateDoc(uRef, { passwordHash: hash });
-app.showToast("Kata laluan ditukar! Sila log masuk.");
-document.getElementById('reset-wa').value=''; document.getElementById('reset-pin').value=''; document.getElementById('reset-new-pwd').value=''; app.hideResetPwd();
-} else { app.showToast(snap.exists() ? "PIN Salah!" : "Pengguna tidak wujud."); }
-} catch(e) { app.showToast("Ralat sistem."); }
-document.getElementById('global-loader').classList.add('hidden');
-},
-loginSuccess: () => { document.getElementById('auth-section').classList.add('hidden'); app.setupListeners(); app.renderNav(); app.switchMode('buyer'); app.showToast(⁠Selamat datang, ${app.state.appUser.name}!⁠); },
-logout: () => { app.state.appUser=null; app.state.cart={}; app.renderNav(); app.switchMode('buyer'); app.showToast("Log keluar berjaya."); },
-switchMode: (m) => {
-document.getElementById('auth-section').classList.add('hidden'); app.state.currentMode=m;
-document.getElementById('buyer-section').classList.add('hidden'); document.getElementById('seller-section').classList.add('hidden'); document.getElementById('admin-section').classList.add('hidden'); document.getElementById('main-tabs-container').classList.add('hidden'); document.getElementById('single-shop-view').classList.add('hidden');
-if(m==='buyer') { document.getElementById('buyer-section').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.remove('hidden'); app.renderMarketplace(); }
-else if(m==='auth') { document.getElementById('auth-section').classList.remove('hidden'); app.hideResetPwd(); }
-else if(m==='seller') { if(!app.state.appUser) { app.showToast("Sila log masuk untuk urus kedai."); app.switchMode('auth'); } else { document.getElementById('seller-section').classList.remove('hidden'); app.renderSellerDashboard(); } }
-else if(m==='admin') { document.getElementById('admin-section').classList.remove('hidden'); app.renderAdmin(); }
-app.renderNav(); app.updateNavHighlight(); document.getElementById('main-scroll-area').scrollTo(0,0);
-},
-resetToHome: () => { app.state.currentViewedSeller=null; app.switchMode('buyer'); app.switchMainTab('beli'); },
-renderNav: () => {
-const c = document.getElementById('top-auth-btn'); const u = app.state.appUser;
-if(!u) { c.innerHTML = ⁠<button onclick="app.switchMode('auth')" class="bg-gray-100 border border-gray-200 text-gray-700 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1 active:scale-95">🔑 Log Masuk</button>⁠; }
-else { c.innerHTML = ⁠<div class="bg-km-main text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm truncate max-w-[120px]">Hi, ${u.name.split(' ')[0]}</div>⁠; }
-app.updateNavHighlight();
-},
-switchMainTab: (t) => {
-app.state.currentMainTab = t;
-['beli','kursus','kedai'].forEach(id=>{ document.getElementById('tab-'+id).className=⁠tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95⁠; });
-const actBtn = document.getElementById('tab-'+t);
-if(t==='beli') actBtn.className = ⁠tab-btn active-beli rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95⁠;
-if(t==='kursus') actBtn.className = ⁠tab-btn active-kursus rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95⁠;
-if(t==='kedai') actBtn.className = ⁠tab-btn active-kedai rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95⁠;
-document.getElementById('product-categories').classList.toggle('hidden', t!'beli');
-document.getElementById('global-search').placeholder = t='beli'?"Cari produk, makanan...":(t==='kursus'?"Cari kelas jahitan, solekan...":"Cari nama kedai...");
-app.renderMarketplace();
-},
-setCategoryFilter: (c) => { app.state.activeCategory=c; app.extractCategories(); app.renderMarketplace(); },
-generateProductCard: (p) => {
-const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp);
-const sNm = safeStr(slr?.shopName||'Peniaga'); const loc = slr?.state?⁠${slr.state}⁠:'Malaysia';
-const pPrice = safePrice(p.price); const safeName = safeStr(p.name);
-const isLiked = app.state.likedProducts.includes(p.id);
-return `
-<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative pb-2 group hover:shadow-md transition-shadow">
-<div class="h-32 bg-slate-100 relative">
-<img src="${p.image||''}" class="w-full h-full object-cover cursor-pointer" onclick="app.viewSingleShop('${p.sellerWhatsapp}')" loading="lazy" alt="Gambar Produk">
-<div class="absolute top-2 right-2 flex flex-col gap-1.5 opacity-90">
-<button onclick="app.toggleLike('${p.id}', this)" class="interaction-btn w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-xs shadow-sm border border-slate-200/50 ${isLiked ? 'liked' : ''}">
-${isLiked ? '❤️' : '🤍'}
-</button>
-<button onclick="app.copyProductLink('${p.sellerWhatsapp}', '${p.id}')" class="interaction-btn w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-[10px] shadow-sm border border-slate-200/50 text-slate-700" title="Salin Pautan">
-🔗
-</button>
-</div>
-</div>
-<div class="p-2.5 flex-1 flex flex-col">
-<h3 class="font-extrabold text-slate-800 text-[11px] mb-1 line-clamp-2 cursor-pointer hover:text-km-main transition-colors h-8" onclick="app.viewSingleShop('${p.sellerWhatsapp}')">${safeName||'-'}</h3>
-<div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
-<span class="font-black text-km-main text-sm">RM ${pPrice.toFixed(2)}</span>
-</div>
-<div class="text-[9px] text-slate-400 truncate mb-2 font-medium flex items-center gap-1">
-<span class="truncate max-w-[80px]">🏪 ${sNm}</span> • <span>📍 ${loc}</span>
-</div>
-<!-- Butang Aksi Sebaris & Kecil (Sejajar Sebaris) -->
-<div class="mt-auto flex flex-col gap-1.5">
-<div class="flex gap-1 w-full">
-<button onclick="app.addToCart('${p.id}')" class="w-8 h-8 shrink-0 bg-orange-50 text-orange-600 border border-orange-200 rounded-lg flex items-center justify-center font-bold active:scale-95 text-xs" title="Masuk Troli">🛒</button>
-<button onclick="app.shareProductWA('￼{p.id}', '{safeName.replace(/'/g, "\\'")}', '{pPrice}', '${sNm.replace(/'/g, "\'")}')" class="flex-1 bg-[#25D366] text-white py-1 rounded-lg text-[10px] font-bold flex justify-center items-center gap-1 shadow-sm active:scale-95">
-<svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-Chat
-</button>
-</div>
-<button onclick="app.buyNow('${p.id}')" class="w-full bg-km-main text-white py-1.5 rounded-lg text-[10px] font-bold flex justify-center items-center gap-1 shadow-sm active:scale-95">⚡ Beli Terus</button>
-</div>
-</div>
-</div>`;
-},
-renderMarketplace: () => {
-if(app.state.currentMode !== 'buyer' || document.getElementById('buyer-section').classList.contains('hidden')) return;
-const t = app.state.currentMainTab; const grid = document.getElementById('dynamic-grid-container');
-const q = (document.getElementById('global-search')?.value||'').toLowerCase();
-const s = document.getElementById('global-state')?.value; const d = document.getElementById('global-district')?.value;
-const cov = (document.getElementById('global-coverage')?.value||'').toLowerCase();
-try {
-if(t==='beli') {
-grid.className = "grid grid-cols-2 gap-3 px-3"; const cat = app.state.activeCategory;
-const prods = app.state.data.products.filter(p => {
-const pName = safeStr(p.name).toLowerCase(); const pCat = safeStr(p.category);
-if (q && !pName.includes(q)) return false; if (cat && pCat !== cat) return false;
-if (s || d || cov) {
-const slr = app.state.data.sellers.find(x => x.id === p.sellerWhatsapp) || {};
-if (s && slr.state !== s) return false; if (d && slr.district !== d) return false;
-if (cov && !(slr.coverage||'').toLowerCase().includes(cov)) return false;
-} return true;
-}).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
-grid.innerHTML = prods.length ? prods.map(p => app.generateProductCard(p)).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada produk ditemui.</p></div>';
-}
-else if(t==='kursus') {
-grid.className = "grid grid-cols-1 gap-3 px-3";
-const crs = app.state.data.courses.filter(c => { if(q && !(c.title||'').toLowerCase().includes(q)) return false; return true; });
-grid.innerHTML = crs.length ? crs.map(c=>{
-const cFee = safePrice(c.fee);
-return ⁠<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?⁠<img src="${c.image}" loading="lazy" class="w-full h-full object-cover rounded-xl">⁠:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-base leading-tight mb-1">${safeStr(c.title)}</h3><p class="text-xs text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${cFee.toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${safeStr(c.title)}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30">Daftar</button></div></div></div>⁠
-}).join('') : '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada kursus.</p></div>';
-}
-else if(t==='kedai') {
-grid.className = "grid grid-cols-2 gap-3 px-3";
-const slrs = app.state.data.sellers.filter(sl => {
-if(q && !(sl.shopName||'').toLowerCase().includes(q)) return false;
-if(s && sl.state!==s) return false;
-if(d && sl.district!d) return false;
-if(cov && !(sl.coverage||'').toLowerCase().includes(cov)) return false;
-return true;
-});
-grid.innerHTML = slrs.length ? slrs.map(sl=>{
-const c = app.state.data.products.filter(p=>p.sellerWhatsapp=sl.id).length;
-return ⁠<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-pointer active:scale-95 transition-transform flex flex-col h-full" onclick="app.viewSingleShop('${sl.id}')"><div class="h-14 bg-gradient-to-r from-slate-700 to-slate-800 relative"><div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwaDh2OEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')]"></div></div><div class="px-2 pb-3 relative flex-1 flex flex-col items-center text-center -mt-6"><div class="w-14 h-14 bg-white rounded-full p-1 shadow-sm mb-2 z-10"><div class="w-full h-full bg-slate-100 rounded-full flex justify-center items-center text-xl overflow-hidden">${sl.storeLogo ? ⁠<img src="${sl.storeLogo}" loading="lazy" class="w-full h-full object-cover">⁠ : '🏪'}</div></div><h4 class="font-extrabold text-slate-800 text-[11px] uppercase line-clamp-2 leading-tight mb-1">${safeStr(sl.shopName) || sl.id}</h4><p class="text-[9px] bg-slate-50 border border-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold mb-2">${sl.state || 'Malaysia'}</p><div class="mt-auto w-full border-t border-slate-100 pt-2"><p class="text-[10px] text-km-light font-black">🛍️ ${c} Produk</p></div></div></div>⁠;
-}).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada kedai ditemui.</p></div>';
-}
-} catch(err) { app.showErrorUI("Ralat carian", err.message); }
-},
-viewSingleShop: (sId) => {
-document.getElementById('buyer-section').classList.add('hidden'); document.getElementById('single-shop-view').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.add('hidden');
-const slr = app.state.data.sellers.find(s=>s.id===sId)||{shopName:sId};
-document.getElementById('shop-name').innerText = safeStr(slr.shopName)||sId; document.getElementById('shop-location').innerText = ⁠📍 ${slr.district||''}, ${slr.state||''}⁠;
-if(slr.storeLogo) { document.getElementById('shop-logo-img').src=slr.storeLogo; document.getElementById('shop-logo-img').classList.remove('hidden'); document.getElementById('shop-logo-placeholder').classList.add('hidden'); } else { document.getElementById('shop-logo-img').classList.add('hidden'); document.getElementById('shop-logo-placeholder').classList.remove('hidden'); }
-let iH=''; if(slr.coverage) iH+=⁠<div><span class="text-slate-400 text-[10px] uppercase tracking-wider block">🚚 Liputan:</span> <span class="font-black text-slate-700 text-sm">${safeStr(slr.coverage)}</span></div>⁠; if(slr.codCharge!==undefined) iH+=⁠<div><span class="text-slate-400 text-[10px] uppercase tracking-wider block">💰 Caj COD:</span> <span class="font-black text-slate-700 text-sm">${slr.codCharge>0?⁠RM${parseFloat(slr.codCharge).toFixed(2)}⁠:'Percuma'}</span></div>⁠; document.getElementById('shop-info-box').innerHTML=iH||'<p class="text-center text-slate-400 w-full col-span-2">Tiada info tambahan.</p>';
-try {
-const prods = app.state.data.products.filter(p=>p.sellerWhatsapp===sId);
-document.getElementById('single-shop-products').innerHTML = prods.length ? prods.map(p => app.generateProductCard(p)).join('') : '<p class="col-span-2 text-center text-sm text-slate-500 py-8 bg-white rounded-2xl border border-slate-200">Katalog kosong.</p>';
-} catch(err) { document.getElementById('single-shop-products').innerHTML = ⁠<p class="col-span-2 text-center text-sm text-red-500 py-8">Ralat paparan produk kedai.</p>⁠; }
-},
-showMarketplace: () => { document.getElementById('single-shop-view').classList.add('hidden'); document.getElementById('buyer-section').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.remove('hidden'); app.renderMarketplace(); },
-addToCart: (pId, showModal=false) => {
-const p=app.state.data.products.find(x=>x.id=pId); if(!p)return; const sId=p.sellerWhatsapp;
-if(!app.state.cart[sId])app.state.cart[sId]=[]; const e=app.state.cart[sId].find(i=>i.product.id=pId);
-if(e)e.qty++; else app.state.cart[sId].push({product:p,qty:1});
-app.updateNavHighlight(); if(showModal) { app.showCart(); } else { app.showToast("🛒 Masuk troli!"); }
-},
-buyNow: (pId) => { app.addToCart(pId, true); },
-updateCartQty: (sId, pId, c) => { let i=app.state.cart[sId].find(x=>x.product.id===pId); if(i){i.qty+=c; if(i.qty<=0){app.state.cart[sId]=app.state.cart[sId].filter(x=>x.product.id!pId); if(app.state.cart[sId].length=0)delete app.state.cart[sId];}} app.showCart(); app.updateNavHighlight(); },
-showCart: () => {
-if(!app.state.appUser){ app.showToast("Sila log masuk untuk guna troli."); app.switchMode('auth'); return; }
-const c=document.getElementById('cart-content'); const s=Object.keys(app.state.cart);
-if(s.length=0){c.innerHTML='<div class="text-center py-10"><span class="text-5xl opacity-30 block mb-2">🛒</span><p class="text-sm font-bold text-slate-500">Troli kosong.</p></div>';}
-else{
-c.innerHTML=s.map(sId=>{
-const slr=app.state.data.sellers.find(x=>x.id=sId)||{shopName:sId}; let t=0;
-const items=app.state.cart[sId].map(i=>{
-const pPrice = safePrice(i.product.price); t+=i.qty*pPrice;
-return ⁠<div class="flex justify-between items-center text-sm py-3 border-b border-slate-100 last:border-0"><div class="flex-1 pr-2"><p class="font-extrabold text-slate-800 line-clamp-1">${safeStr(i.product.name)}</p><p class="text-km-main font-black">RM${pPrice.toFixed(2)}</p></div><div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1 border border-slate-200"><button onclick="app.updateCartQty('${sId}','${i.product.id}',-1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">-</button><span class="font-black w-4 text-center">${i.qty}</span><button onclick="app.updateCartQty('${sId}','${i.product.id}',1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600">+</button></div></div>⁠
-}).join('');
-return ⁠<div class="bg-white p-4 rounded-2xl border border-slate-200 mb-3 shadow-sm"><h4 class="font-black text-base mb-2 border-b border-slate-100 pb-2">🏪 ${safeStr(slr.shopName)||sId}</h4>${items}<div class="mt-3 flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold text-xs text-slate-500">Subtotal: <span class="text-slate-900 text-xl font-black">RM${t.toFixed(2)}</span></span><button onclick="app.prepCheck('${sId}',${t})" class="bg-km-main text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-md active:scale-95">Bayar &rarr;</button></div></div>⁠
-}).join('');
-} app.openModal('cart-modal');
-},
-prepCheck: (sId, t) => { const slr=app.state.data.sellers.find(s=>s.id=sId); const cod=slr?.codCharge||0; app.state.pendingCheckout={id:sId,base:t,cod:cod}; app.closeModal('cart-modal'); document.getElementById('chk-seller').innerText=safeStr(slr?.shopName)||sId; document.getElementById('chk-sub').innerText=⁠RM ${t.toFixed(2)}⁠; app.togglePayMethod(); const img=document.getElementById('chk-qr-img'); const noMsg=document.getElementById('chk-no-qr'); if(slr?.qrImage){img.src=slr.qrImage;img.classList.remove('hidden');noMsg.classList.add('hidden');}else{img.classList.add('hidden');noMsg.classList.remove('hidden');} app.openModal('checkout-modal'); },
-togglePayMethod: () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; if(m='qr'){document.getElementById('chk-qr-sec').classList.remove('hidden');document.getElementById('chk-cash-sec').classList.add('hidden');document.getElementById('chk-cod-row').classList.add('hidden');document.getElementById('chk-total').innerText=⁠RM ${d.base.toFixed(2)}⁠;}else{document.getElementById('chk-qr-sec').classList.add('hidden');document.getElementById('chk-cash-sec').classList.remove('hidden');if(d.cod>0){document.getElementById('chk-cod-row').classList.remove('hidden');document.getElementById('chk-cod').innerText=⁠RM ${d.cod.toFixed(2)}⁠;} document.getElementById('chk-total').innerText=⁠RM ${(d.base+d.cod).toFixed(2)}⁠;} },
-submitOrder: async () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; const sId=d.id; const ft=m==='cash'?(d.base+d.cod):d.base; const fc=m==='cash'?d.cod:0; const proc=async(r=null)=>{ document.getElementById('global-loader').classList.remove('hidden'); await addDoc(collection(db, ⁠${dbPath}/orders⁠),{buyerWhatsapp:app.state.appUser.whatsapp,buyerName:app.state.appUser.name,sellerWhatsapp:sId,items:app.state.cart[sId].map(i=>({name:i.product.name,price:safePrice(i.product.price),qty:i.qty})),total:ft,codCharge:fc,paymentMethod:m,receipt:r,status:'Menunggu Pengesahan',timestamp:Date.now()}); delete app.state.cart[sId]; document.getElementById('global-loader').classList.add('hidden'); app.updateNavHighlight(); app.closeModal('checkout-modal'); app.showToast(⁠Pesanan dihantar ke Peniaga!⁠); }; if(m==='qr'){const f=document.getElementById('chk-receipt'); if(f.files.length===0)return app.showToast("Muat naik resit."); const b=await app.resizeImagePromise(f.files[0]); proc(b); } else { proc(); } },
-renderSellerDashboard: () => {
-const wa=app.state.appUser.whatsapp; const me=app.state.data.sellers.find(s=>s.id=wa); if(me){document.getElementById('seller-name').value=me.shopName||'';if(me.state){document.getElementById('seller-state').value=me.state;app.updateDistricts(me.state,'seller-district');document.getElementById('seller-district').value=me.district||'';}document.getElementById('seller-coverage').value=me.coverage||'';document.getElementById('seller-cod').value=me.codCharge||'';}
-const ords=app.state.data.orders.filter(o=>o.sellerWhatsapp=wa&&o.status==='Menunggu Pengesahan'); document.getElementById('seller-orders-list').innerHTML=ords.length?ords.map(o=>⁠<div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><p class="font-extrabold text-base text-slate-800">${safeStr(o.buyerName)} <span class="text-xs text-slate-500 font-bold ml-1 bg-white px-2 py-0.5 rounded border border-slate-200">${o.paymentMethod==='cash'?'COD':'QR Pay'}</span></p><p class="text-km-main font-black text-xl mt-1">RM ${Number(o.total||0).toFixed(2)}</p><button onclick="updateDoc(doc(db,'${dbPath}/orders','${o.id}'),{status:'Berjaya'});app.showToast('Disahkan')" class="w-full bg-km-main text-white py-3 text-sm rounded-xl font-black mt-3 shadow-md active:scale-95">Sahkan Selesai</button></div>⁠).join(''):'<p class="text-sm text-slate-400 font-bold">Tiada pesanan baru.</p>';
-const prods=app.state.data.products.filter(p=>p.sellerWhatsapp=wa); const crs=app.state.data.courses.filter(c=>c.providerWhatsapp=wa);
-let catHtml = prods.length?prods.map(p=>⁠<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-slate-700 truncate pr-2 flex-1">📦 ${safeStr(p.name)}</span><button onclick="deleteDoc(doc(db,'${dbPath}/products','${p.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>⁠).join(''):'';
-catHtml += crs.length?crs.map(c=>⁠<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-yellow-700 truncate pr-2 flex-1">🎓 ${safeStr(c.title)}</span><button onclick="deleteDoc(doc(db,'${dbPath}/courses','${c.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95">Padam</button></div>⁠).join(''):'';
-document.getElementById('seller-catalog-list').innerHTML=catHtml||'<p class="text-slate-400 font-bold text-center py-4">Katalog kosong.</p>';
-},
-saveProfile: async () => { document.getElementById('global-loader').classList.remove('hidden'); let d={shopName:document.getElementById('seller-name').value,state:document.getElementById('seller-state').value,district:document.getElementById('seller-district').value,coverage:document.getElementById('seller-coverage').value,codCharge:parseFloat(document.getElementById('seller-cod').value)||0}; const f=document.getElementById('seller-qr'); const l=document.getElementById('seller-logo'); if(f.files.length>0)d.qrImage=await app.resizeImagePromise(f.files[0]); if(l.files.length>0)d.storeLogo=await app.resizeImagePromise(l.files[0]); await setDoc(doc(db,⁠${dbPath}/sellers⁠,app.state.appUser.whatsapp),d,{merge:true}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Profil Disimpan"); },
-addProduct: async () => { const n=document.getElementById('prod-name').value;const p=document.getElementById('prod-price').value;const c=document.getElementById('prod-cat').value;const f=document.getElementById('prod-img'); if(!n||!p||f.files.length===0)return app.showToast("Isi maklumat lengkap"); document.getElementById('global-loader').classList.remove('hidden'); const img=await app.resizeImagePromise(f.files[0]); await addDoc(collection(db, ⁠${dbPath}/products⁠),{sellerWhatsapp:app.state.appUser.whatsapp,name:n,price:parseFloat(p),category:c,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Produk Ditambah"); document.getElementById('prod-name').value=''; document.getElementById('prod-price').value=''; },
-addCourse: async () => { const t=document.getElementById('course-title').value;const f=document.getElementById('course-fee').value;const d=document.getElementById('course-date').value;const l=document.getElementById('course-loc').value;const i=document.getElementById('course-img'); if(!t)return app.showToast("Isi tajuk kursus"); document.getElementById('global-loader').classList.remove('hidden'); let img=null; if(i.files.length>0)img=await app.resizeImagePromise(i.files[0]); await addDoc(collection(db, ⁠${dbPath}/courses⁠),{providerWhatsapp:app.state.appUser.whatsapp,title:t,fee:parseFloat(f)||0,date:d,location:l,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Kursus Diterbit"); document.getElementById('course-title').value=''; },
-renderAdmin: () => {
-document.getElementById('admin-users-list').innerHTML=app.state.data.users.map(u=>⁠<div class="flex justify-between items-center py-3 border-b border-slate-100 bg-slate-50 px-4 rounded-xl mb-2 shadow-sm"> <span class="font-extrabold text-slate-800 text-sm">${u.id} <br><span class="text-slate-500 font-medium text-xs uppercase">${safeStr(u.name)||'-'}</span></span> <div class="flex items-center gap-2"> <span class="bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase text-indigo-600 shadow-sm">${u.role||'PENGGUNA'}</span> <button onclick="app.adminResetPwd('${u.id}')" class="bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase active:scale-95 shadow-sm border border-red-200 transition-colors">RESET</button> </div> </div>⁠).join('');
-},
-adminResetPwd: (wa) => { document.getElementById('admin-reset-wa').innerText = wa; document.getElementById('admin-reset-new-pwd').value = "123456"; app.openModal('admin-reset-modal'); },
-confirmAdminReset: async () => {
-const wa = document.getElementById('admin-reset-wa').innerText; const newPwd = document.getElementById('admin-reset-new-pwd').value;
-if(!newPwd) return app.showToast("Masukkan kata laluan."); app.closeModal('admin-reset-modal'); document.getElementById('global-loader').classList.remove('hidden');
-try { const hash = hashString(newPwd); await updateDoc(doc(db, ⁠${dbPath}/users⁠, wa), { passwordHash: hash }); app.showToast("Berjaya reset pengguna: " + wa); } catch(e) { app.showToast("Ralat."); }
-document.getElementById('global-loader').classList.add('hidden');
-}
-};
-window.addEventListener('DOMContentLoaded', app.init);
-</script>
+
+    <div class="mobile-container" id="app-wrapper">
+        
+        <!-- HEADER SECTION -->
+        <header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-gray-100 relative">
+            <div class="bg-km-dark text-white text-[10px] py-1.5 px-3 flex justify-center items-center gap-1.5">
+                <span class="text-yellow-300">✨</span>
+                <span class="font-medium tracking-wide truncate">KITA Market — Hab Usahawan Komuniti & Kursus</span>
+            </div>
+
+            <!-- Hub Rider Banner -->
+            <div class="bg-orange-50 border-b border-orange-100 p-1.5 flex justify-between items-center px-3 relative">
+                <div class="flex items-center gap-1.5 text-[10px] font-bold text-orange-900 truncate">
+                    <span>🛵</span> 
+                    <span class="truncate">Hub Rider: Lalamove &bull; BungkusIt &bull; MISI</span>
+                </div>
+                <button onclick="app.openModal('rider-modal')" class="bg-km-rider hover:bg-orange-500 text-white rounded-md px-2 py-0.5 text-[10px] font-black shadow-sm shrink-0 active:scale-95 flex items-center gap-1 cursor-pointer transition-colors border-none outline-none">
+                    Daftar <span class="text-[7px]">▼</span>
+                </button>
+            </div>
+
+            <div class="flex justify-between items-center px-4 py-3">
+                <div class="flex items-center gap-2 shrink-0 cursor-pointer active:scale-95" onclick="app.resetToHome()">
+                    <div class="bg-km-main text-white rounded-full w-8 h-8 flex items-center justify-center font-black text-lg shadow-sm">K</div>
+                    <div class="font-black text-lg tracking-tight text-gray-900 leading-none">
+                        KITA<span class="text-km-main">MARKET</span>
+                    </div>
+                </div>
+                <div id="top-auth-btn">
+                    <button onclick="app.switchMode('auth')" class="bg-gray-100 border border-gray-200 text-gray-700 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1 active:scale-95">
+                        🔑 Log Masuk
+                    </button>
+                </div>
+            </div>
+
+            <div id="main-tabs-container" class="grid grid-cols-3 gap-2 px-3 pb-3">
+                <button id="tab-beli" onclick="app.switchMainTab('beli')" class="tab-btn active-beli rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95">
+                    <span>🛍️</span> Beli Barang
+                </button>
+                <button id="tab-kursus" onclick="app.switchMainTab('kursus')" class="tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95">
+                    <span>🎓</span> Kursus KEMAS
+                </button>
+                <button id="tab-kedai" onclick="app.switchMainTab('kedai')" class="tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95">
+                    <span>🏪</span> Kedai Seller
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 overflow-y-auto relative no-scrollbar bg-slate-50" id="main-scroll-area">
+            
+            <div id="global-loader" class="hidden absolute inset-0 z-50 bg-slate-50/80 backdrop-blur-sm flex flex-col items-center justify-center">
+                <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center">
+                    <div class="loader mb-3"></div>
+                    <p class="text-sm font-bold text-gray-800">Sila tunggu...</p>
+                </div>
+            </div>
+            
+            <div id="system-error-msg" class="hidden bg-red-100 text-red-700 p-3 m-3 rounded-xl text-xs font-bold border border-red-200 whitespace-pre-line"></div>
+
+            <!-- MOD PEMBELI -->
+            <div id="buyer-section" class="pb-6">
+                <!-- Wishlist Button -->
+                <div class="px-3 pt-3">
+                    <button onclick="app.showWishlist()" class="w-full bg-white border border-red-100 text-red-500 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95 hover:bg-red-50 transition-colors">
+                        <span class="text-sm">❤️</span> Lihat Produk Pilihan Anda (<span id="wishlist-count">0</span>)
+                    </button>
+                </div>
+
+                <div id="unified-search-card" class="bg-white m-3 p-4 rounded-3xl shadow-sm border border-slate-100">
+                    <div class="relative mb-3">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">🔍</div>
+                        <input type="text" id="global-search" onkeyup="app.debounceRender()" class="block w-full pl-9 pr-3 py-3 border border-slate-200 rounded-2xl text-xs font-bold focus:ring-1 focus:ring-km-main focus:border-km-main bg-slate-50 outline-none placeholder-slate-400" placeholder="Cari produk, makanan...">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 mb-3" id="location-filters">
+                        <div class="relative">
+                            <select id="global-state" onchange="app.updateDistricts(this.value, 'global-district', true); app.debounceRender();" class="block w-full pl-8 pr-8 py-2.5 border border-slate-200 rounded-xl text-xs appearance-none font-bold text-slate-700 bg-white outline-none focus:border-km-main">
+                                <option value="">Semua Negeri</option>
+                                <option value="Johor">Johor</option><option value="Kedah">Kedah</option><option value="Kelantan">Kelantan</option><option value="Melaka">Melaka</option><option value="Negeri Sembilan">Negeri Sembilan</option><option value="Pahang">Pahang</option><option value="Perak">Perak</option><option value="Perlis">Perlis</option><option value="Pulau Pinang">Pulau Pinang</option><option value="Sabah">Sabah</option><option value="Sarawak">Sarawak</option><option value="Selangor">Selangor</option><option value="Terengganu">Terengganu</option><option value="W.P. Kuala Lumpur">W.P. KL</option>
+                            </select>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-xs">🌐</div>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">⬇️</div>
+                        </div>
+                        <div class="relative">
+                            <select id="global-district" onchange="app.debounceRender()" class="block w-full pl-8 pr-8 py-2.5 border border-slate-200 rounded-xl text-xs appearance-none font-bold text-slate-700 bg-white outline-none focus:border-km-main">
+                                <option value="">Semua Daerah</option>
+                            </select>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-xs">📍</div>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-400">⬇️</div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative mb-3">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">🚚</div>
+                        <input type="text" id="global-coverage" onkeyup="app.debounceRender()" class="block w-full pl-9 pr-3 py-2.5 border border-slate-200 rounded-xl text-xs font-bold focus:ring-1 focus:ring-km-main focus:border-km-main bg-white outline-none placeholder-slate-400" placeholder="Kawasan liputan COD... (Cth: Skudai)">
+                    </div>
+
+                    <div id="product-categories" class="mb-1">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Kategori Barangan:</p>
+                        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="dynamic-category-filters">
+                            <button onclick="app.setCategoryFilter('')" class="cat-pill active shrink-0 bg-km-main text-white px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors border border-transparent" data-cat="">Semua</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dynamic-grid-container" class="grid grid-cols-2 gap-3 px-3">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- SINGLE SHOP -->
+            <div id="single-shop-view" class="hidden pb-6">
+                <div class="sticky top-0 bg-white/90 backdrop-blur border-b border-gray-200 p-3 z-30 flex items-center justify-between">
+                    <button class="bg-gray-100 px-3 py-2 rounded-xl font-bold text-xs flex items-center gap-1 active:scale-95 text-slate-700" onclick="app.showMarketplace()">⬅️ Kembali</button>
+                    <button id="btn-follow-shop" class="bg-orange-100 text-orange-600 px-3 py-2 rounded-xl font-bold text-xs shadow-sm active:scale-95 border border-orange-200">⭐ Follow</button>
+                </div>
+                
+                <div class="bg-white border-b border-gray-200 p-5 mb-3 flex flex-col items-center text-center relative overflow-hidden">
+                    <div class="w-20 h-20 bg-km-main text-white rounded-full flex items-center justify-center text-3xl font-black shadow-md border-4 border-white mb-2 shrink-0 z-10" id="shop-logo-placeholder">🏪</div>
+                    <img id="shop-logo-img" loading="lazy" class="hidden w-20 h-20 rounded-full object-cover border-4 border-white shadow-md mb-2 shrink-0 z-10">
+                    <div class="z-10">
+                        <h2 id="shop-name" class="font-black text-slate-800 text-xl leading-tight mb-1">Nama Kedai</h2>
+                        <p id="shop-location" class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md inline-block"></p>
+                    </div>
+                </div>
+
+                <div class="px-3 mb-4">
+                    <div id="shop-info-box" class="bg-white border border-slate-200 p-4 rounded-2xl text-xs text-slate-700 grid grid-cols-1 gap-2.5 font-medium shadow-sm"></div>
+                </div>
+
+                <div class="px-3 pb-2 mb-2 flex items-center gap-2">
+                    <span class="text-lg">🛍️</span><h3 class="font-black text-slate-800 text-base">Produk Jualan</h3>
+                </div>
+                <div id="single-shop-products" class="grid grid-cols-2 gap-3 px-3"></div>
+            </div>
+
+            <!-- AUTHENTICATION -->
+            <div id="auth-section" class="hidden px-4 py-8 pb-6">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+                    <div class="text-center mb-8">
+                        <div class="w-14 h-14 bg-km-main text-white rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-black shadow-inner">K</div>
+                        <h2 class="text-2xl font-black text-slate-900">Log Masuk</h2>
+                        <p class="text-sm text-slate-500 mt-1 font-medium">Beli, Jual, dan Urus Kursus</p>
+                    </div>
+                    
+                    <div id="auth-default-fields" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">No. WhatsApp</label>
+                            <input type="tel" id="auth-wa" placeholder="0123456789" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-km-main outline-none text-base font-bold transition-colors">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-end mb-1.5">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide">Kata Laluan</label>
+                            </div>
+                            <input type="password" id="auth-pwd" placeholder="••••••••" class="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-km-main outline-none text-base font-bold transition-colors">
+                            <div class="text-right mt-1.5">
+                                <button type="button" onclick="app.showResetPwd()" class="text-[11px] font-bold text-red-500 hover:text-red-600 transition-colors bg-transparent border-none p-0 cursor-pointer outline-none">Lupa Kata Laluan?</button>
+                            </div>
+                        </div>
+                        
+                        <div id="auth-register-fields" class="hidden bg-emerald-50 p-5 rounded-2xl border border-emerald-100 mt-2 space-y-4">
+                            <p class="text-[11px] font-black text-km-main uppercase tracking-widest text-center border-b border-emerald-200 pb-2">Pendaftaran Baru</p>
+                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase">Nama Penuh</label><input type="text" id="auth-name" placeholder="Ali Bin Abu" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none text-sm font-bold"></div>
+                            <div><label class="block text-[11px] font-bold text-km-main mb-1.5 uppercase">PIN Keselamatan (4-Digit)</label><input type="number" id="auth-pin" placeholder="1234" class="w-full px-4 py-3 rounded-xl border-2 border-emerald-200 bg-white outline-none text-lg font-black text-center tracking-[0.5em]" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);"></div>
+                        </div>
+
+                        <button onclick="app.handleAuth()" class="w-full bg-km-main hover:bg-km-dark text-white font-black py-4 rounded-xl shadow-lg shadow-km-main/30 active:scale-95 text-base mt-4 transition-all">Log Masuk / Daftar &rarr;</button>
+                        <button onclick="app.switchMode('buyer')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl active:scale-95 text-sm transition-colors">Kembali Cuci Mata</button>
+                    </div>
+
+                    <div id="auth-reset-fields" class="hidden space-y-4">
+                        <div class="bg-red-50 p-5 rounded-2xl border border-red-100 mt-2 space-y-4 shadow-sm">
+                            <p class="text-[11px] font-black text-red-600 uppercase tracking-widest text-center border-b border-red-200 pb-2 flex justify-center items-center gap-1"><span>🔓</span> Set Semula Kata Laluan</p>
+                            <div><label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase">No. WhatsApp Anda</label><input type="tel" id="reset-wa" placeholder="0123456789" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none text-sm font-bold"></div>
+                            <div><label class="block text-[11px] font-bold text-red-600 mb-1.5 uppercase">PIN (4-Digit) Didaftarkan</label><input type="number" id="reset-pin" placeholder="1234" class="w-full px-4 py-3 rounded-xl border-2 border-red-200 bg-white outline-none text-lg font-black text-center tracking-[0.5em] text-red-600" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);"></div>
+                            <div><label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase">Kata Laluan Baru</label><input type="password" id="reset-new-pwd" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white outline-none text-sm font-bold"></div>
+                        </div>
+                        <button onclick="app.handleResetPwd()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-xl shadow-lg shadow-red-500/30 active:scale-95 text-base transition-all">Sahkan Reset</button>
+                        <button onclick="app.hideResetPwd()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl active:scale-95 text-sm transition-colors">Batal</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SELLER DASHBOARD -->
+            <div id="seller-section" class="hidden pb-6">
+                <div class="bg-slate-900 px-5 py-8 text-white border-b-4 border-km-main relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-slate-700 rounded-full blur-2xl opacity-50"></div>
+                    <h2 class="text-2xl font-black relative z-10">Papan Pemuka Anda</h2>
+                    <p class="text-sm text-slate-300 font-medium relative z-10">Urus profil, katalog dan pesanan.</p>
+                </div>
+
+                <div class="p-4 space-y-4 -mt-4 relative z-20">
+                    <div class="bg-white rounded-3xl shadow-sm border-t-4 border-t-orange-500 p-5">
+                        <h3 class="font-black text-slate-800 text-base mb-3 flex items-center gap-2"><span>📦</span> Pesanan Baru (Perlu Sah)</h3>
+                        <div id="seller-orders-list" class="space-y-3"></div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden text-sm">
+                        <details class="group border-b border-slate-100">
+                            <summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">⚙️ Tetapan Kedai & COD <span class="transition group-open:rotate-180">⬇️</span></summary>
+                            <div class="p-5 space-y-4 bg-white border-t border-slate-100 text-sm">
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Nama Kedai</label><input type="text" id="seller-name" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none font-bold focus:border-km-main"></div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div><label class="block font-bold text-slate-500 mb-1.5">Negeri</label><select id="seller-state" onchange="app.updateDistricts(this.value, 'seller-district')" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"><option value="">Pilih...</option><option value="Johor">Johor</option><option value="Kedah">Kedah</option><option value="Kelantan">Kelantan</option><option value="Melaka">Melaka</option><option value="Negeri Sembilan">Negeri Sembilan</option><option value="Pahang">Pahang</option><option value="Perak">Perak</option><option value="Perlis">Perlis</option><option value="Pulau Pinang">Pulau Pinang</option><option value="Sabah">Sabah</option><option value="Sarawak">Sarawak</option><option value="Selangor">Selangor</option><option value="Terengganu">Terengganu</option><option value="W.P. Kuala Lumpur">W.P. KL</option></select></div>
+                                    <div><label class="block font-bold text-slate-500 mb-1.5">Daerah</label><select id="seller-district" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"><option value="">Negeri Dahulu</option></select></div>
+                                </div>
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Kawasan Liputan</label><input type="text" id="seller-coverage" placeholder="Cth: Skudai, Kempas" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none font-bold"></div>
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Caj COD (RM)</label><input type="number" id="seller-cod" placeholder="0.00" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 outline-none font-bold text-km-main"></div>
+                                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100"><label class="block font-bold text-emerald-800 mb-1.5">QR Pay (DuitNow/TnG)</label><input type="file" id="seller-qr" accept="image/*" class="text-xs w-full bg-white p-1.5 rounded-lg border border-emerald-200"></div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><label class="block font-bold text-slate-700 mb-1.5">Logo Kedai</label><input type="file" id="seller-logo" accept="image/*" class="text-xs w-full bg-white p-1.5 rounded-lg border border-slate-200"></div>
+                                <button onclick="app.saveProfile()" class="w-full bg-slate-800 text-white font-bold py-3.5 rounded-xl mt-2 active:scale-95 shadow-md text-base">Simpan Profil</button>
+                            </div>
+                        </details>
+
+                        <details class="group border-b border-slate-100" open>
+                            <summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">➕ Tambah Produk <span class="transition group-open:rotate-180">⬇️</span></summary>
+                            <div class="p-5 space-y-4 bg-white border-t border-slate-100 text-sm">
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Nama Produk</label><input type="text" id="prod-name" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold focus:border-km-main outline-none"></div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div><label class="block font-bold text-slate-500 mb-1.5">Harga (RM)</label><input type="number" id="prod-price" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-black text-km-main focus:border-km-main outline-none"></div>
+                                    <div>
+                                        <label class="block font-bold text-slate-500 mb-1.5">Kategori</label>
+                                        <select id="prod-cat" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none">
+                                            <option value="Lauk & Kuih">Lauk & Kuih</option>
+                                            <option value="Kerepek & Biskut">Kerepek & Biskut</option>
+                                            <option value="Pakaian & Fesyen">Pakaian & Fesyen</option>
+                                            <option value="Kraf & Gubahan">Kraf & Gubahan</option>
+                                            <option value="Lain-lain">Lain-lain</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Gambar Produk</label><input type="file" id="prod-img" accept="image/*" class="w-full text-xs p-2 border border-slate-200 rounded-xl bg-slate-50"></div>
+                                <button onclick="app.addProduct()" class="w-full bg-km-main text-white font-bold py-3.5 rounded-xl mt-2 shadow-md active:scale-95 text-base">Simpan Produk</button>
+                            </div>
+                        </details>
+
+                        <details class="group border-b border-slate-100">
+                            <summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-yellow-50 text-yellow-900 hover:bg-yellow-100 transition-colors">🎓 Tawar Kursus KEMAS <span class="transition group-open:rotate-180">⬇️</span></summary>
+                            <div class="p-5 space-y-4 bg-white border-t border-yellow-100 text-sm">
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Tajuk Kursus / Kelas</label><input type="text" id="course-title" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold focus:border-yellow-500 outline-none"></div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div><label class="block font-bold text-slate-500 mb-1.5">Yuran (RM)</label><input type="number" id="course-fee" placeholder="10.00" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-black text-yellow-700 outline-none"></div>
+                                    <div><label class="block font-bold text-slate-500 mb-1.5">Tarikh / Masa</label><input type="text" id="course-date" placeholder="Cth: 20 Okt, 9 Pagi" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"></div>
+                                </div>
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Lokasi Kelas</label><input type="text" id="course-loc" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none"></div>
+                                <div><label class="block font-bold text-slate-500 mb-1.5">Poster (Pilihan)</label><input type="file" id="course-img" accept="image/*" class="w-full text-xs p-2 border border-slate-200 rounded-xl bg-slate-50"></div>
+                                <button onclick="app.addCourse()" class="w-full bg-yellow-500 text-white font-bold py-3.5 rounded-xl mt-2 shadow-md active:scale-95 text-base shadow-yellow-500/30">Terbitkan Kursus</button>
+                            </div>
+                        </details>
+
+                        <details class="group">
+                            <summary class="flex justify-between items-center font-bold p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">📋 Urus Katalog <span class="transition group-open:rotate-180">⬇️</span></summary>
+                            <div class="p-5 bg-white border-t border-slate-100 text-sm max-h-72 overflow-y-auto" id="seller-catalog-list"></div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN -->
+            <div id="admin-section" class="hidden pb-6 px-4 pt-6">
+                <div class="bg-indigo-600 text-white p-6 rounded-3xl shadow-lg mb-6 relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-500 rounded-full opacity-50 blur-xl"></div>
+                    <h2 class="font-black text-2xl relative z-10">🛡️ Panel Admin</h2>
+                    <p class="text-sm opacity-80 mt-1 relative z-10 font-medium">Kawalan sistem & pengguna.</p>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                    <h3 class="font-extrabold mb-4 border-b border-slate-100 pb-3 text-slate-800 flex items-center gap-2 text-base"><span>👥</span> Senarai Pengguna</h3>
+                    <div id="admin-users-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2"></div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FOOTER NAV -->
+        <nav id="mobile-bottom-nav">
+            <button onclick="app.resetToHome()" class="nav-item active flex flex-col items-center justify-center gap-1 w-14 active:scale-95 cursor-pointer border-none bg-transparent" id="nav-home">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="text-[10px] font-bold">Home</span>
+            </button>
+            <button onclick="app.showCart()" class="nav-item flex flex-col items-center justify-center gap-1 w-14 active:scale-95 relative cursor-pointer border-none bg-transparent" id="nav-cart">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                <span class="text-[10px] font-bold">Troli</span>
+                <span id="cart-badge" class="hidden absolute top-0 right-2 bg-red-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-white">0</span>
+            </button>
+            <button onclick="app.switchMode('seller')" class="nav-item flex flex-col items-center justify-center gap-1 w-14 active:scale-95 cursor-pointer border-none bg-transparent" id="nav-seller">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                <span class="text-[10px] font-bold">Kedai</span>
+            </button>
+            <button onclick="app.handleAkaunClick()" class="nav-item flex flex-col items-center justify-center gap-1 w-14 active:scale-95 cursor-pointer border-none bg-transparent" id="nav-account">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                <span class="text-[10px] font-bold">Akaun</span>
+            </button>
+        </nav>
+
+        <!-- MODALS -->
+        <div id="wishlist-modal" class="modal-overlay" onclick="app.closeModal('wishlist-modal')">
+            <div class="modal-content w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
+                <div class="p-5 border-b border-slate-100 bg-red-50 flex justify-between items-center">
+                    <h2 class="font-black text-red-600 text-xl flex items-center gap-2">❤️ Produk Disukai</h2>
+                    <button onclick="app.closeModal('wishlist-modal')" class="bg-white p-2 rounded-full text-slate-400 shadow-sm border border-slate-200 active:scale-90 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div id="wishlist-content" class="p-5 overflow-y-auto flex-1 bg-slate-50/50 space-y-3"></div>
+            </div>
+        </div>
+
+        <div id="rider-modal" class="modal-overlay" onclick="app.closeModal('rider-modal')">
+            <div class="modal-content w-[90%] max-w-[320px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col p-6 text-center border border-slate-100" onclick="event.stopPropagation()">
+                <div class="w-16 h-16 bg-orange-50 border border-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-black shadow-inner">🛵</div>
+                <h3 class="font-black text-slate-800 text-xl mb-1">Pendaftaran Rider</h3>
+                <p class="text-xs font-bold text-slate-500 mb-5">Pilih platform untuk mendaftar. Tambah pendapatan bantu komuniti!</p>
+                <div class="space-y-3">
+                    <a href="https://www.lalamove.com/ms-my/driver" target="_blank" class="block w-full bg-white border-2 border-orange-100 text-orange-600 hover:bg-orange-50 font-bold py-3.5 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+                        <span class="text-xl">🚚</span> Lalamove Driver
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.bungkusit.rider" target="_blank" class="block w-full bg-white border-2 border-blue-100 text-blue-600 hover:bg-blue-50 font-bold py-3.5 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+                        <span class="text-xl">📦</span> BungkusIt Rider
+                    </a>
+                    <a href="https://misirakyat.com/join_rider" target="_blank" class="block w-full bg-white border-2 border-red-100 text-red-600 hover:bg-red-50 font-bold py-3.5 rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+                        <span class="text-xl">🏍️</span> MISI Rakyat
+                    </a>
+                </div>
+                <button onclick="app.closeModal('rider-modal')" class="mt-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3.5 rounded-xl active:scale-95 text-sm w-full transition-colors cursor-pointer border-none">Tutup</button>
+            </div>
+        </div>
+
+        <div id="account-modal" class="modal-overlay" onclick="app.closeModal('account-modal')">
+            <div class="modal-content w-full max-w-[300px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col p-6 text-center border border-slate-100" onclick="event.stopPropagation()">
+                <div class="w-16 h-16 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-black">👤</div>
+                <h3 class="font-black text-slate-800 text-xl mb-1" id="acc-modal-name">Nama</h3>
+                <p class="text-sm font-bold text-slate-400 mb-6" id="acc-modal-phone">012-3456789</p>
+                <div class="space-y-3" id="acc-modal-actions"></div>
+                <button onclick="app.closeModal('account-modal')" class="mt-4 text-sm font-bold text-slate-400 p-2 cursor-pointer border-none bg-transparent">Tutup</button>
+            </div>
+        </div>
+
+        <div id="cart-modal" class="modal-overlay" onclick="app.closeModal('cart-modal')">
+            <div class="modal-content w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
+                <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center"><h2 class="font-black text-slate-800 text-xl flex items-center gap-2">🛒 Troli Saya</h2><button onclick="app.closeModal('cart-modal')" class="bg-white p-2 rounded-full text-slate-400 shadow-sm border border-slate-200 active:scale-90 cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>
+                <div id="cart-content" class="p-5 overflow-y-auto flex-1 bg-slate-50/50"></div>
+            </div>
+        </div>
+
+        <div id="checkout-modal" class="modal-overlay" onclick="app.closeModal('checkout-modal')">
+            <div class="modal-content w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" onclick="event.stopPropagation()">
+                <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center"><h2 class="font-black text-slate-800 text-xl flex items-center gap-2">💳 Pembayaran</h2><button onclick="app.closeModal('checkout-modal')" class="bg-white p-2 rounded-full text-slate-400 shadow-sm border border-slate-200 active:scale-90 cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>
+                <div class="p-5 overflow-y-auto flex-1 text-sm space-y-5 bg-slate-50/30">
+                    <div class="text-center border-b border-slate-100 pb-4"><p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Bayar Kepada</p><p id="chk-seller" class="font-black text-2xl text-km-main"></p></div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm"><div class="flex justify-between font-bold text-slate-600 text-base"><p>Subtotal</p><span id="chk-sub"></span></div><div id="chk-cod-row" class="hidden flex justify-between text-orange-600 font-bold mt-1 text-base"><p>Caj Penghantaran</p><span id="chk-cod"></span></div><div class="flex justify-between text-xl font-black mt-3 pt-3 border-t border-slate-100 text-slate-800"><p>Jumlah</p><span id="chk-total" class="text-km-main"></span></div></div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold mb-2 uppercase text-slate-500 tracking-wide">Kaedah Bayaran</label>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-2xl bg-white cursor-pointer has-[:checked]:border-km-main has-[:checked]:bg-green-50/50 transition-colors shadow-sm"><input type="radio" name="payMethod" value="qr" checked onchange="app.togglePayMethod()" class="w-5 h-5 text-km-main"><span class="font-bold text-slate-800 text-base">📱 QR Pay (Upload Resit)</span></label>
+                            <label class="flex items-center gap-3 p-4 border-2 border-slate-200 rounded-2xl bg-white cursor-pointer has-[:checked]:border-km-main has-[:checked]:bg-green-50/50 transition-colors shadow-sm"><input type="radio" name="payMethod" value="cash" onchange="app.togglePayMethod()" class="w-5 h-5 text-km-main"><span class="font-bold text-slate-800 text-base">🤝 Tunai (COD)</span></label>
+                        </div>
+                    </div>
+                    
+                    <div id="chk-qr-sec" class="bg-white p-5 rounded-2xl border border-slate-200 text-center shadow-sm">
+                        <img id="chk-qr-img" loading="lazy" class="w-40 h-40 object-cover mx-auto rounded-xl shadow-sm hidden mb-4 border border-slate-100">
+                        <p id="chk-no-qr" class="text-red-500 text-sm font-bold hidden mb-4 p-4 bg-red-50 rounded-xl border border-red-100">Penjual belum muat naik QR.</p>
+                        <input type="file" id="chk-receipt" accept="image/*" class="w-full text-xs font-bold file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-km-main/10 file:text-km-main bg-slate-50 p-1.5 rounded-xl border border-slate-200 cursor-pointer">
+                    </div>
+                    <div id="chk-cash-sec" class="hidden bg-orange-50 p-5 rounded-2xl border border-orange-200 text-center shadow-sm"><p class="text-base font-black text-orange-700 flex flex-col items-center gap-2"><span class="text-3xl">⚠️</span>Sediakan wang tunai mencukupi semasa menerima barang.</p></div>
+                    
+                    <button onclick="app.submitOrder()" class="w-full bg-km-main hover:bg-km-dark text-white font-black text-xl py-4 rounded-2xl active:scale-95 shadow-lg shadow-km-main/30 transition-all border-b-4 border-km-dark cursor-pointer">Sahkan Pesanan</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- JAVASCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3Yyo-F6Cp9rP_3btB35K31SDaMwwf2to",
+            authDomain: "pasarkita-eff95.firebaseapp.com",
+            projectId: "pasarkita-eff95",
+            storageBucket: "pasarkita-eff95.firebasestorage.app",
+            messagingSenderId: "47537965550",
+            appId: "1:47537965550:web:2ecd0fe86a4c964af3e6ff"
+        };
+        
+        const dbPath = "artifacts/pasarkita-prod/public/data";
+
+        let firebaseApp, auth, db;
+        try {
+            firebaseApp = initializeApp(firebaseConfig); 
+            auth = getAuth(firebaseApp); 
+            db = getFirestore(firebaseApp);
+        } catch (error) { console.error("Firebase Error:", error); }
+
+        function hashString(str) { let hash=0; for(let i=0;i<str.length;i++){ hash=(hash<<5)-hash+str.charCodeAt(i); hash|=0; } return hash.toString(16); }
+        
+        const safeStr = (s) => { if (!s) return ''; return String(s).replace(/[\r\n]+/g, ' ').replace(/"/g, '&quot;').replace(/'/g, '&#39;').trim(); };
+        const safePrice = (p) => { 
+            if(p === undefined || p === null || p === '') return 0.00;
+            if(typeof p === 'number') return isNaN(p) ? 0.00 : p;
+            if(typeof p === 'string') { const num = parseFloat(p.replace(/[^0-9.-]+/g,"")); return isNaN(num) ? 0.00 : num; }
+            return parseFloat(p) || 0.00;
+        };
+
+        window.app = {
+            state: {
+                appUser: null, currentMode: 'buyer', currentMainTab: 'beli', activeCategory: '',
+                data: { users: [], sellers: [], products: [], courses: [], orders: [] }, cart: {}, pendingCheckout: null, unsubs: [],
+                likedProducts: JSON.parse(localStorage.getItem('kitamarket_likes') || '[]'),
+                malaysiaDistricts: { "Johor": ["Batu Pahat", "Johor Bahru", "Kluang", "Kota Tinggi", "Kulai", "Mersing", "Muar", "Pontian", "Segamat", "Tangkak"], "Kedah": ["Baling", "Bandar Baharu", "Kota Setar", "Kuala Muda", "Kubang Pasu", "Kulim", "Langkawi", "Padang Terap", "Pendang", "Pokok Sena", "Sik", "Yan"], "Kelantan": ["Bachok", "Gua Musang", "Jeli", "Kota Bharu", "Kuala Krai", "Machang", "Pasir Mas", "Pasir Puteh", "Tanah Merah", "Tumpat"], "Melaka": ["Alor Gajah", "Jasin", "Melaka Tengah"], "Negeri Sembilan": ["Jelebu", "Jempol", "Kuala Pilah", "Port Dickson", "Rembau", "Seremban", "Tampin"], "Pahang": ["Bera", "Bentong", "Cameron Highlands", "Jerantut", "Kuantan", "Lipis", "Maran", "Pekan", "Raub", "Rompin", "Temerloh"], "Perak": ["Bagan Datuk", "Batang Padang", "Hilir Perak", "Hulu Perak", "Kampar", "Kerian", "Kinta", "Kuala Kangsar", "Larut Matang Selama", "Manjung", "Muallim", "Perak Tengah"], "Perlis": ["Arau", "Kangar", "Padang Besar"], "Pulau Pinang": ["Barat Daya", "Seberang Perai Selatan", "Seberang Perai Tengah", "Seberang Perai Utara", "Timur Laut"], "Sabah": ["Beaufort", "Beluran", "Keningau", "Kinabatangan", "Kota Belud", "Kota Kinabalu", "Kota Marudu", "Kuala Penyu", "Kudat", "Kunak", "Lahad Datu", "Nabawan", "Papar", "Penampang", "Putatan", "Pitas", "Ranau", "Sandakan", "Semporna", "Sipitang", "Tambunan", "Tawau", "Tenom", "Tongod", "Tuaran"], "Sarawak": ["Asajaya", "Bau", "Belaga", "Beluru", "Betong", "Bintulu", "Bukit Mabong", "Dalat", "Daro", "Julau", "Kabong", "Kanowit", "Kapit", "Kuching", "Lawas", "Limbang", "Lubok Antu", "Lundu", "Marudi", "Matu", "Meradong", "Miri", "Mukah", "Pakan", "Pusa", "Sarikei", "Sebauh", "Selangau", "Serian", "Sibu", "Simunjan", "Song", "Sri Aman", "Subis", "Tanjung Manis", "Tatau", "Tebedu", "Telang Usan"], "Selangor": ["Gombak", "Hulu Langat", "Hulu Selangor", "Klang", "Kuala Langat", "Kuala Selangor", "Petaling", "Sabak Bernam", "Sepang"], "Terengganu": ["Besut", "Dungun", "Hulu Terengganu", "Kemaman", "Kuala Nerus", "Kuala Terengganu", "Marang", "Setiu"], "W.P. Kuala Lumpur": ["Batu", "Bukit Bintang", "Bandar Tun Razak", "Cheras", "Kepong", "Lembah Pantai", "Segambut", "Seputeh", "Titiwangsa", "Wangsa Maju"], "W.P. Labuan": ["Labuan"], "W.P. Putrajaya": ["Putrajaya"] }
+            },
+
+            showErrorUI: (msg, detail="") => { 
+                const box=document.getElementById('system-error-msg'); 
+                box.innerText=`🚨 Ralat:\n${msg}\n${detail}`; box.classList.remove('hidden'); 
+            },
+            hideErrorUI: () => { document.getElementById('system-error-msg').classList.add('hidden'); },
+            showToast: (msg) => { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); },
+            closeModal: (id) => document.getElementById(id).classList.remove('active'), 
+            openModal: (id) => document.getElementById(id).classList.add('active'),
+            
+            resizeImage: (file) => new Promise((res, rej) => { 
+                if(!file.type.match(/image.*/)) rej("Bukan gambar"); 
+                const r=new FileReader(); 
+                r.onload=(e)=>{
+                    const img=new Image(); 
+                    img.onload=()=>{
+                        const c=document.createElement('canvas'); const ctx=c.getContext('2d'); 
+                        let w=img.width, h=img.height; 
+                        if(w>400){h*=400/w;w=400;} 
+                        c.width=w;c.height=h;ctx.drawImage(img,0,0,w,h); res(c.toDataURL('image/jpeg',0.5)); 
+                    }; 
+                    img.onerror = () => rej("Gambar rosak"); img.src=e.target.result;
+                }; r.onerror = () => rej("Gagal baca fail"); r.readAsDataURL(file); 
+            }),
+            resizeImagePromise: (file) => app.resizeImage(file),
+            
+            copyTextToClipboard: (text, successMsg = "Disalin!") => { const tempInput = document.createElement("textarea"); tempInput.value = text; document.body.appendChild(tempInput); tempInput.select(); document.execCommand("copy"); document.body.removeChild(tempInput); if(successMsg) app.showToast(successMsg); },
+            
+            openWhatsAppLink: (text, phone = null) => { 
+                const url = phone ? `https://api.whatsapp.com/send?phone=6${phone.replace(/\D/g, '')}&text=${encodeURIComponent(text)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`; 
+                window.open(url, '_blank'); 
+            },
+
+            copyProductLink: (sellerId, productId) => { 
+                const productUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?store=${sellerId}&product=${productId}`; 
+                app.copyTextToClipboard(productUrl, "🔗 Pautan disalin!"); 
+            },
+            
+            shareProductWA: (sellerId, productId, productName, productPrice, shopName) => { 
+                const shortId = productId.substring(0, 5).toUpperCase(); 
+                const productUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?store=${sellerId}&product=${productId}`; 
+                const message = `Salam ${shopName},\n\nSaya berminat dengan produk ini di KITA Market:\n📦 *${productName}*\n🔢 *Kod Produk:* #KM-${shortId}\n💰 *Harga:* RM ${parseFloat(productPrice).toFixed(2)}\n🔗 *Pautan:* ${productUrl}\n\nAdakah stok masih ada?`; 
+                app.openWhatsAppLink(message, sellerId); 
+            },
+
+            updateWishlistCount: () => {
+                const count = app.state.likedProducts.length;
+                const badge = document.getElementById('wishlist-count');
+                if (badge) badge.innerText = count;
+            },
+
+            toggleLike: (productId, btnElement) => {
+                const index = app.state.likedProducts.indexOf(productId);
+                if (index > -1) {
+                    app.state.likedProducts.splice(index, 1);
+                    if (btnElement) {
+                        btnElement.classList.remove('liked');
+                        btnElement.innerHTML = '🤍';
+                    }
+                } else {
+                    app.state.likedProducts.push(productId);
+                    if (btnElement) {
+                        btnElement.classList.add('liked');
+                        btnElement.innerHTML = '❤️';
+                    }
+                    app.showToast("❤️ Ditambah ke Wishlist!");
+                }
+                
+                localStorage.setItem('kitamarket_likes', JSON.stringify(app.state.likedProducts));
+                app.updateWishlistCount();
+                
+                const modal = document.getElementById('wishlist-modal');
+                if (modal && modal.classList.contains('active')) {
+                    app.showWishlist();
+                }
+                app.debounceRender();
+            },
+
+            showWishlist: () => {
+                const c = document.getElementById('wishlist-content');
+                if (app.state.likedProducts.length === 0) {
+                    c.innerHTML = '<div class="text-center py-10"><span class="text-5xl opacity-30 block mb-2">❤️</span><p class="text-sm font-bold text-slate-500">Anda belum menyukai apa-apa produk.</p></div>';
+                } else {
+                    const likedProds = app.state.data.products.filter(p => app.state.likedProducts.includes(p.id));
+                    
+                    if(likedProds.length === 0) {
+                        c.innerHTML = '<div class="text-center py-10"><p class="text-sm font-bold text-slate-500">Produk yang disukai tiada dalam pangkalan data.</p></div>';
+                    } else {
+                        c.innerHTML = likedProds.map(p => {
+                            const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp); 
+                            const sNm = safeStr(slr?.shopName||'Peniaga');
+                            const pPrice = safePrice(p.price);
+                            return `
+                                <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex gap-3 items-center relative">
+                                    <img src="${p.image||''}" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-100">
+                                    <div class="flex-1">
+                                        <h4 class="font-extrabold text-sm text-slate-800 line-clamp-1 mb-1">${safeStr(p.name)}</h4>
+                                        <p class="text-xs text-slate-500 mb-1">🏪 ${sNm}</p>
+                                        <p class="text-km-main font-black text-sm">RM ${pPrice.toFixed(2)}</p>
+                                    </div>
+                                    <div class="flex flex-col gap-2 shrink-0">
+                                        <button onclick="app.buyNow('${p.id}'); app.closeModal('wishlist-modal');" class="bg-km-main text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 cursor-pointer border-none">Beli</button>
+                                        <button onclick="app.toggleLike('${p.id}')" class="text-red-500 text-xs font-bold hover:underline cursor-pointer bg-transparent border-none">Padam</button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                }
+                app.openModal('wishlist-modal');
+            },
+
+            updateNavHighlight: () => {
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                if(app.state.currentMode === 'buyer' && !document.getElementById('single-shop-view').classList.contains('hidden')) { }
+                else if(app.state.currentMode === 'buyer') { document.getElementById('nav-home').classList.add('active'); }
+                else if(app.state.currentMode === 'seller') { document.getElementById('nav-seller').classList.add('active'); }
+                else if(app.state.currentMode === 'auth') { document.getElementById('nav-account').classList.add('active'); }
+                
+                const cartCount = Object.values(app.state.cart).reduce((sum, shop) => sum + shop.length, 0);
+                const badge = document.getElementById('cart-badge');
+                if(cartCount > 0) { badge.innerText = cartCount; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); }
+            },
+
+            handleAkaunClick: () => {
+                if(!app.state.appUser) { app.switchMode('auth'); }
+                else {
+                    document.getElementById('acc-modal-name').innerText = app.state.appUser.name;
+                    document.getElementById('acc-modal-phone').innerText = app.state.appUser.whatsapp;
+                    let actions = '';
+                    if(app.state.appUser.role === 'admin') actions += `<button onclick="app.closeModal('account-modal'); app.switchMode('admin')" class="w-full bg-indigo-50 text-indigo-700 font-bold py-3.5 rounded-xl border border-indigo-200 text-sm cursor-pointer">🛡️ Admin Dashboard</button>`;
+                    actions += `<button onclick="app.closeModal('account-modal'); app.switchMode('seller')" class="w-full bg-slate-50 text-slate-700 font-bold py-3.5 rounded-xl border border-slate-200 text-sm mt-2 cursor-pointer">🏪 Urus Kedai Saya</button>`;
+                    actions += `<button onclick="app.closeModal('account-modal'); app.logout()" class="w-full bg-red-50 text-red-600 font-bold py-3.5 rounded-xl border border-red-200 mt-2 text-sm cursor-pointer">🚪 Log Keluar</button>`;
+                    document.getElementById('acc-modal-actions').innerHTML = actions;
+                    app.openModal('account-modal');
+                }
+            },
+
+            init: async () => { 
+                try { await signInAnonymously(auth); } catch (e) { console.error("Auth error:", e); } 
+                app.setupListeners(); app.switchMainTab('beli'); app.renderNav(); app.updateWishlistCount();
+            },
+            
+            setupListeners: () => {
+                app.state.unsubs.forEach(u => u()); app.state.unsubs = [];
+                const errHandler = (err) => { console.error(err); };
+
+                try {
+                    app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/sellers`), s => { app.hideErrorUI(); app.state.data.sellers = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
+                    app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/products`), s => { app.hideErrorUI(); app.state.data.products = s.docs.map(d=>({id: d.id, ...d.data()})); app.extractCategories(); app.debounceRender(); }, errHandler));
+                    app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/courses`), s => { app.hideErrorUI(); app.state.data.courses = s.docs.map(d=>({id: d.id, ...d.data()})); app.debounceRender(); }, errHandler));
+                    
+                    if(app.state.appUser) {
+                        app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/orders`), s => { app.state.data.orders = s.docs.map(d=>({id: d.id, ...d.data()})); if(app.state.currentMode==='seller') app.renderSellerDashboard(); }, errHandler));
+                        if(app.state.appUser.role==='admin') {
+                            app.state.unsubs.push(onSnapshot(collection(db, `${dbPath}/users`), s => { app.state.data.users = s.docs.map(d=>({id: d.id, ...d.data()})); app.renderAdmin(); }, errHandler));
+                        }
+                    }
+                } catch(e) { console.log(e); }
+            },
+            
+            extractCategories: () => {
+                const catContainer = document.getElementById('dynamic-category-filters');
+                if(!catContainer) return;
+                const categories = new Set();
+                app.state.data.products.forEach(p => {
+                    const c = safeStr(p.category);
+                    if(c && c.toLowerCase() !== 'lain-lain') categories.add(c);
+                });
+                const sortedCategories = Array.from(categories).sort();
+                let html = `<button onclick="app.setCategoryFilter('')" class="cat-pill ${app.state.activeCategory === '' ? 'active bg-km-main text-white' : 'bg-white text-slate-600'} shrink-0 px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors border ${app.state.activeCategory === '' ? 'border-transparent' : 'border-slate-200'} cursor-pointer">Semua</button>`;
+                sortedCategories.forEach(cat => {
+                    const isActive = app.state.activeCategory === cat;
+                    html += `<button onclick="app.setCategoryFilter('${cat}')" class="cat-pill ${isActive ? 'active bg-km-main text-white border-transparent' : 'bg-white text-slate-600 border-slate-200 hover:border-km-main'} shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors border cursor-pointer">${cat}</button>`;
+                });
+                const isLainActive = app.state.activeCategory === 'Lain-lain';
+                html += `<button onclick="app.setCategoryFilter('Lain-lain')" class="cat-pill ${isLainActive ? 'active bg-km-main text-white border-transparent' : 'bg-white text-slate-600 border-slate-200 hover:border-km-main'} shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-colors border cursor-pointer">Lain-lain</button>`;
+                catContainer.innerHTML = html;
+            },
+
+            debounceRender: () => { clearTimeout(app.state.renderTimer); app.state.renderTimer = setTimeout(app.renderMarketplace, 100); },
+            updateDistricts: (st, tId, isFilter=false) => { const s=document.getElementById(tId); s.innerHTML=isFilter?'<option value="">Semua Daerah</option>':'<option value="">Pilih...</option>'; if(st&&app.state.malaysiaDistricts[st]) app.state.malaysiaDistricts[st].forEach(d=>s.innerHTML+=`<option value="${d}">${d}</option>`); },
+
+            handleAuth: async () => {
+                const wa = document.getElementById('auth-wa').value.trim(); const pwd = document.getElementById('auth-pwd').value; const reg = document.getElementById('auth-register-fields');
+                if(!wa || !pwd) return app.showToast("Isi nombor & kata laluan");
+                document.getElementById('global-loader').classList.remove('hidden');
+                try {
+                    const uRef = doc(db, `${dbPath}/users`, wa); const snap = await getDoc(uRef); const hash = hashString(pwd); const isMaster = (wa.replace(/\D/g, '') === "0182676999");
+                    if(snap.exists()) {
+                        if(snap.data().passwordHash === hash || (isMaster && pwd === "admin123")) { 
+                            app.state.appUser = {whatsapp: wa, name: snap.data().name || 'Pengguna', role: isMaster?'admin':'dual'}; app.loginSuccess(); 
+                        } else { app.showToast("Katalaluan salah"); }
+                    } else {
+                        if(reg.classList.contains('hidden')){ reg.classList.remove('hidden'); } else {
+                            const nm = document.getElementById('auth-name').value; const pin = document.getElementById('auth-pin').value;
+                            if(!nm || pin.length!==4) { document.getElementById('global-loader').classList.add('hidden'); return app.showToast("Isi Nama & 4-digit PIN"); }
+                            await setDoc(uRef, {whatsapp: wa, name: nm, pin: pin, passwordHash: hash, role: isMaster?'admin':'dual', created: Date.now()});
+                            app.state.appUser = {whatsapp: wa, name: nm, role: isMaster?'admin':'dual'}; app.showToast("Berjaya Daftar!"); app.loginSuccess();
+                        }
+                    }
+                } catch(e){ console.error(e); app.showToast("Gagal log masuk."); } document.getElementById('global-loader').classList.add('hidden');
+            },
+            
+            showResetPwd: () => { document.getElementById('auth-default-fields').classList.add('hidden'); document.getElementById('auth-reset-fields').classList.remove('hidden'); },
+            hideResetPwd: () => { document.getElementById('auth-reset-fields').classList.add('hidden'); document.getElementById('auth-default-fields').classList.remove('hidden'); },
+            handleResetPwd: async () => {
+                const wa = document.getElementById('reset-wa').value.trim(); const pin = document.getElementById('reset-pin').value; const newPwd = document.getElementById('reset-new-pwd').value;
+                if(!wa || pin.length!==4 || !newPwd) return app.showToast("Lengkapkan maklumat reset.");
+                document.getElementById('global-loader').classList.remove('hidden');
+                try {
+                    const uRef = doc(db, `${dbPath}/users`, wa); const snap = await getDoc(uRef);
+                    if(snap.exists() && snap.data().pin === pin) {
+                        const hash = hashString(newPwd); await updateDoc(uRef, { passwordHash: hash });
+                        app.showToast("Kata laluan ditukar! Sila log masuk.");
+                        document.getElementById('reset-wa').value=''; document.getElementById('reset-pin').value=''; document.getElementById('reset-new-pwd').value=''; app.hideResetPwd();
+                    } else { app.showToast(snap.exists() ? "PIN Salah!" : "Pengguna tidak wujud."); }
+                } catch(e) { app.showToast("Ralat sistem."); }
+                document.getElementById('global-loader').classList.add('hidden');
+            },
+
+            loginSuccess: () => { document.getElementById('auth-section').classList.add('hidden'); app.setupListeners(); app.renderNav(); app.switchMode('buyer'); app.showToast(`Selamat datang, ${app.state.appUser.name}!`); },
+            logout: () => { app.state.appUser=null; app.state.cart={}; app.renderNav(); app.switchMode('buyer'); app.showToast("Log keluar berjaya."); },
+            
+            switchMode: (m) => { 
+                document.getElementById('auth-section').classList.add('hidden'); app.state.currentMode=m; 
+                document.getElementById('buyer-section').classList.add('hidden'); document.getElementById('seller-section').classList.add('hidden'); document.getElementById('admin-section').classList.add('hidden'); document.getElementById('main-tabs-container').classList.add('hidden'); document.getElementById('single-shop-view').classList.add('hidden');
+                if(m==='buyer') { document.getElementById('buyer-section').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.remove('hidden'); app.renderMarketplace(); } 
+                else if(m==='auth') { document.getElementById('auth-section').classList.remove('hidden'); app.hideResetPwd(); }
+                else if(m==='seller') { if(!app.state.appUser) { app.showToast("Sila log masuk untuk urus kedai."); app.switchMode('auth'); } else { document.getElementById('seller-section').classList.remove('hidden'); app.renderSellerDashboard(); } } 
+                else if(m==='admin') { document.getElementById('admin-section').classList.remove('hidden'); app.renderAdmin(); } 
+                app.renderNav(); app.updateNavHighlight(); document.getElementById('main-scroll-area').scrollTo(0,0);
+            },
+            resetToHome: () => { app.state.currentViewedSeller=null; app.switchMode('buyer'); app.switchMainTab('beli'); },
+
+            renderNav: () => {
+                const c = document.getElementById('top-auth-btn'); const u = app.state.appUser;
+                if(!u) { c.innerHTML = `<button onclick="app.switchMode('auth')" class="bg-gray-100 border border-gray-200 text-gray-700 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1 active:scale-95 cursor-pointer">🔑 Log Masuk</button>`; }
+                else { c.innerHTML = `<div class="bg-km-main text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm truncate max-w-[120px]">Hi, ${u.name.split(' ')[0]}</div>`; }
+                app.updateNavHighlight();
+            },
+
+            switchMainTab: (t) => {
+                app.state.currentMainTab = t;
+                ['beli','kursus','kedai'].forEach(id=>{ document.getElementById('tab-'+id).className=`tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 cursor-pointer active:scale-95`; });
+                const actBtn = document.getElementById('tab-'+t);
+                if(t==='beli') actBtn.className = `tab-btn active-beli rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95`;
+                if(t==='kursus') actBtn.className = `tab-btn active-kursus rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95`;
+                if(t==='kedai') actBtn.className = `tab-btn active-kedai rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 border border-transparent cursor-pointer active:scale-95`;
+                
+                document.getElementById('product-categories').classList.toggle('hidden', t!=='beli');
+                document.getElementById('global-search').placeholder = t==='beli'?"Cari produk, makanan...":(t==='kursus'?"Cari kelas jahitan, solekan...":"Cari nama kedai...");
+                app.renderMarketplace();
+            },
+            setCategoryFilter: (c) => { app.state.activeCategory=c; app.extractCategories(); app.renderMarketplace(); },
+
+            generateProductCard: (p) => {
+                const slr = app.state.data.sellers.find(x=>x.id===p.sellerWhatsapp); 
+                const sNm = safeStr(slr?.shopName||'Peniaga'); const loc = slr?.state?`${slr.state}`:'Malaysia';
+                const pPrice = safePrice(p.price); const safeName = safeStr(p.name);
+                const isLiked = app.state.likedProducts.includes(p.id);
+                
+                return `
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative pb-2 group hover:shadow-md transition-shadow">
+                    
+                    <div class="h-32 bg-slate-100 relative">
+                        <img src="${p.image||''}" class="w-full h-full object-cover cursor-pointer" onclick="app.viewSingleShop('${p.sellerWhatsapp}')" loading="lazy" alt="Gambar Produk">
+                        
+                        <div class="absolute top-2 right-2 flex flex-col gap-1.5 opacity-90">
+                            <button onclick="app.toggleLike('${p.id}', this)" class="interaction-btn w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-xs shadow-sm border border-slate-200/50 cursor-pointer border-none ${isLiked ? 'liked' : ''}">
+                                ${isLiked ? '❤️' : '🤍'}
+                            </button>
+                            <button onclick="app.copyProductLink('${p.sellerWhatsapp}', '${p.id}')" class="interaction-btn w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-[10px] shadow-sm border border-slate-200/50 text-slate-700 cursor-pointer border-none" title="Salin Pautan">
+                                🔗
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-2.5 flex-1 flex flex-col">
+                        <h3 class="font-extrabold text-slate-800 text-[11px] mb-1 line-clamp-2 cursor-pointer hover:text-km-main transition-colors h-8" onclick="app.viewSingleShop('${p.sellerWhatsapp}')">${safeName||'-'}</h3>
+                        
+                        <div class="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
+                            <span class="font-black text-km-main text-sm">RM ${pPrice.toFixed(2)}</span>
+                        </div>
+                        
+                        <div class="text-[9px] text-slate-400 truncate mb-2 font-medium flex items-center gap-1">
+                            <span class="truncate max-w-[80px]">🏪 ${sNm}</span> &bull; <span>📍 ${loc}</span>
+                        </div>
+                        
+                        <!-- Butang Sebaris Sempurna -->
+                        <div class="mt-auto flex flex-col gap-1.5">
+                            <div class="flex gap-1 w-full">
+                                <button onclick="app.addToCart('${p.id}')" class="w-8 h-8 shrink-0 bg-orange-50 text-orange-600 border border-orange-200 rounded-lg flex items-center justify-center font-bold active:scale-95 text-xs cursor-pointer" title="Masuk Troli">🛒</button>
+                                <button onclick="app.shareProductWA('${p.sellerWhatsapp}', '${p.id}', '${safeName.replace(/'/g, "\\'")}', '${pPrice}', '${sNm.replace(/'/g, "\\'")}')" class="flex-1 bg-[#25D366] text-white py-1.5 rounded-lg text-[10px] font-bold flex justify-center items-center gap-1 shadow-sm active:scale-95 cursor-pointer border-none">
+                                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    Chat
+                                </button>
+                            </div>
+                            <button onclick="app.buyNow('${p.id}')" class="w-full bg-km-main text-white py-1.5 rounded-lg text-[10px] font-bold flex justify-center items-center gap-1 shadow-sm active:scale-95 cursor-pointer border-none">⚡ Beli Terus</button>
+                        </div>
+                    </div>
+                </div>`;
+            },
+
+            renderMarketplace: () => {
+                if(app.state.currentMode !== 'buyer' || document.getElementById('buyer-section').classList.contains('hidden')) return;
+                const t = app.state.currentMainTab; const grid = document.getElementById('dynamic-grid-container');
+                const q = (document.getElementById('global-search')?.value||'').toLowerCase(); 
+                const s = document.getElementById('global-state')?.value; const d = document.getElementById('global-district')?.value;
+                const cov = (document.getElementById('global-coverage')?.value||'').toLowerCase();
+                
+                try {
+                    if(t==='beli') {
+                        grid.className = "grid grid-cols-2 gap-3 px-3"; const cat = app.state.activeCategory;
+                        const prods = app.state.data.products.filter(p => {
+                            const pName = safeStr(p.name).toLowerCase(); const pCat = safeStr(p.category);
+                            if (q && !pName.includes(q)) return false; if (cat && pCat !== cat) return false;
+                            if (s || d || cov) {
+                                const slr = app.state.data.sellers.find(x => x.id === p.sellerWhatsapp) || {};
+                                if (s && slr.state !== s) return false; if (d && slr.district !== d) return false;
+                                if (cov && !(slr.coverage||'').toLowerCase().includes(cov)) return false;
+                            } return true;
+                        }).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+                        
+                        grid.innerHTML = prods.length ? prods.map(p => app.generateProductCard(p)).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada produk ditemui.</p></div>';
+                    }
+                    else if(t==='kursus') {
+                        grid.className = "grid grid-cols-1 gap-3 px-3";
+                        const crs = app.state.data.courses.filter(c => { if(q && !(c.title||'').toLowerCase().includes(q)) return false; return true; });
+                        grid.innerHTML = crs.length ? crs.map(c=>{
+                            const cFee = safePrice(c.fee);
+                            return `<div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3"><div class="w-16 h-16 bg-white rounded-xl flex items-center justify-center text-3xl shrink-0 shadow-sm border border-yellow-100">${c.image?`<img src="${c.image}" loading="lazy" class="w-full h-full object-cover rounded-xl">`:'🎓'}</div><div class="flex-1"><h3 class="font-extrabold text-yellow-900 text-base leading-tight mb-1">${safeStr(c.title)}</h3><p class="text-xs text-yellow-700 mb-3 font-medium">📍 ${c.location||'TBA'} | 📅 ${c.date||'TBA'}</p><div class="flex justify-between items-end"><span class="font-black text-yellow-800 text-lg">RM ${cFee.toFixed(2)}</span><button onclick="app.openWhatsAppLink('Salam, saya nak daftar kursus ${safeStr(c.title)}', '${c.providerWhatsapp}')" class="bg-yellow-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm active:scale-95 shadow-yellow-500/30 cursor-pointer border-none">Daftar</button></div></div></div>`
+                        }).join('') : '<div class="text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada kursus.</p></div>';
+                    }
+                    else if(t==='kedai') {
+                        grid.className = "grid grid-cols-2 gap-3 px-3";
+                        const slrs = app.state.data.sellers.filter(sl => { 
+                            if(q && !(sl.shopName||'').toLowerCase().includes(q)) return false; 
+                            if(s && sl.state!==s) return false; 
+                            if(d && sl.district!==d) return false; 
+                            if(cov && !(sl.coverage||'').toLowerCase().includes(cov)) return false;
+                            return true; 
+                        });
+                        grid.innerHTML = slrs.length ? slrs.map(sl=>{ 
+                            const c = app.state.data.products.filter(p=>p.sellerWhatsapp===sl.id).length; 
+                            return `<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-pointer active:scale-95 transition-transform flex flex-col h-full" onclick="app.viewSingleShop('${sl.id}')"><div class="h-14 bg-gradient-to-r from-slate-700 to-slate-800 relative"><div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwaDh2OEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==')]"></div></div><div class="px-2 pb-3 relative flex-1 flex flex-col items-center text-center -mt-6"><div class="w-14 h-14 bg-white rounded-full p-1 shadow-sm mb-2 z-10"><div class="w-full h-full bg-slate-100 rounded-full flex justify-center items-center text-xl overflow-hidden">${sl.storeLogo ? `<img src="${sl.storeLogo}" loading="lazy" class="w-full h-full object-cover">` : '🏪'}</div></div><h4 class="font-extrabold text-slate-800 text-[11px] uppercase line-clamp-2 leading-tight mb-1">${safeStr(sl.shopName) || sl.id}</h4><p class="text-[9px] bg-slate-50 border border-slate-100 px-2 py-0.5 rounded text-slate-500 font-bold mb-2">${sl.state || 'Malaysia'}</p><div class="mt-auto w-full border-t border-slate-100 pt-2"><p class="text-[10px] text-km-light font-black">🛍️ ${c} Produk</p></div></div></div>`; 
+                        }).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-200"><p class="text-sm font-bold text-slate-500">Tiada kedai ditemui.</p></div>';
+                    }
+                } catch(err) { app.showErrorUI("Ralat carian", err.message); }
+            },
+
+            viewSingleShop: (sId) => {
+                document.getElementById('buyer-section').classList.add('hidden'); document.getElementById('single-shop-view').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.add('hidden');
+                const slr = app.state.data.sellers.find(s=>s.id===sId)||{shopName:sId};
+                document.getElementById('shop-name').innerText = safeStr(slr.shopName)||sId; document.getElementById('shop-location').innerText = `📍 ${slr.district||''}, ${slr.state||''}`;
+                if(slr.storeLogo) { document.getElementById('shop-logo-img').src=slr.storeLogo; document.getElementById('shop-logo-img').classList.remove('hidden'); document.getElementById('shop-logo-placeholder').classList.add('hidden'); } else { document.getElementById('shop-logo-img').classList.add('hidden'); document.getElementById('shop-logo-placeholder').classList.remove('hidden'); }
+                let iH=''; if(slr.coverage) iH+=`<div><span class="text-slate-400 text-[10px] uppercase tracking-wider block">🚚 Liputan:</span> <span class="font-black text-slate-700 text-sm">${safeStr(slr.coverage)}</span></div>`; if(slr.codCharge!==undefined) iH+=`<div><span class="text-slate-400 text-[10px] uppercase tracking-wider block">💰 Caj COD:</span> <span class="font-black text-slate-700 text-sm">${slr.codCharge>0?`RM${parseFloat(slr.codCharge).toFixed(2)}`:'Percuma'}</span></div>`; document.getElementById('shop-info-box').innerHTML=iH||'<p class="text-center text-slate-400 w-full col-span-2">Tiada info tambahan.</p>';
+                
+                try {
+                    const prods = app.state.data.products.filter(p=>p.sellerWhatsapp===sId);
+                    document.getElementById('single-shop-products').innerHTML = prods.length ? prods.map(p => app.generateProductCard(p)).join('') : '<p class="col-span-2 text-center text-sm text-slate-500 py-8 bg-white rounded-2xl border border-slate-200">Katalog kosong.</p>';
+                } catch(err) { document.getElementById('single-shop-products').innerHTML = `<p class="col-span-2 text-center text-sm text-red-500 py-8">Ralat paparan produk kedai.</p>`; }
+            },
+            showMarketplace: () => { document.getElementById('single-shop-view').classList.add('hidden'); document.getElementById('buyer-section').classList.remove('hidden'); document.getElementById('main-tabs-container').classList.remove('hidden'); app.renderMarketplace(); },
+
+            addToCart: (pId, showModal=false) => { 
+                const p=app.state.data.products.find(x=>x.id===pId); if(!p)return; const sId=p.sellerWhatsapp; 
+                if(!app.state.cart[sId])app.state.cart[sId]=[]; const e=app.state.cart[sId].find(i=>i.product.id===pId); 
+                if(e)e.qty++; else app.state.cart[sId].push({product:p,qty:1}); 
+                app.updateNavHighlight(); if(showModal) { app.showCart(); } else { app.showToast("🛒 Masuk troli!"); }
+            },
+            buyNow: (pId) => { app.addToCart(pId, true); },
+            updateCartQty: (sId, pId, c) => { let i=app.state.cart[sId].find(x=>x.product.id===pId); if(i){i.qty+=c; if(i.qty<=0){app.state.cart[sId]=app.state.cart[sId].filter(x=>x.product.id!==pId); if(app.state.cart[sId].length===0)delete app.state.cart[sId];}} app.showCart(); app.updateNavHighlight(); },
+            showCart: () => { 
+                if(!app.state.appUser){ app.showToast("Sila log masuk untuk guna troli."); app.switchMode('auth'); return; }
+                const c=document.getElementById('cart-content'); const s=Object.keys(app.state.cart); 
+                if(s.length===0){c.innerHTML='<div class="text-center py-10"><span class="text-5xl opacity-30 block mb-2">🛒</span><p class="text-sm font-bold text-slate-500">Troli kosong.</p></div>';}
+                else{ 
+                    c.innerHTML=s.map(sId=>{ 
+                        const slr=app.state.data.sellers.find(x=>x.id===sId)||{shopName:sId}; let t=0; 
+                        const items=app.state.cart[sId].map(i=>{
+                            const pPrice = safePrice(i.product.price); t+=i.qty*pPrice; 
+                            return `<div class="flex justify-between items-center text-sm py-3 border-b border-slate-100 last:border-0"><div class="flex-1 pr-2"><p class="font-extrabold text-slate-800 line-clamp-1">${safeStr(i.product.name)}</p><p class="text-km-main font-black">RM${pPrice.toFixed(2)}</p></div><div class="flex items-center gap-1.5 bg-slate-100 rounded-lg p-1 border border-slate-200"><button onclick="app.updateCartQty('${sId}','${i.product.id}',-1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600 cursor-pointer border-none">-</button><span class="font-black w-4 text-center">${i.qty}</span><button onclick="app.updateCartQty('${sId}','${i.product.id}',1)" class="w-7 h-7 bg-white rounded font-black shadow-sm active:scale-95 text-slate-600 cursor-pointer border-none">+</button></div></div>`
+                        }).join(''); 
+                        return `<div class="bg-white p-4 rounded-2xl border border-slate-200 mb-3 shadow-sm"><h4 class="font-black text-base mb-2 border-b border-slate-100 pb-2">🏪 ${safeStr(slr.shopName)||sId}</h4>${items}<div class="mt-3 flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold text-xs text-slate-500">Subtotal: <span class="text-slate-900 text-xl font-black">RM${t.toFixed(2)}</span></span><button onclick="app.prepCheck('${sId}',${t})" class="bg-km-main text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-md active:scale-95 cursor-pointer border-none">Bayar &rarr;</button></div></div>` 
+                    }).join('');
+                } app.openModal('cart-modal'); 
+            },
+            
+            prepCheck: (sId, t) => { const slr=app.state.data.sellers.find(s=>s.id===sId); const cod=slr?.codCharge||0; app.state.pendingCheckout={id:sId,base:t,cod:cod}; app.closeModal('cart-modal'); document.getElementById('chk-seller').innerText=safeStr(slr?.shopName)||sId; document.getElementById('chk-sub').innerText=`RM ${t.toFixed(2)}`; app.togglePayMethod(); const img=document.getElementById('chk-qr-img'); const noMsg=document.getElementById('chk-no-qr'); if(slr?.qrImage){img.src=slr.qrImage;img.classList.remove('hidden');noMsg.classList.add('hidden');}else{img.classList.add('hidden');noMsg.classList.remove('hidden');} app.openModal('checkout-modal'); },
+            togglePayMethod: () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; if(m==='qr'){document.getElementById('chk-qr-sec').classList.remove('hidden');document.getElementById('chk-cash-sec').classList.add('hidden');document.getElementById('chk-cod-row').classList.add('hidden');document.getElementById('chk-total').innerText=`RM ${d.base.toFixed(2)}`;}else{document.getElementById('chk-qr-sec').classList.add('hidden');document.getElementById('chk-cash-sec').classList.remove('hidden');if(d.cod>0){document.getElementById('chk-cod-row').classList.remove('hidden');document.getElementById('chk-cod').innerText=`RM ${d.cod.toFixed(2)}`;} document.getElementById('chk-total').innerText=`RM ${(d.base+d.cod).toFixed(2)}`;} },
+            submitOrder: async () => { const m=document.querySelector('input[name="payMethod"]:checked').value; const d=app.state.pendingCheckout; const sId=d.id; const ft=m==='cash'?(d.base+d.cod):d.base; const fc=m==='cash'?d.cod:0; const proc=async(r=null)=>{ document.getElementById('global-loader').classList.remove('hidden'); await addDoc(collection(db, `${dbPath}/orders`),{buyerWhatsapp:app.state.appUser.whatsapp,buyerName:app.state.appUser.name,sellerWhatsapp:sId,items:app.state.cart[sId].map(i=>({name:i.product.name,price:safePrice(i.product.price),qty:i.qty})),total:ft,codCharge:fc,paymentMethod:m,receipt:r,status:'Menunggu Pengesahan',timestamp:Date.now()}); delete app.state.cart[sId]; document.getElementById('global-loader').classList.add('hidden'); app.updateNavHighlight(); app.closeModal('checkout-modal'); app.showToast(`Pesanan dihantar ke Peniaga!`); }; if(m==='qr'){const f=document.getElementById('chk-receipt'); if(f.files.length===0)return app.showToast("Muat naik resit."); const b=await app.resizeImagePromise(f.files[0]); proc(b); } else { proc(); } },
+
+            renderSellerDashboard: () => {
+                const wa=app.state.appUser.whatsapp; const me=app.state.data.sellers.find(s=>s.id===wa); if(me){document.getElementById('seller-name').value=me.shopName||'';if(me.state){document.getElementById('seller-state').value=me.state;app.updateDistricts(me.state,'seller-district');document.getElementById('seller-district').value=me.district||'';}document.getElementById('seller-coverage').value=me.coverage||'';document.getElementById('seller-cod').value=me.codCharge||'';}
+                const ords=app.state.data.orders.filter(o=>o.sellerWhatsapp===wa&&o.status==='Menunggu Pengesahan'); document.getElementById('seller-orders-list').innerHTML=ords.length?ords.map(o=>`<div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl"><p class="font-extrabold text-base text-slate-800">${safeStr(o.buyerName)} <span class="text-xs text-slate-500 font-bold ml-1 bg-white px-2 py-0.5 rounded border border-slate-200">${o.paymentMethod==='cash'?'COD':'QR Pay'}</span></p><p class="text-km-main font-black text-xl mt-1">RM ${Number(o.total||0).toFixed(2)}</p><button onclick="updateDoc(doc(db,'${dbPath}/orders','${o.id}'),{status:'Berjaya'});app.showToast('Disahkan')" class="w-full bg-km-main text-white py-3 text-sm rounded-xl font-black mt-3 shadow-md active:scale-95 cursor-pointer border-none">Sahkan Selesai</button></div>`).join(''):'<p class="text-sm text-slate-400 font-bold">Tiada pesanan baru.</p>';
+                const prods=app.state.data.products.filter(p=>p.sellerWhatsapp===wa); const crs=app.state.data.courses.filter(c=>c.providerWhatsapp===wa);
+                let catHtml = prods.length?prods.map(p=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-slate-700 truncate pr-2 flex-1">📦 ${safeStr(p.name)}</span><button onclick="deleteDoc(doc(db,'${dbPath}/products','${p.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95 cursor-pointer">Padam</button></div>`).join(''):'';
+                catHtml += crs.length?crs.map(c=>`<div class="flex justify-between items-center border-b border-slate-100 py-3"><span class="font-extrabold text-yellow-700 truncate pr-2 flex-1">🎓 ${safeStr(c.title)}</span><button onclick="deleteDoc(doc(db,'${dbPath}/courses','${c.id}'));app.showToast('Dipadam')" class="text-red-500 font-bold bg-red-50 border border-red-100 px-3 py-1.5 rounded-lg active:scale-95 cursor-pointer">Padam</button></div>`).join(''):'';
+                document.getElementById('seller-catalog-list').innerHTML=catHtml||'<p class="text-slate-400 font-bold text-center py-4">Katalog kosong.</p>';
+            },
+            saveProfile: async () => { document.getElementById('global-loader').classList.remove('hidden'); let d={shopName:document.getElementById('seller-name').value,state:document.getElementById('seller-state').value,district:document.getElementById('seller-district').value,coverage:document.getElementById('seller-coverage').value,codCharge:parseFloat(document.getElementById('seller-cod').value)||0}; const f=document.getElementById('seller-qr'); const l=document.getElementById('seller-logo'); if(f.files.length>0)d.qrImage=await app.resizeImagePromise(f.files[0]); if(l.files.length>0)d.storeLogo=await app.resizeImagePromise(l.files[0]); await setDoc(doc(db,`${dbPath}/sellers`,app.state.appUser.whatsapp),d,{merge:true}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Profil Disimpan"); },
+            addProduct: async () => { const n=document.getElementById('prod-name').value;const p=document.getElementById('prod-price').value;const c=document.getElementById('prod-cat').value;const f=document.getElementById('prod-img'); if(!n||!p||f.files.length===0)return app.showToast("Isi maklumat lengkap"); document.getElementById('global-loader').classList.remove('hidden'); const img=await app.resizeImagePromise(f.files[0]); await addDoc(collection(db, `${dbPath}/products`),{sellerWhatsapp:app.state.appUser.whatsapp,name:n,price:parseFloat(p),category:c,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Produk Ditambah"); document.getElementById('prod-name').value=''; document.getElementById('prod-price').value=''; },
+            addCourse: async () => { const t=document.getElementById('course-title').value;const f=document.getElementById('course-fee').value;const d=document.getElementById('course-date').value;const l=document.getElementById('course-loc').value;const i=document.getElementById('course-img'); if(!t)return app.showToast("Isi tajuk kursus"); document.getElementById('global-loader').classList.remove('hidden'); let img=null; if(i.files.length>0)img=await app.resizeImagePromise(i.files[0]); await addDoc(collection(db, `${dbPath}/courses`),{providerWhatsapp:app.state.appUser.whatsapp,title:t,fee:parseFloat(f)||0,date:d,location:l,image:img,timestamp:Date.now()}); document.getElementById('global-loader').classList.add('hidden'); app.showToast("Kursus Diterbit"); document.getElementById('course-title').value=''; },
+
+            renderAdmin: () => { 
+                document.getElementById('admin-users-list').innerHTML=app.state.data.users.map(u=>`
+                    <div class="flex justify-between items-center py-3 border-b border-slate-100 bg-slate-50 px-4 rounded-xl mb-2 shadow-sm">
+                        <span class="font-extrabold text-slate-800 text-sm">${u.id} <br><span class="text-slate-500 font-medium text-xs uppercase">${safeStr(u.name)||'-'}</span></span>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase text-indigo-600 shadow-sm">${u.role||'PENGGUNA'}</span>
+                            <button onclick="app.adminResetPwd('${u.id}')" class="bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase active:scale-95 shadow-sm border border-red-200 transition-colors cursor-pointer">RESET</button>
+                        </div>
+                    </div>
+                `).join(''); 
+            },
+            adminResetPwd: (wa) => { document.getElementById('admin-reset-wa').innerText = wa; document.getElementById('admin-reset-new-pwd').value = "123456"; app.openModal('admin-reset-modal'); },
+            confirmAdminReset: async () => {
+                const wa = document.getElementById('admin-reset-wa').innerText; const newPwd = document.getElementById('admin-reset-new-pwd').value;
+                if(!newPwd) return app.showToast("Masukkan kata laluan."); app.closeModal('admin-reset-modal'); document.getElementById('global-loader').classList.remove('hidden');
+                try { const hash = hashString(newPwd); await updateDoc(doc(db, `${dbPath}/users`, wa), { passwordHash: hash }); app.showToast("Berjaya reset pengguna: " + wa); } catch(e) { app.showToast("Ralat."); }
+                document.getElementById('global-loader').classList.add('hidden');
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', app.init);
+    </script>
 </body>
 </html>
