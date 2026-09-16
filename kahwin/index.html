@@ -2,453 +2,381 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KitaKahwin | Direktori Vendor Perkahwinan Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KitaKahwin | Direktori Vendor, Kalkulator & Jemputan Digital</title>
     
-    <!-- Tailwind CSS CDN -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        kk: {
+                            dark: '#4c1d95', /* Violet 900 */
+                            main: '#7c3aed', /* Violet 600 */
+                            light: '#a78bfa', /* Violet 400 */
+                            accent: '#fbcfe8', /* Pink 200 */
+                            bg: '#f5f3ff'    /* Violet 50 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
-            background-attachment: fixed;
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            margin: 0; padding: 0; width: 100%;
+            overflow-x: hidden;
+            touch-action: pan-y;
         }
-        h1, h2, h3, .font-cinzel { font-family: 'Cinzel', serif; }
+        body { background-color: #ede9fe; display: flex; justify-content: center; font-family: 'Inter', sans-serif; }
+        input, select, textarea { font-size: 16px !important; }
+        .mobile-container { width: 100%; max-width: 440px; background-color: #faf5ff; min-height: 100vh; min-height: 100dvh; position: relative; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; margin: 0 auto; overflow-x: hidden; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Glassmorphism Premium */
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(212, 175, 55, 0.2); /* Gold border for Luxury */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-        .glass-card:hover {
-            border-color: rgba(212, 175, 55, 0.6);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
-        }
-
-        .category-btn.active {
-            background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%);
-            color: #0A0A0A;
-            border-color: #D4AF37;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-        }
-
-        /* Modal Overlay */
-        .modal-overlay {
-            background: rgba(2, 6, 23, 0.95);
-            backdrop-filter: blur(15px);
-        }
+        #toast-container { position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
+        .toast { background: rgba(76, 29, 149, 0.95); color: white; padding: 12px 16px; border-radius: 12px; text-align: center; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); font-weight: 600; font-size: 13px; backdrop-filter: blur(4px); }
         
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #fcf6ba 0%, #d4af37 50%, #aa771c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .tab-btn { transition: all 0.2s; }
+        .tab-btn.active { background-color: #7c3aed; color: white; box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.3); border-color: #7c3aed; }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-900">
+<body class="text-slate-800 antialiased selection:bg-kk-main selection:text-white">
 
-    <!-- Header / Navbar -->
-    <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="../index.html" class="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-extrabold text-slate-950 text-xl shadow-lg shadow-amber-500/20">
-                    K
-                </div>
-                <span class="text-xl font-bold tracking-tight text-white font-cinzel">Kita<span class="text-amber-400">Kahwin</span></span>
-            </a>
-            
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
-                <a href="../index.html" class="hover:text-amber-400 transition-colors">Ekosistem</a>
-                <a href="../invite/index.html" class="hover:text-amber-400 transition-colors">KitaInvite</a>
-                <a href="../pay/index.html" class="hover:text-amber-400 transition-colors">KitaPay</a>
-                <a href="#" class="text-amber-400 font-bold border-b-2 border-amber-400 pb-1">KitaKahwin</a>
-            </nav>
-
-            <button onclick="openVendorLogin()" class="text-xs font-semibold text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-2 border border-slate-800 px-4 py-2 rounded-full hover:border-amber-500/50">
-                <i data-lucide="store" class="w-4 h-4"></i> Log Masuk Vendor
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-grow w-full max-w-7xl mx-auto px-6 py-10">
-        
-        <!-- Affiliate Reward Banner -->
-        <div class="mb-12 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 border border-amber-500/30">
-                    <i data-lucide="award" class="w-6 h-6"></i>
-                </div>
-                <div>
-                    <h3 class="font-cinzel font-bold text-lg text-amber-400 mb-1">Kempen Rakan KitaAffiliate</h3>
-                    <p class="text-sm text-slate-300 leading-relaxed">
-                        Anda mempunyai kenalan vendor katering, butik, atau fotografi? Bawa mereka mendaftar di KitaKahwin menggunakan <strong class="text-white">ID Affiliate</strong> anda dan nikmati ganjaran <strong class="text-amber-400 font-mono">RM50.00</strong> terus ke dalam akaun KitaPay anda apabila mereka melanggan pakej vendor.
-                    </p>
-                </div>
+    <div class="mobile-container">
+        <!-- HEADER -->
+        <header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-purple-100">
+            <div class="bg-kk-dark text-white text-[10px] py-1.5 px-3 flex justify-center items-center gap-1.5">
+                <span>💍</span>
+                <span class="font-medium tracking-wide truncate">KITA KAHWIN — Direktori & Perancang Majlis</span>
             </div>
-            
-            <div class="shrink-0 w-full md:w-auto">
-                <button onclick="copyAffiliateInvite()" id="btnCopyAff" class="w-full md:w-auto bg-slate-900 hover:bg-slate-800 text-amber-400 border border-amber-500/50 font-bold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-lg">
-                    <i data-lucide="link" class="w-4 h-4"></i> <span id="textCopyAff">Salin Pautan Jemputan</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Hero Section -->
-        <div class="text-center mb-12 relative">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-600/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
-            
-            <h1 class="text-4xl md:text-5xl font-cinzel font-bold text-white mb-4">
-                Direktori Eksklusif <br/> <span class="gold-gradient-text">Vendor Perkahwinan</span>
-            </h1>
-            <p class="text-slate-400 max-w-2xl mx-auto mb-8">Himpunan pakar industri perkahwinan yang disahkan. Tempah vendor impian anda dengan yakin melalui ekosistem KitaVerse.</p>
-            
-            <!-- Search & Filter -->
-            <div class="max-w-3xl mx-auto">
-                <div class="relative mb-8">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 w-5 h-5"></i>
-                    <input type="text" id="searchInput" onkeyup="filterVendors()" placeholder="Cari nama butik, lokasi, atau perkhidmatan..." class="w-full bg-slate-900/80 border border-slate-700 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 shadow-xl transition-all">
-                </div>
-
-                <!-- Categories -->
-                <div class="flex flex-wrap justify-center gap-3" id="categoryFilters">
-                    <button onclick="setCategory('Semua')" class="category-btn active px-6 py-2 rounded-full border border-slate-700 text-sm font-medium transition-all text-slate-300">Semua</button>
-                    <button onclick="setCategory('Dewan & Lokasi')" class="category-btn px-6 py-2 rounded-full border border-slate-700 text-sm font-medium transition-all text-slate-300 hover:border-amber-500/50">Dewan</button>
-                    <button onclick="setCategory('Katering')" class="category-btn px-6 py-2 rounded-full border border-slate-700 text-sm font-medium transition-all text-slate-300 hover:border-amber-500/50">Katering</button>
-                    <button onclick="setCategory('Busana & Solekan')" class="category-btn px-6 py-2 rounded-full border border-slate-700 text-sm font-medium transition-all text-slate-300 hover:border-amber-500/50">Busana & Solekan</button>
-                    <button onclick="setCategory('Fotografi')" class="category-btn px-6 py-2 rounded-full border border-slate-700 text-sm font-medium transition-all text-slate-300 hover:border-amber-500/50">Fotografi</button>
-                    <button onclick="setCategory('Pelamin')" class="category-btn px-6 py-2 rounded-full border border-slate-700 text-sm font-medium transition-all text-slate-300 hover:border-amber-500/50">Pelamin</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Vendor Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="vendorGrid">
-            <!-- Diisi oleh JavaScript -->
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/80 py-8 bg-slate-950 mt-auto">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500">
-            <p>&copy; 2026 KitaKahwin by KitaVerse. Platform Vendor Eksklusif.</p>
-            <div class="flex space-x-6 mt-4 md:mt-0">
-                <a href="#" class="hover:text-amber-400 transition-colors">Daftar Vendor Baru</a>
-                <a href="#" class="hover:text-amber-400 transition-colors">Terma Syarat</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Vendor Details Modal -->
-    <div id="vendorDetailModal" class="fixed inset-0 z-[100] modal-overlay hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="glass-card w-full max-w-2xl rounded-3xl overflow-hidden relative flex flex-col max-h-[90vh]">
-            <button onclick="closeVendorDetail()" class="absolute top-4 right-4 bg-black/50 hover:bg-black text-white p-2 rounded-full transition-colors z-10">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            
-            <div class="h-48 sm:h-64 w-full relative border-b border-amber-500/20">
-                <img id="modalCover" src="" class="w-full h-full object-cover" alt="Cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div>
-                <div class="absolute bottom-4 left-6 flex items-center gap-3">
-                    <span id="modalCategory" class="bg-amber-600/90 backdrop-blur text-slate-900 text-[10px] font-bold uppercase px-3 py-1 rounded-full tracking-wider shadow-lg">Kategori</span>
-                    <span class="flex items-center gap-1 text-yellow-400 text-sm font-bold bg-black/50 px-2 py-1 rounded-full"><i data-lucide="star" class="w-4 h-4 fill-current"></i> <span id="modalRating">5.0</span></span>
-                </div>
-            </div>
-            
-            <div class="p-6 sm:p-8 overflow-y-auto">
-                <h2 id="modalTitle" class="font-cinzel text-3xl font-bold gold-gradient-text mb-2">Nama Vendor</h2>
-                <p id="modalLocation" class="text-slate-400 text-sm flex items-center gap-2 mb-6">
-                    <i data-lucide="map-pin" class="w-4 h-4"></i> Lokasi
-                </p>
-                
-                <h3 class="text-white font-semibold mb-2">Penerangan</h3>
-                <p id="modalDesc" class="text-slate-400 text-sm leading-relaxed mb-8">Penerangan vendor di sini...</p>
-                
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="bg-slate-900/50 border border-slate-800 p-4 rounded-2xl">
-                        <p class="text-xs text-slate-500 mb-1">Harga Bermula</p>
-                        <p id="modalPrice" class="text-lg font-bold text-amber-400 font-mono">RM 0</p>
-                    </div>
-                    <div class="bg-slate-900/50 border border-slate-800 p-4 rounded-2xl">
-                        <p class="text-xs text-slate-500 mb-1">Status Pembayaran</p>
-                        <p class="text-sm font-semibold text-emerald-400 flex items-center gap-1"><i data-lucide="shield-check" class="w-4 h-4"></i> KitaPay Disahkan</p>
+            <div class="flex justify-between items-center px-4 py-3">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='../index.html'">
+                    <div class="bg-kk-main text-white rounded-full w-8 h-8 flex items-center justify-center font-black text-lg shadow-sm">K</div>
+                    <div class="font-black text-lg tracking-tight text-gray-900 leading-none">
+                        KITA<span class="text-kk-main">KAHWIN</span>
                     </div>
                 </div>
-
-                <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-800">
-                    <button onclick="alert('Integrasi KitaPay sedang dalam pembinaan.')" class="flex-1 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-900 font-bold py-3 rounded-xl shadow-lg shadow-amber-600/20 transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="credit-card" class="w-5 h-5"></i> Tempah Pakej
-                    </button>
-                    <a id="modalWhatsapp" href="#" target="_blank" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl border border-slate-600 transition-all flex items-center justify-center gap-2 text-center">
-                        <i data-lucide="message-circle" class="w-5 h-5 text-emerald-400"></i> Tanya WhatsApp
+                <div class="flex items-center gap-1.5">
+                    <a href="../market/index.html" class="bg-purple-50 text-kk-main border border-purple-200 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm active:scale-95 flex items-center gap-1">
+                        🛍️ Ke KitaMarket
                     </a>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Vendor Admin Login -->
-    <div id="vendorLoginModal" class="fixed inset-0 z-[110] modal-overlay hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="glass-card w-full max-w-sm rounded-3xl p-8 text-center relative border-amber-500/30">
-            <button onclick="closeVendorLogin()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            <div class="w-16 h-16 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
-                <i data-lucide="store" class="w-8 h-8"></i>
-            </div>
-            <h3 class="font-cinzel text-xl font-bold gold-gradient-text mb-2">Portal Vendor</h3>
-            <p class="text-xs text-slate-400 mb-6">Uruskan pakej dan status tempahan anda.</p>
-            
-            <form onsubmit="handleVendorLogin(event)" class="space-y-4">
-                <input type="text" id="v_id" placeholder="ID Vendor" class="w-full bg-slate-900/80 border border-slate-700 text-white rounded-xl py-3 px-4 focus:outline-none focus:border-amber-500 text-sm">
-                <input type="password" id="v_pass" placeholder="Kata Laluan" class="w-full bg-slate-900/80 border border-slate-700 text-white rounded-xl py-3 px-4 focus:outline-none focus:border-amber-500 text-sm">
-                <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-900 font-bold py-3 rounded-xl shadow-lg transition-all text-sm">
-                    Log Masuk
+            <!-- TABS -->
+            <div class="grid grid-cols-3 gap-2 px-3 pb-3">
+                <button id="btn-tab-vendor" onclick="app.switchTab('vendor')" class="tab-btn active border border-transparent rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1">
+                    <span>🏢</span> Direktori Vendor
                 </button>
-            </form>
-            <div class="mt-6 pt-4 border-t border-slate-800">
-                <a href="#" class="text-xs text-amber-400 hover:underline">Belum mendaftar? Daftar sebagai Vendor.</a>
+                <button id="btn-tab-bajet" onclick="app.switchTab('bajet')" class="tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1">
+                    <span>🧮</span> Kalkulator Bajet
+                </button>
+                <button id="btn-tab-family" onclick="app.switchTab('family')" class="tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1">
+                    <span>👶</span> Perancang Keluarga
+                </button>
             </div>
-        </div>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 overflow-y-auto relative no-scrollbar pb-20 p-3 bg-purple-50/40">
+            
+            <!-- TAB 1: DIREKTORI VENDOR -->
+            <div id="tab-content-vendor" class="space-y-4">
+                
+                <!-- Banner Promosi KitaInvite (Pautan ke SaaS Kad Kahwin) -->
+                <div class="bg-gradient-to-r from-pink-600 to-purple-700 text-white p-5 rounded-3xl shadow-lg relative overflow-hidden flex flex-col items-center text-center">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-xl"></div>
+                    <div class="absolute -left-4 -bottom-4 w-24 h-24 bg-pink-400/20 rounded-full blur-xl"></div>
+                    
+                    <span class="text-[9px] font-black uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full mb-3 backdrop-blur-sm shadow-sm border border-white/30">Eksklusif Bakal Pengantin</span>
+                    <h4 class="font-extrabold text-lg mb-1 leading-tight relative z-10">Cari Kad Kahwin Digital?</h4>
+                    <p class="text-xs text-pink-100 mb-4 relative z-10 font-medium">Urus tetamu, RSVP & peta lokasi dengan platform premium <span class="font-bold text-white">KitaInvite SaaS</span>.</p>
+                    
+                    <a href="../invite/index.html" class="w-full bg-white text-purple-700 hover:bg-gray-50 py-3 rounded-xl text-sm font-black shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 relative z-10">
+                        <span>💌</span> Cipta Kad Jemputan Sekarang
+                    </a>
+                </div>
+
+                <div class="bg-white p-4 rounded-3xl shadow-sm border border-purple-100">
+                    <div class="relative mb-3">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">🔍</div>
+                        <input type="text" id="vendor-search" onkeyup="app.renderVendors()" class="block w-full pl-9 pr-3 py-3 border border-slate-200 rounded-2xl text-xs font-bold focus:ring-1 focus:ring-kk-main focus:border-kk-main bg-slate-50 outline-none placeholder-slate-400" placeholder="Cari vendor, jurugambar, MUA...">
+                    </div>
+                    <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="vendor-category-filters">
+                        <button onclick="app.setVendorCategory('')" class="cat-pill active shrink-0 bg-kk-main text-white border border-kk-main px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors">Semua</button>
+                        <button onclick="app.setVendorCategory('Jurugambar')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold transition-colors">📸 Jurugambar</button>
+                        <button onclick="app.setVendorCategory('MUA')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold transition-colors">💄 MUA / Makeup</button>
+                        <button onclick="app.setVendorCategory('Katering')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold transition-colors">🥘 Katering</button>
+                        <button onclick="app.setVendorCategory('Dewan')" class="cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold transition-colors">🏰 Dewan</button>
+                    </div>
+                </div>
+
+                <!-- Grid Paparan Iklan -->
+                <div id="vendors-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Diisi JavaScript -->
+                </div>
+            </div>
+
+            <!-- TAB 2: KALKULATOR BAJET KENDURI -->
+            <div id="tab-content-bajet" class="space-y-4 hidden">
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-purple-100 space-y-4">
+                    <div class="text-center border-b border-purple-100 pb-4">
+                        <h3 class="font-black text-slate-800 text-lg">🧮 Kalkulator Bajet Kenduri</h3>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Kira anggaran perbelanjaan majlis perkahwinan anda supaya tidak berhutang.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Sasaran Bilangan Tetamu (Pax)</label>
+                        <input type="number" id="budget-guests" value="500" oninput="app.calculateBudget()" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-black text-xl text-kk-main outline-none focus:border-kk-main transition-colors text-center">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Kos Katering (Seorang)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
+                                <input type="number" id="budget-catering-rate" value="15" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Pelamin & Dekorasi</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
+                                <input type="number" id="budget-pelamin" value="3500" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Jurugambar & Video</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
+                                <input type="number" id="budget-photo" value="2500" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Lain-lain / Kad Jemputan</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
+                                <input type="number" id="budget-misc" value="2000" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-900 text-white p-6 rounded-2xl shadow-md text-center space-y-1 relative overflow-hidden mt-2">
+                        <div class="absolute -right-4 -top-4 w-20 h-20 bg-purple-700 rounded-full blur-xl opacity-50"></div>
+                        <p class="text-[11px] uppercase tracking-widest text-purple-300 font-bold relative z-10">Anggaran Jumlah Keseluruhan</p>
+                        <p class="text-3xl font-black text-amber-300 relative z-10" id="budget-total-result">RM 15,500.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: KALKULATOR FAMILY PLANNING -->
+            <div id="tab-content-family" class="space-y-4 hidden">
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-emerald-100 space-y-4">
+                    <div class="text-center border-b border-emerald-100 pb-4">
+                        <h3 class="font-black text-slate-800 text-lg">👶 Perancangan Keluarga</h3>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Kira anggaran persediaan kewangan untuk menyambut cahaya mata.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Sasaran Anak (Dalam 5 Tahun)</label>
+                        <select id="family-kids" onchange="app.calculateFamily()" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold text-slate-800 outline-none focus:border-emerald-500 cursor-pointer">
+                            <option value="1">1 Orang Anak</option>
+                            <option value="2">2 Orang Anak (Jarak Dekat)</option>
+                            <option value="3">3 Orang Anak</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Kos Bersalin (Hospital)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
+                                <input type="number" id="family-birth" value="3000" oninput="app.calculateFamily()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Susu/Lampin (Sebulan)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
+                                <input type="number" id="family-monthly" value="500" oninput="app.calculateFamily()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-900 text-white p-6 rounded-2xl shadow-md text-center space-y-1 relative overflow-hidden mt-2">
+                        <div class="absolute -left-4 -bottom-4 w-20 h-20 bg-emerald-700 rounded-full blur-xl opacity-50"></div>
+                        <p class="text-[11px] uppercase tracking-widest text-emerald-300 font-bold relative z-10">Anggaran Simpanan Diperlukan</p>
+                        <p class="text-3xl font-black text-emerald-300 relative z-10" id="family-total-result">RM 9,000.00</p>
+                        <p class="text-[9px] text-emerald-400/80 mt-1 relative z-10">*Kos bersalin + (Bulanan x 12 bulan)</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    <!-- Pangkalan Data Mock Vendor -->
+    <div id="toast-container"></div>
+
     <script>
-        lucide.createIcons();
-
-        // Data Mock Vendor KitaKahwin
-        const vendors = [
-            {
-                id: 1,
-                name: "Dewan Perdana Felda",
-                category: "Dewan & Lokasi",
-                location: "Kuala Lumpur",
-                rating: "4.9",
-                price: "15,000.00",
-                desc: "Dewan eksklusif berhawa dingin sepenuhnya dengan kapasiti sehingga 1000 tetamu. Sesuai untuk majlis resepsi gilang-gemilang.",
-                image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80",
-                phone: "60123456789"
-            },
-            {
-                id: 2,
-                name: "Seri Kenangan Katering",
-                category: "Katering",
-                location: "Shah Alam, Selangor",
-                rating: "4.8",
-                price: "15.00 / pax",
-                desc: "Pakar lauk pauk kampung dan hidangan pengantin diraja dengan pengalaman lebih 10 tahun melayani ribuan majlis.",
-                image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80",
-                phone: "60123456789"
-            },
-            {
-                id: 3,
-                name: "Aura Bridal Couture",
-                category: "Busana & Solekan",
-                location: "Bangi, Selangor",
-                rating: "5.0",
-                price: "1,500.00",
-                desc: "Rekaan busana pengantin eksklusif songket tenun tangan dan servis solekan profesional (MUA) yang menaikkan seri wajah.",
-                image: "https://images.unsplash.com/photo-1595954421407-b6f987f2e460?auto=format&fit=crop&w=800&q=80",
-                phone: "60123456789"
-            },
-            {
-                id: 4,
-                name: "Lensa Memori Studio",
-                category: "Fotografi",
-                location: "Putrajaya",
-                rating: "4.9",
-                price: "1,800.00",
-                desc: "Merakam detik terindah anda dengan gaya sinematik, *candid*, dan warna yang kekal malar segar merentas zaman.",
-                image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
-                phone: "60123456789"
-            },
-            {
-                id: 5,
-                name: "Mahligai Rindu Pelamin",
-                category: "Pelamin",
-                location: "Kajang, Selangor",
-                rating: "4.7",
-                price: "2,500.00",
-                desc: "Rekaan pelamin dewan dan kanopi mengikut trend terkini: konsep taman, minimalis, dan sentuhan klasik istana.",
-                image: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=80",
-                phone: "60123456789"
-            },
-            {
-                id: 6,
-                name: "Kencana Emas Katering",
-                category: "Katering",
-                location: "Johor Bahru, Johor",
-                rating: "4.8",
-                price: "18.00 / pax",
-                desc: "Pakej katering lengkap termasuk pramusaji terlatih, hiasan bufet, dan set makan beradab premium.",
-                image: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=800&q=80",
-                phone: "60123456789"
-            }
-        ];
-
-        let activeCategory = 'Semua';
-
-        function renderVendors(vendorsToRender) {
-            const grid = document.getElementById('vendorGrid');
-            grid.innerHTML = '';
-
-            if (vendorsToRender.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center text-slate-500 py-10 font-cinzel">Tiada vendor ditemui.</div>`;
-                return;
-            }
-
-            vendorsToRender.forEach(v => {
-                const card = document.createElement('div');
-                card.className = 'glass-card rounded-3xl overflow-hidden cursor-pointer flex flex-col group';
-                card.onclick = () => openVendorDetail(v);
+        window.app = {
+            state: {
+                activeTab: 'vendor',
+                vendorCategory: '',
                 
-                card.innerHTML = `
-                    <div class="h-48 w-full overflow-hidden relative border-b border-amber-500/20">
-                        <img src="${v.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${v.name}">
-                        <div class="absolute top-4 right-4 bg-black/60 backdrop-blur text-yellow-400 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 border border-yellow-500/30">
-                            <i data-lucide="star" class="w-3 h-3 fill-current"></i> ${v.rating}
+                // ==========================================
+                // DATABASE STATIK KITAKAHWIN (CARA PADAM/TAMBAH IKLAN)
+                // ==========================================
+                // Untuk buang iklan, Tuan hanya perlu padam blok kod di antara tanda { dan },
+                // Untuk tambah iklan, Tuan boleh salin blok { ... } dan tampal di bawah.
+                vendors: [
+                    { 
+                        name: 'Mahligai Lens Studio', 
+                        category: 'Jurugambar', 
+                        area: 'Johor Bahru', 
+                        phone: '0123456789', 
+                        desc: 'Pakej perkahwinan lengkap foto & cinematic video. Percuma album kahwin.', 
+                        price: 'RM 1,800',
+                        image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80' 
+                    },
+                    { 
+                        name: 'Siti MUA Glamour', 
+                        category: 'MUA', 
+                        area: 'Skudai, Johor', 
+                        phone: '0198765432', 
+                        desc: 'Solekan pengantin eksklusif berserta percubaan (trial) percuma.', 
+                        price: 'RM 450',
+                        image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80'
+                    },
+                    { 
+                        name: 'Katering Warisan Selera', 
+                        category: 'Katering', 
+                        area: 'Kluang, Johor', 
+                        phone: '0171122334', 
+                        desc: 'Pakej kenduri sedap beriani gam & lauk kampung. Termasuk pelayan.', 
+                        price: 'RM 14 / pax',
+                        image: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=600&q=80'
+                    },
+                    { 
+                        name: 'Dewan Astana Impian', 
+                        category: 'Dewan', 
+                        area: 'Batu Pahat', 
+                        phone: '0134455667', 
+                        desc: 'Dewan berhawa dingin lengkap meja beradap, PA sistem & pelamin.', 
+                        price: 'RM 4,500',
+                        image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80'
+                    }
+                ]
+            },
+
+            showToast: (msg) => { 
+                const c = document.getElementById('toast-container'); 
+                const t = document.createElement('div'); t.className = 'toast'; t.innerText = msg; 
+                c.appendChild(t); setTimeout(()=>t.remove(),2500); 
+            },
+            
+            switchTab: (tab) => {
+                app.state.activeTab = tab;
+                ['vendor', 'bajet', 'family'].forEach(t => {
+                    document.getElementById(`tab-content-${t}`).classList.toggle('hidden', t !== tab);
+                    const btn = document.getElementById(`btn-tab-${t}`);
+                    if(t === tab) { 
+                        btn.className = "tab-btn active border border-transparent rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1"; 
+                    } else { 
+                        btn.className = "tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1"; 
+                    }
+                });
+            },
+            
+            setVendorCategory: (cat) => { 
+                app.state.vendorCategory = cat; 
+                // Kemaskini butang aktif
+                document.querySelectorAll('.cat-pill').forEach(el => {
+                    if(el.innerText.includes(cat) || (cat === '' && el.innerText === 'Semua')) {
+                        el.className = "cat-pill active shrink-0 bg-kk-main text-white border border-kk-main px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors";
+                    } else {
+                        el.className = "cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold transition-colors";
+                    }
+                });
+                app.renderVendors(); 
+            },
+
+            renderVendors: () => {
+                const q = (document.getElementById('vendor-search').value || '').toLowerCase();
+                const cat = app.state.vendorCategory;
+                
+                const filtered = app.state.vendors.filter(v => {
+                    if(q && !v.name.toLowerCase().includes(q) && !v.area.toLowerCase().includes(q)) return false;
+                    if(cat && v.category !== cat) return false;
+                    return true;
+                });
+
+                document.getElementById('vendors-grid').innerHTML = filtered.length ? filtered.map(v => `
+                    <div class="bg-white rounded-3xl border border-purple-100 shadow-sm flex flex-col overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="h-40 bg-purple-100 w-full relative">
+                            <img src="${v.image}" class="w-full h-full object-cover" loading="lazy" alt="${v.name}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <span class="absolute top-3 left-3 text-[10px] font-black uppercase tracking-wider bg-white text-purple-700 px-2.5 py-1 rounded-md shadow-sm">${v.category}</span>
+                            <span class="absolute bottom-3 right-3 font-black text-white text-base shadow-sm">${v.price}</span>
                         </div>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                        <span class="text-amber-500 text-[10px] font-bold uppercase tracking-wider mb-2">${v.category}</span>
-                        <h3 class="font-cinzel text-xl font-bold text-white mb-2 leading-tight group-hover:text-amber-400 transition-colors">${v.name}</h3>
-                        <p class="text-slate-400 text-xs flex items-center gap-1 mb-4"><i data-lucide="map-pin" class="w-3 h-3"></i> ${v.location}</p>
-                        
-                        <div class="mt-auto flex items-center justify-between border-t border-slate-700/50 pt-4">
-                            <div>
-                                <p class="text-[10px] text-slate-500 mb-0.5">Bermula dari</p>
-                                <p class="text-sm font-bold text-amber-400 font-mono">RM ${v.price}</p>
+                        <div class="p-5 flex flex-col gap-2 flex-1">
+                            <h4 class="font-extrabold text-slate-800 text-lg leading-tight">${v.name}</h4>
+                            <p class="text-xs text-slate-500 font-medium mb-2 line-clamp-2">${v.desc}</p>
+                            <div class="mt-auto flex justify-between items-center pt-4 border-t border-slate-100">
+                                <span class="text-[10px] text-slate-400 font-bold flex items-center gap-1"><span>📍</span> ${v.area}</span>
+                                <a href="https://api.whatsapp.com/send?phone=6${v.phone.replace(/\D/g,'')}&text=Salam,%20saya%20berminat%20dengan%20pakej%20${encodeURIComponent(v.name)}" target="_blank" class="bg-[#25D366] hover:bg-[#1da851] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors flex items-center gap-1.5 active:scale-95">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                                    WhatsApp
+                                </a>
                             </div>
-                            <button class="bg-slate-800 group-hover:bg-amber-500 text-white group-hover:text-slate-900 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-md">
-                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </button>
                         </div>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
+                `).join('') : '<div class="col-span-2 text-center py-12 bg-white rounded-3xl border border-slate-100"><p class="text-sm text-slate-500 font-bold">Tiada vendor dijumpai untuk carian ini.</p></div>';
+            },
 
-        function filterVendors() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            let filtered = vendors;
-
-            if (activeCategory !== 'Semua') {
-                filtered = filtered.filter(v => v.category === activeCategory);
-            }
-
-            if (query) {
-                filtered = filtered.filter(v => 
-                    v.name.toLowerCase().includes(query) || 
-                    v.location.toLowerCase().includes(query) ||
-                    v.category.toLowerCase().includes(query)
-                );
-            }
-
-            renderVendors(filtered);
-        }
-
-        function setCategory(cat) {
-            activeCategory = cat;
-            
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                if (btn.innerText.includes(cat) || (cat === 'Dewan & Lokasi' && btn.innerText === 'Dewan')) {
-                    btn.classList.add('active');
-                    btn.classList.remove('hover:border-amber-500/50', 'text-slate-300');
-                } else {
-                    btn.classList.remove('active');
-                    btn.classList.add('hover:border-amber-500/50', 'text-slate-300');
-                }
-            });
-
-            filterVendors();
-        }
-
-        // Modal Logic
-        function openVendorDetail(v) {
-            const modal = document.getElementById('vendorDetailModal');
-            document.getElementById('modalCover').src = v.image;
-            document.getElementById('modalCategory').innerText = v.category;
-            document.getElementById('modalRating').innerText = v.rating;
-            document.getElementById('modalTitle').innerText = v.name;
-            document.getElementById('modalLocation').innerHTML = `<i data-lucide="map-pin" class="w-4 h-4"></i> ${v.location}`;
-            document.getElementById('modalDesc').innerText = v.desc;
-            document.getElementById('modalPrice').innerText = `RM ${v.price}`;
-            
-            const waMsg = encodeURIComponent(`Hai ${v.name}, saya berminat dengan pakej anda (dijumpai melalui platform KitaKahwin).`);
-            document.getElementById('modalWhatsapp').href = `https://wa.me/${v.phone}?text=${waMsg}`;
-            
-            lucide.createIcons();
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
-        }
-
-        function closeVendorDetail() {
-            const modal = document.getElementById('vendorDetailModal');
-            modal.classList.add('opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
-        }
-
-        // Admin Modal Logic
-        function openVendorLogin() {
-            const modal = document.getElementById('vendorLoginModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
-        }
-
-        function closeVendorLogin() {
-            const modal = document.getElementById('vendorLoginModal');
-            modal.classList.add('opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
-        }
-
-        function handleVendorLogin(e) {
-            e.preventDefault();
-            alert("Log masuk berjaya. Memuatkan dashboard vendor...");
-            closeVendorLogin();
-        }
-
-        // Copy Affiliate Logic
-        function copyAffiliateInvite() {
-            const inviteLink = "https://kitaverse.com/kahwin/daftar?ref=agen_12345";
-            navigator.clipboard.writeText(inviteLink).then(() => {
-                const btn = document.getElementById('btnCopyAff');
-                const text = document.getElementById('textCopyAff');
-                text.innerText = "Berjaya Disalin!";
-                btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-500');
-                btn.classList.remove('bg-slate-900', 'text-amber-400');
+            calculateBudget: () => {
+                const guests = parseFloat(document.getElementById('budget-guests').value) || 0;
+                const rate = parseFloat(document.getElementById('budget-catering-rate').value) || 0;
+                const pelamin = parseFloat(document.getElementById('budget-pelamin').value) || 0;
+                const photo = parseFloat(document.getElementById('budget-photo').value) || 0;
+                const misc = parseFloat(document.getElementById('budget-misc').value) || 0;
                 
-                setTimeout(() => {
-                    text.innerText = "Salin Pautan Jemputan";
-                    btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-500');
-                    btn.classList.add('bg-slate-900', 'text-amber-400');
-                }, 2000);
-            });
-        }
+                const cateringTotal = guests * rate;
+                const total = cateringTotal + pelamin + photo + misc;
+                
+                document.getElementById('budget-total-result').innerText = `RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            },
 
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            renderVendors(vendors);
+            calculateFamily: () => {
+                const kids = parseInt(document.getElementById('family-kids').value) || 1;
+                const birth = parseFloat(document.getElementById('family-birth').value) || 0;
+                const monthly = parseFloat(document.getElementById('family-monthly').value) || 0;
+                
+                // Formula anggaran asas: Kos bersalin + (Keperluan bulanan x 12 bulan) darab bilangan anak
+                const total = (birth * kids) + (monthly * 12 * kids);
+                
+                document.getElementById('family-total-result').innerText = `RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            }
+        };
+
+        // Mulakan aplikasi
+        window.addEventListener('DOMContentLoaded', () => { 
+            app.renderVendors(); 
+            app.calculateBudget(); 
+            app.calculateFamily(); 
         });
     </script>
 </body>
