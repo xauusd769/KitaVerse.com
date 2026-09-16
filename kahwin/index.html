@@ -19,11 +19,7 @@
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         kk: {
-                            dark: '#4c1d95', /* Violet 900 */
-                            main: '#7c3aed', /* Violet 600 */
-                            light: '#a78bfa', /* Violet 400 */
-                            accent: '#fbcfe8', /* Pink 200 */
-                            bg: '#f5f3ff'    /* Violet 50 */
+                            dark: '#4c1d95', main: '#7c3aed', light: '#a78bfa', accent: '#fbcfe8', bg: '#f5f3ff'
                         }
                     }
                 }
@@ -32,12 +28,7 @@
     </script>
     
     <style>
-        html, body {
-            -webkit-text-size-adjust: 100%;
-            margin: 0; padding: 0; width: 100%;
-            overflow-x: hidden;
-            touch-action: pan-y;
-        }
+        html, body { -webkit-text-size-adjust: 100%; margin: 0; padding: 0; width: 100%; overflow-x: hidden; touch-action: pan-y; }
         body { background-color: #ede9fe; display: flex; justify-content: center; font-family: 'Inter', sans-serif; }
         input, select, textarea { font-size: 16px !important; }
         .mobile-container { width: 100%; max-width: 440px; background-color: #faf5ff; min-height: 100vh; min-height: 100dvh; position: relative; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; margin: 0 auto; overflow-x: hidden; }
@@ -59,23 +50,19 @@
 <body class="text-slate-800 antialiased selection:bg-kk-main selection:text-white">
 
     <div class="mobile-container">
-        <!-- HEADER -->
         <header class="w-full bg-white z-40 shrink-0 shadow-sm border-b border-purple-100 relative">
             <div class="bg-kk-dark text-white text-[10px] py-1.5 px-3 flex justify-center items-center gap-1.5">
-                <span>💍</span>
-                <span class="font-medium tracking-wide truncate">KITA KAHWIN — Direktori & Perancang Majlis</span>
+                <span>💍</span><span class="font-medium tracking-wide truncate">KITA KAHWIN — Direktori & Perancang Majlis</span>
             </div>
             
             <div class="flex justify-between items-center px-4 py-3">
                 <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='../index.html'">
                     <div class="bg-kk-main text-white rounded-full w-8 h-8 flex items-center justify-center font-black text-lg shadow-sm">K</div>
-                    <div class="font-black text-lg tracking-tight text-gray-900 leading-none">
-                        KITA<span class="text-kk-main">KAHWIN</span>
-                    </div>
+                    <div class="font-black text-lg tracking-tight text-gray-900 leading-none">KITA<span class="text-kk-main">KAHWIN</span></div>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button onclick="app.openVendorModal()" class="bg-amber-100 text-amber-700 border border-amber-200 text-[10px] font-black px-3 py-1.5 rounded-full shadow-sm active:scale-95 flex items-center gap-1 transition-colors hover:bg-amber-200">
-                        💼 Vendor
+                        💼 Daftar Vendor
                     </button>
                     <a href="../market/index.html" class="bg-purple-50 text-kk-main border border-purple-200 text-[10px] font-black px-3 py-1.5 rounded-full shadow-sm active:scale-95 flex items-center gap-1 hover:bg-purple-100 transition-colors">
                         🛍️ Market
@@ -99,11 +86,8 @@
 
         <!-- MAIN CONTENT AREA -->
         <main class="flex-1 overflow-y-auto relative no-scrollbar pb-20 p-3 bg-purple-50/40">
-            
-            <!-- TAB 1: DIREKTORI VENDOR -->
             <div id="tab-content-vendor" class="space-y-4">
                 
-                <!-- Banner Promosi KitaInvite (Pautan ke SaaS Kad Kahwin) -->
                 <div class="bg-gradient-to-r from-pink-600 to-purple-700 text-white p-5 rounded-3xl shadow-lg relative overflow-hidden flex flex-col items-center text-center">
                     <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-xl"></div>
                     <div class="absolute -left-4 -bottom-4 w-24 h-24 bg-pink-400/20 rounded-full blur-xl"></div>
@@ -133,11 +117,10 @@
 
                 <!-- Grid Paparan Iklan -->
                 <div id="vendors-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Diisi JavaScript -->
+                    <div class="col-span-2 text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-kk-main mx-auto"></div></div>
                 </div>
             </div>
 
-            <!-- TAB 2: KALKULATOR BAJET KENDURI -->
             <div id="tab-content-bajet" class="space-y-4 hidden">
                 <div class="bg-white p-5 rounded-3xl shadow-sm border border-purple-100 space-y-4">
                     <div class="text-center border-b border-purple-100 pb-4">
@@ -153,34 +136,22 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Kos Katering (Seorang)</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
-                                <input type="number" id="budget-catering-rate" value="15" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
-                            </div>
+                            <div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span><input type="number" id="budget-catering-rate" value="15" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors"></div>
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Pelamin & Dekorasi</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
-                                <input type="number" id="budget-pelamin" value="3500" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
-                            </div>
+                            <div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span><input type="number" id="budget-pelamin" value="3500" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors"></div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Jurugambar & Video</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
-                                <input type="number" id="budget-photo" value="2500" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
-                            </div>
+                            <div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span><input type="number" id="budget-photo" value="2500" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors"></div>
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Lain-lain / Kad Jemputan</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
-                                <input type="number" id="budget-misc" value="2000" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors">
-                            </div>
+                            <div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span><input type="number" id="budget-misc" value="2000" oninput="app.calculateBudget()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-kk-main transition-colors"></div>
                         </div>
                     </div>
 
@@ -192,7 +163,6 @@
                 </div>
             </div>
 
-            <!-- TAB 3: KALKULATOR FAMILY PLANNING -->
             <div id="tab-content-family" class="space-y-4 hidden">
                 <div class="bg-white p-5 rounded-3xl shadow-sm border border-emerald-100 space-y-4">
                     <div class="text-center border-b border-emerald-100 pb-4">
@@ -203,26 +173,18 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">Sasaran Anak (Dalam 5 Tahun)</label>
                         <select id="family-kids" onchange="app.calculateFamily()" class="w-full p-3 border border-slate-200 rounded-xl bg-slate-50 font-bold text-slate-800 outline-none focus:border-emerald-500 cursor-pointer">
-                            <option value="1">1 Orang Anak</option>
-                            <option value="2">2 Orang Anak (Jarak Dekat)</option>
-                            <option value="3">3 Orang Anak</option>
+                            <option value="1">1 Orang Anak</option><option value="2">2 Orang Anak (Jarak Dekat)</option><option value="3">3 Orang Anak</option>
                         </select>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Kos Bersalin (Hospital)</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
-                                <input type="number" id="family-birth" value="3000" oninput="app.calculateFamily()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-emerald-500">
-                            </div>
+                            <div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span><input type="number" id="family-birth" value="3000" oninput="app.calculateFamily()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-emerald-500"></div>
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-slate-600 mb-1 uppercase tracking-wide">Susu/Lampin (Sebulan)</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span>
-                                <input type="number" id="family-monthly" value="500" oninput="app.calculateFamily()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-emerald-500">
-                            </div>
+                            <div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">RM</span><input type="number" id="family-monthly" value="500" oninput="app.calculateFamily()" class="w-full pl-8 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 font-bold outline-none focus:border-emerald-500"></div>
                         </div>
                     </div>
 
@@ -237,7 +199,6 @@
 
         </main>
         
-        <!-- MODAL LOGIN/DAFTAR VENDOR -->
         <div id="vendor-modal" class="modal-overlay" onclick="app.closeVendorModal()">
             <div class="modal-content bg-white rounded-3xl shadow-2xl p-6 border border-slate-100" onclick="event.stopPropagation()">
                 <div class="flex justify-between items-start mb-4">
@@ -267,7 +228,7 @@
                         <input type="password" id="vendor-login-pass" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-kk-main outline-none text-sm font-bold transition-all">
                     </div>
                     
-                    <button onclick="app.processVendorAuth()" class="w-full bg-kk-main hover:bg-kk-dark text-white font-black py-3.5 rounded-xl shadow-lg shadow-kk-main/30 active:scale-95 text-sm transition-all mt-2">Log Masuk / Daftar</button>
+                    <button onclick="app.processVendorAuth()" id="btn-vendor-auth" class="w-full bg-kk-main hover:bg-kk-dark text-white font-black py-3.5 rounded-xl shadow-lg shadow-kk-main/30 active:scale-95 text-sm transition-all mt-2">Daftar / Log Masuk</button>
                 </div>
                 
                 <div class="mt-6 pt-4 border-t border-slate-100 text-center">
@@ -280,52 +241,59 @@
 
     <div id="toast-container"></div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Guna database pasarkita-eff95 (Satu Ekosistem)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3Yyo-F6Cp9rP_3btB35K31SDaMwwf2to",
+            authDomain: "pasarkita-eff95.firebaseapp.com",
+            projectId: "pasarkita-eff95",
+            storageBucket: "pasarkita-eff95.firebasestorage.app",
+            messagingSenderId: "47537965550",
+            appId: "1:47537965550:web:2ecd0fe86a4c964af3e6ff"
+        };
+        const fApp = initializeApp(firebaseConfig);
+        const auth = getAuth(fApp);
+        const db = getFirestore(fApp);
+        const dbPath = "artifacts/pasarkita-prod/public/data";
+
+        // Dedahkan fungsi DB ke global scope untuk app logic
+        window.firebaseDb = db;
+        window.firebaseDbPath = dbPath;
+        window.firebaseSetDoc = setDoc;
+        window.firebaseDoc = doc;
+
+        signInAnonymously(auth).then(() => {
+            // Dengar perubahan koleksi kahwin_vendors secara real-time
+            onSnapshot(collection(db, `${dbPath}/kahwin_vendors`), (snap) => {
+                if (snap.empty) {
+                    // Seed data permulaan supaya direktori tidak kosong
+                    const dummy = [
+                        { name: 'Mahligai Lens Studio', category: 'Jurugambar', area: 'Johor Bahru', phone: '0123456789', desc: 'Pakej perkahwinan lengkap foto & cinematic video.', price: 'RM 1,800', image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80', status: 'approved' },
+                        { name: 'Siti MUA Glamour', category: 'MUA', area: 'Skudai, Johor', phone: '0198765432', desc: 'Solekan pengantin eksklusif berserta percubaan.', price: 'RM 450', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80', status: 'approved' },
+                        { name: 'Katering Warisan Selera', category: 'Katering', area: 'Kluang, Johor', phone: '0171122334', desc: 'Pakej kenduri sedap beriani gam & lauk kampung.', price: 'RM 14 / pax', image: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=600&q=80', status: 'approved' },
+                        { name: 'Dewan Astana Impian', category: 'Dewan', area: 'Batu Pahat', phone: '0134455667', desc: 'Dewan berhawa dingin lengkap meja beradap.', price: 'RM 4,500', image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80', status: 'approved' }
+                    ];
+                    dummy.forEach(v => setDoc(doc(db, `${dbPath}/kahwin_vendors`, v.phone), v));
+                } else {
+                    // Masukkan ke dalam state aplikasi dan papar
+                    window.app.state.vendors = snap.docs.map(d => d.data()).filter(v => v.status === 'approved' || v.status === 'pending_payment');
+                    window.app.renderVendors();
+                }
+            }, (error) => console.error("Firebase Error:", error));
+        });
+    </script>
+
     <script>
         window.app = {
             state: {
                 activeTab: 'vendor',
                 vendorCategory: '',
                 affiliateRef: null,
-                
-                // DATABASE STATIK KITAKAHWIN (CARA PADAM/TAMBAH IKLAN)
-                vendors: [
-                    { 
-                        name: 'Mahligai Lens Studio', 
-                        category: 'Jurugambar', 
-                        area: 'Johor Bahru', 
-                        phone: '0123456789', 
-                        desc: 'Pakej perkahwinan lengkap foto & cinematic video. Percuma album kahwin.', 
-                        price: 'RM 1,800',
-                        image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80' 
-                    },
-                    { 
-                        name: 'Siti MUA Glamour', 
-                        category: 'MUA', 
-                        area: 'Skudai, Johor', 
-                        phone: '0198765432', 
-                        desc: 'Solekan pengantin eksklusif berserta percubaan (trial) percuma.', 
-                        price: 'RM 450',
-                        image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80'
-                    },
-                    { 
-                        name: 'Katering Warisan Selera', 
-                        category: 'Katering', 
-                        area: 'Kluang, Johor', 
-                        phone: '0171122334', 
-                        desc: 'Pakej kenduri sedap beriani gam & lauk kampung. Termasuk pelayan.', 
-                        price: 'RM 14 / pax',
-                        image: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=600&q=80'
-                    },
-                    { 
-                        name: 'Dewan Astana Impian', 
-                        category: 'Dewan', 
-                        area: 'Batu Pahat', 
-                        phone: '0134455667', 
-                        desc: 'Dewan berhawa dingin lengkap meja beradap, PA sistem & pelamin.', 
-                        price: 'RM 4,500',
-                        image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80'
-                    }
-                ]
+                vendors: [] // Akan diisi oleh Firebase
             },
 
             showToast: (msg) => { 
@@ -334,12 +302,9 @@
                 c.appendChild(t); setTimeout(()=>t.remove(),2500); 
             },
             
-            // FUNGSI MODAL VENDOR LENGKAP DENGAN AFFILIATE TRACKER
             openVendorModal: () => {
                 const modal = document.getElementById('vendor-modal');
                 const badge = document.getElementById('affiliate-badge');
-                
-                // Kesan affiliate dari URL bar (Contoh: kitaverse.com/kahwin?ref=agen1001)
                 const urlParams = new URLSearchParams(window.location.search);
                 const ref = urlParams.get('ref');
                 
@@ -350,33 +315,53 @@
                 } else {
                     badge.classList.add('hidden');
                 }
-                
                 modal.classList.add('active');
             },
             closeVendorModal: () => {
                 document.getElementById('vendor-modal').classList.remove('active');
             },
-            processVendorAuth: () => {
-                const wa = document.getElementById('vendor-login-wa').value;
+            
+            processVendorAuth: async () => {
+                const wa = document.getElementById('vendor-login-wa').value.trim();
                 const pass = document.getElementById('vendor-login-pass').value;
+                const btn = document.getElementById('btn-vendor-auth');
                 
-                if(!wa || !pass) {
-                    app.showToast("Sila masukkan no. telefon & kata laluan.");
-                    return;
-                }
+                if(!wa || !pass) return app.showToast("Sila masukkan no. telefon & kata laluan.");
                 
-                // Simulate processing
-                app.showToast("Menyemak rekod pangkalan data...");
-                setTimeout(() => {
-                    app.closeVendorModal();
-                    if(app.state.affiliateRef) {
-                        alert(`PERHATIAN KEPADA ADMIN (Sistem Demo):\n\nVendor baru memohon untuk berdaftar!\n\nNo. WA Vendor: ${wa}\nRujukan Affiliate: ${app.state.affiliateRef}\n\nSistem KitaPay akan menolak RM50 dari bayaran RM150 untuk disalurkan ke akaun ejen ${app.state.affiliateRef}.`);
+                btn.innerText = "Memproses...";
+                try {
+                    if(window.firebaseDb && window.firebaseSetDoc) {
+                        // Simpan pendaftaran vendor ke Firebase (Status Pending Payment)
+                        await window.firebaseSetDoc(window.firebaseDoc(window.firebaseDb, `${window.firebaseDbPath}/kahwin_vendors`, wa), {
+                            phone: wa,
+                            password: pass,
+                            affiliateRef: app.state.affiliateRef || null,
+                            status: 'pending_payment',
+                            timestamp: Date.now(),
+                            name: 'Vendor Baru (' + wa + ')',
+                            category: 'Lain-lain',
+                            area: 'Malaysia',
+                            price: 'TBA',
+                            desc: 'Menunggu pengesahan Admin',
+                            image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80'
+                        }, { merge: true });
+
+                        app.closeVendorModal();
+                        let alertMsg = `BERJAYA DAFTAR!\n\nNo. WA Vendor: ${wa}`;
+                        if(app.state.affiliateRef) alertMsg += `\nRujukan Affiliate: ${app.state.affiliateRef}`;
+                        alertMsg += `\n\nSila hubungi Admin (0182676999) untuk pengaktifan Iklan/Pembayaran RM150.`;
+                        alert(alertMsg);
+                        
+                        document.getElementById('vendor-login-wa').value = '';
+                        document.getElementById('vendor-login-pass').value = '';
                     } else {
-                        alert(`PERHATIAN KEPADA ADMIN (Sistem Demo):\n\nVendor baru memohon untuk berdaftar!\n\nNo. WA Vendor: ${wa}\n(Tiada Rujukan Ejen)`);
+                        app.showToast("Database sedang dimuatkan, sila tunggu.");
                     }
-                    document.getElementById('vendor-login-wa').value = '';
-                    document.getElementById('vendor-login-pass').value = '';
-                }, 1000);
+                } catch(e) {
+                    console.error(e);
+                    app.showToast("Ralat pangkalan data.");
+                }
+                btn.innerText = "Daftar / Log Masuk";
             },
             
             switchTab: (tab) => {
@@ -384,22 +369,16 @@
                 ['vendor', 'bajet', 'family'].forEach(t => {
                     document.getElementById(`tab-content-${t}`).classList.toggle('hidden', t !== tab);
                     const btn = document.getElementById(`btn-tab-${t}`);
-                    if(t === tab) { 
-                        btn.className = "tab-btn active border border-transparent rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1"; 
-                    } else { 
-                        btn.className = "tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1"; 
-                    }
+                    if(t === tab) btn.className = "tab-btn active border border-transparent rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1"; 
+                    else btn.className = "tab-btn bg-white border border-gray-200 text-gray-600 rounded-xl py-2.5 text-[11px] font-bold shadow-sm flex flex-col items-center justify-center gap-1"; 
                 });
             },
             
             setVendorCategory: (cat) => { 
                 app.state.vendorCategory = cat; 
                 document.querySelectorAll('.cat-pill').forEach(el => {
-                    if(el.innerText.includes(cat) || (cat === '' && el.innerText === 'Semua')) {
-                        el.className = "cat-pill active shrink-0 bg-kk-main text-white border border-kk-main px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors";
-                    } else {
-                        el.className = "cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold transition-colors";
-                    }
+                    if(el.innerText.includes(cat) || (cat === '' && el.innerText === 'Semua')) el.className = "cat-pill active shrink-0 bg-kk-main text-white border border-kk-main px-4 py-2 rounded-full text-xs font-bold shadow-sm transition-colors";
+                    else el.className = "cat-pill shrink-0 bg-white text-slate-600 border border-slate-200 px-4 py-2 rounded-full text-xs font-bold transition-colors";
                 });
                 app.renderVendors(); 
             },
@@ -415,12 +394,13 @@
                 });
 
                 document.getElementById('vendors-grid').innerHTML = filtered.length ? filtered.map(v => `
-                    <div class="bg-white rounded-3xl border border-purple-100 shadow-sm flex flex-col overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="bg-white rounded-3xl border ${v.status==='pending_payment' ? 'border-amber-300' : 'border-purple-100'} shadow-sm flex flex-col overflow-hidden hover:shadow-md transition-shadow">
                         <div class="h-40 bg-purple-100 w-full relative">
                             <img src="${v.image}" class="w-full h-full object-cover" loading="lazy" alt="${v.name}">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             <span class="absolute top-3 left-3 text-[10px] font-black uppercase tracking-wider bg-white text-purple-700 px-2.5 py-1 rounded-md shadow-sm">${v.category}</span>
                             <span class="absolute bottom-3 right-3 font-black text-white text-base shadow-sm">${v.price}</span>
+                            ${v.status==='pending_payment' ? '<span class="absolute top-3 right-3 bg-amber-500 text-white text-[9px] px-2 py-1 rounded-full font-bold">Pending Payment</span>' : ''}
                         </div>
                         <div class="p-5 flex flex-col gap-2 flex-1">
                             <h4 class="font-extrabold text-slate-800 text-lg leading-tight">${v.name}</h4>
@@ -428,7 +408,6 @@
                             <div class="mt-auto flex justify-between items-center pt-4 border-t border-slate-100">
                                 <span class="text-[10px] text-slate-400 font-bold flex items-center gap-1"><span>📍</span> ${v.area}</span>
                                 <a href="https://api.whatsapp.com/send?phone=6${v.phone.replace(/\D/g,'')}&text=Salam,%20saya%20berminat%20dengan%20pakej%20${encodeURIComponent(v.name)}" target="_blank" class="bg-[#25D366] hover:bg-[#1da851] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors flex items-center gap-1.5 active:scale-95">
-                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
                                     WhatsApp
                                 </a>
                             </div>
@@ -439,35 +418,17 @@
 
             calculateBudget: () => {
                 const guests = parseFloat(document.getElementById('budget-guests').value) || 0;
-                const rate = parseFloat(document.getElementById('budget-catering-rate').value) || 0;
-                const pelamin = parseFloat(document.getElementById('budget-pelamin').value) || 0;
-                const photo = parseFloat(document.getElementById('budget-photo').value) || 0;
-                const misc = parseFloat(document.getElementById('budget-misc').value) || 0;
-                
-                const cateringTotal = guests * rate;
-                const total = cateringTotal + pelamin + photo + misc;
-                
+                const total = (guests * (parseFloat(document.getElementById('budget-catering-rate').value) || 0)) + (parseFloat(document.getElementById('budget-pelamin').value) || 0) + (parseFloat(document.getElementById('budget-photo').value) || 0) + (parseFloat(document.getElementById('budget-misc').value) || 0);
                 document.getElementById('budget-total-result').innerText = `RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             },
 
             calculateFamily: () => {
                 const kids = parseInt(document.getElementById('family-kids').value) || 1;
-                const birth = parseFloat(document.getElementById('family-birth').value) || 0;
-                const monthly = parseFloat(document.getElementById('family-monthly').value) || 0;
-                
-                // Formula anggaran asas: Kos bersalin + (Keperluan bulanan x 12 bulan) darab bilangan anak
-                const total = (birth * kids) + (monthly * 12 * kids);
-                
+                const total = ((parseFloat(document.getElementById('family-birth').value) || 0) * kids) + ((parseFloat(document.getElementById('family-monthly').value) || 0) * 12 * kids);
                 document.getElementById('family-total-result').innerText = `RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             }
         };
-
-        // Mulakan aplikasi
-        window.addEventListener('DOMContentLoaded', () => { 
-            app.renderVendors(); 
-            app.calculateBudget(); 
-            app.calculateFamily(); 
-        });
+        window.addEventListener('DOMContentLoaded', () => { app.calculateBudget(); app.calculateFamily(); });
     </script>
 </body>
 </html>
