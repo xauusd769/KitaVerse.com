@@ -17,7 +17,6 @@
     <style>
         :root {
             --bg-color: #020617; /* Slate 950 */
-            --accent-glow: rgba(16, 185, 129, 0.15);
         }
         
         * {
@@ -31,20 +30,17 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
-        
-        /* Bunuh 300ms delay di telefon bimbit */
-        a, button {
-            touch-action: manipulation; 
-        }
 
-        /* Ambient Background Animations */
+        /* Ambient Background Animations - WAJIB pointer-events: none supaya tak block click */
         .ambient-bg {
             position: fixed; inset: 0; z-index: -1; overflow: hidden;
             background: radial-gradient(circle at 50% 0%, #061b15 0%, var(--bg-color) 70%);
+            pointer-events: none;
         }
         .blob {
             position: absolute; filter: blur(120px); opacity: 0.4;
             animation: float-blob 20s infinite ease-in-out alternate;
+            pointer-events: none;
         }
         .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #064e3b; animation-delay: 0s; }
         .blob-2 { bottom: 10%; right: -10%; width: 60vw; height: 60vw; background: #0f172a; animation-delay: -5s; }
@@ -63,24 +59,49 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        /* 
+          KAD KLIK (CLICKABLE CARDS) 
+          Asas transition yang sangat pantas untuk rasa fizikal
+        */
         .glass-card {
             background: linear-gradient(145deg, rgba(30, 41, 59, 0.3) 0%, rgba(15, 23, 42, 0.5) 100%);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.15s ease-out, border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+            display: block;
+            cursor: pointer;
         }
 
-        /* Hover Effect untuk Desktop, Active Effect untuk Mobile */
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        /* 
+          PENYELESAIAN DOUBLE-TAP iOS: 
+          Kesan hover ini HANYA aktif jika peranti ada tetikus (desktop/laptop).
+          Di telefon, ia diabaikan, maka klik pertama akan terus buka link!
+        */
+        @media (hover: hover) and (pointer: fine) {
+            .glass-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(16, 185, 129, 0.4);
+                box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            }
+            .kita-doa-card:hover {
+                transform: translateY(-5px) scale(1.01);
+            }
         }
+
+        /* ACTIVE STATE KHAS UNTUK TELEFON PINTAR (Memberi rasa butang ditekan) */
         .glass-card:active {
-            transform: scale(0.97);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.4);
-            border-color: rgba(16, 185, 129, 0.4);
+            transform: scale(0.95);
+            border-color: rgba(16, 185, 129, 0.6);
+            box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .kita-doa-card {
+            transition: transform 0.15s ease-out;
+            cursor: pointer;
+        }
+        .kita-doa-card:active {
+            transform: scale(0.96);
         }
 
         /* Hero Spotlight */
@@ -92,12 +113,6 @@
             background: radial-gradient(ellipse at top, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
             pointer-events: none; z-index: 0;
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
         /* Animation utilities */
         .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
@@ -124,19 +139,16 @@
     <!-- Navigation -->
     <header class="fixed top-0 w-full z-50 glass-nav">
         <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2.5 active:scale-95 transition-transform" aria-label="Kembali ke atas">
+            <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-400 to-teal-600 flex items-center justify-center font-black text-slate-900 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
                     K
                 </div>
                 <span class="font-extrabold text-lg tracking-tight text-white">Kita<span class="text-emerald-400">Verse</span></span>
-            </a>
-            <nav class="hidden md:flex items-center gap-8 text-sm font-bold text-slate-400">
-                <a href="#rohani" class="hover:text-emerald-400 transition-colors">Kerohanian</a>
-                <a href="#bisnes" class="hover:text-white transition-colors">Hab Bisnes</a>
-                <a href="#komuniti" class="hover:text-white transition-colors">Komuniti</a>
-            </nav>
+            </div>
+            
+            <!-- Standard Anchor Tag - No hover issues -->
             <div>
-                <a href="affiliate/index.html" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 hover:bg-slate-700 hover:border-slate-600 active:scale-95 text-xs font-bold transition-all text-white flex items-center gap-2 shadow-lg">
+                <a href="./affiliate/index.html" class="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 active:bg-slate-700 active:scale-95 text-xs font-bold transition-all text-white flex items-center gap-2 block">
                     <i data-lucide="user" class="w-4 h-4"></i> Portal Ejen
                 </a>
             </div>
@@ -166,14 +178,13 @@
             </p>
         </div>
 
-        <!-- THE FLAGSHIP: KITADOA -->
+        <!-- THE FLAGSHIP: KITADOA (ENTIRE CARD IS NOW CLICKABLE) -->
         <div id="rohani" class="max-w-5xl mx-auto mt-16 fade-in-up" style="animation-delay: 0.2s;">
-            <div class="relative rounded-[2rem] p-1 overflow-hidden group">
-                <!-- Glowing animated border wrapper -->
-                <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/30 via-teal-500/30 to-emerald-500/30 opacity-50 group-hover:opacity-100 transition-opacity duration-700 blur-xl pointer-events-none"></div>
+            <a href="./doa/index.html" class="relative rounded-[2rem] p-1 block focus:outline-none kita-doa-card">
+                <!-- Glowing background wrapper -->
+                <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/30 via-teal-500/30 to-emerald-500/30 opacity-50 blur-xl"></div>
                 
                 <div class="relative bg-slate-900/80 backdrop-blur-2xl border border-emerald-500/20 p-8 md:p-12 rounded-[1.8rem] flex flex-col md:flex-row items-center justify-between gap-10 overflow-hidden">
-                    <!-- Background Pattern inside card -->
                     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMGw0MCA0ME00MCAwbC00MCA0MCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iMC4wMiIvPgo8L3N2Zz4=')] opacity-30 pointer-events-none"></div>
 
                     <div class="flex-1 space-y-5 relative z-10 text-center md:text-left">
@@ -188,10 +199,9 @@
                             Mulakan hari anda di ekosistem ini dengan ketenangan. Akses Janaan Doa AI peribadi, Tasbih Digital mekanikal, dan pelbagai rawatan rohani khusus untuk usahawan.
                         </p>
                         <div class="pt-2">
-                            <!-- NATIVE ANCHOR TAG FOR FLAWLESS NAVIGATION -->
-                            <a href="doa/index.html" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-black text-sm transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] shine-effect">
+                            <span class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-emerald-500 text-slate-950 font-black text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)] shine-effect">
                                 Buka Ruang KitaDoa <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                            </a>
+                            </span>
                         </div>
                     </div>
 
@@ -200,7 +210,6 @@
                         <div class="w-full h-full rounded-full border border-emerald-500/30 flex items-center justify-center relative bg-slate-900/50 backdrop-blur-md">
                             <div class="w-3/4 h-3/4 rounded-full border border-emerald-500/50 flex items-center justify-center relative">
                                 <i data-lucide="fingerprint" class="w-16 h-16 text-emerald-400 opacity-80"></i>
-                                <!-- Orbiting dot -->
                                 <div class="absolute inset-0 animate-[spin_4s_linear_infinite]">
                                     <div class="w-3 h-3 bg-emerald-400 rounded-full absolute -top-1.5 left-1/2 -translate-x-1/2 shadow-[0_0_10px_#10b981]"></div>
                                 </div>
@@ -208,11 +217,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </main>
 
-    <!-- MODULES GRID -->
+    <!-- MODULES GRID (PURE ANCHOR TAGS) -->
     <section id="bisnes" class="relative z-10 px-5 pb-24">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12 fade-in-up" style="animation-delay: 0.3s;">
@@ -222,66 +231,61 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 fade-in-up" style="animation-delay: 0.4s;">
                 
-                <!-- KitaWeb (NATIVE ANCHOR) -->
-                <a href="web/index.html" class="glass-card p-6 rounded-3xl group block relative overflow-hidden focus:outline-none">
-                    <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="layout-template" class="w-24 h-24 text-sky-400"></i></div>
-                    <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center mb-4 text-sky-400 group-hover:scale-110 transition-transform">
+                <a href="./web/index.html" class="glass-card p-6 rounded-3xl relative overflow-hidden focus:outline-none">
+                    <div class="absolute top-0 right-0 p-6 opacity-10"><i data-lucide="layout-template" class="w-24 h-24 text-sky-400"></i></div>
+                    <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center mb-4 text-sky-400">
                         <i data-lucide="monitor-smartphone" class="w-6 h-6"></i>
                     </div>
                     <h4 class="text-lg font-black text-white mb-2">KitaWeb SaaS</h4>
                     <p class="text-sm text-slate-400 leading-relaxed mb-4">Bina laman web bisnes automasi WhatsApp dalam 3 minit. Hanya RM100/tahun.</p>
-                    <span class="text-xs font-bold text-sky-400 flex items-center gap-1 group-hover:underline">Akses Sistem <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
+                    <span class="text-xs font-bold text-sky-400 flex items-center gap-1">Akses Sistem <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
                 </a>
 
-                <!-- KitaMarket (NATIVE ANCHOR) -->
-                <a href="market/index.html" class="glass-card p-6 rounded-3xl group block relative overflow-hidden focus:outline-none">
-                    <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="shopping-bag" class="w-24 h-24 text-orange-400"></i></div>
-                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 text-orange-400 group-hover:scale-110 transition-transform">
+                <a href="./market/index.html" class="glass-card p-6 rounded-3xl relative overflow-hidden focus:outline-none">
+                    <div class="absolute top-0 right-0 p-6 opacity-10"><i data-lucide="shopping-bag" class="w-24 h-24 text-orange-400"></i></div>
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 text-orange-400">
                         <i data-lucide="store" class="w-6 h-6"></i>
                     </div>
                     <h4 class="text-lg font-black text-white mb-2">KitaMarket</h4>
                     <p class="text-sm text-slate-400 leading-relaxed mb-4">E-dagang komuniti dan kursus kemahiran tanpa yuran tersembunyi. Fokus Direct-to-WhatsApp.</p>
-                    <span class="text-xs font-bold text-orange-400 flex items-center gap-1 group-hover:underline">Beli / Jual <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
+                    <span class="text-xs font-bold text-orange-400 flex items-center gap-1">Beli / Jual <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
                 </a>
 
-                <!-- KitaKahwin (NATIVE ANCHOR) -->
-                <a href="kahwin/index.html" class="glass-card p-6 rounded-3xl group block relative overflow-hidden focus:outline-none">
-                    <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="heart-handshake" class="w-24 h-24 text-amber-400"></i></div>
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 text-amber-400 group-hover:scale-110 transition-transform">
+                <a href="./kahwin/index.html" class="glass-card p-6 rounded-3xl relative overflow-hidden focus:outline-none">
+                    <div class="absolute top-0 right-0 p-6 opacity-10"><i data-lucide="heart-handshake" class="w-24 h-24 text-amber-400"></i></div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 text-amber-400">
                         <i data-lucide="rings" class="w-6 h-6"></i>
                     </div>
                     <h4 class="text-lg font-black text-white mb-2">KitaKahwin</h4>
                     <p class="text-sm text-slate-400 leading-relaxed mb-4">Direktori vendor perkahwinan, kalkulator bajet, dan perancangan kewangan keluarga baru.</p>
-                    <span class="text-xs font-bold text-amber-400 flex items-center gap-1 group-hover:underline">Cari Vendor <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
+                    <span class="text-xs font-bold text-amber-400 flex items-center gap-1">Cari Vendor <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
                 </a>
 
-                <!-- KitaInvite (NATIVE ANCHOR) -->
-                <a href="invite/index.html" class="glass-card p-6 rounded-3xl group block relative overflow-hidden focus:outline-none">
-                    <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="mail-open" class="w-24 h-24 text-pink-400"></i></div>
-                    <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-4 text-pink-400 group-hover:scale-110 transition-transform">
+                <a href="./invite/index.html" class="glass-card p-6 rounded-3xl relative overflow-hidden focus:outline-none">
+                    <div class="absolute top-0 right-0 p-6 opacity-10"><i data-lucide="mail-open" class="w-24 h-24 text-pink-400"></i></div>
+                    <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-4 text-pink-400">
                         <i data-lucide="gift" class="w-6 h-6"></i>
                     </div>
                     <h4 class="text-lg font-black text-white mb-2">KitaInvite</h4>
                     <p class="text-sm text-slate-400 leading-relaxed mb-4">Enjin kad jemputan kahwin digital 3D sinematik lengkap dengan sistem RSVP pintar.</p>
-                    <span class="text-xs font-bold text-pink-400 flex items-center gap-1 group-hover:underline">Buat Kad <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
+                    <span class="text-xs font-bold text-pink-400 flex items-center gap-1">Buat Kad <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
                 </a>
 
-                <!-- KitaPay (NATIVE ANCHOR) -->
-                <a href="pay/index.html" class="glass-card p-6 rounded-3xl group block relative overflow-hidden focus:outline-none md:col-span-2 lg:col-span-1">
-                    <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="wallet" class="w-24 h-24 text-teal-400"></i></div>
-                    <div class="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center mb-4 text-teal-400 group-hover:scale-110 transition-transform">
+                <a href="./pay/index.html" class="glass-card p-6 rounded-3xl relative overflow-hidden focus:outline-none md:col-span-2 lg:col-span-1">
+                    <div class="absolute top-0 right-0 p-6 opacity-10"><i data-lucide="wallet" class="w-24 h-24 text-teal-400"></i></div>
+                    <div class="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center mb-4 text-teal-400">
                         <i data-lucide="coins" class="w-6 h-6"></i>
                     </div>
                     <h4 class="text-lg font-black text-white mb-2">KitaPay &amp; KitaCoin</h4>
                     <p class="text-sm text-slate-400 leading-relaxed mb-4">Kalkulator agihan komisen telus (Split-Payment) dan sistem ganjaran ekosistem.</p>
-                    <span class="text-xs font-bold text-teal-400 flex items-center gap-1 group-hover:underline">Lihat Simulator <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
+                    <span class="text-xs font-bold text-teal-400 flex items-center gap-1">Lihat Simulator <i data-lucide="chevron-right" class="w-3 h-3"></i></span>
                 </a>
 
             </div>
         </div>
     </section>
 
-    <!-- AFFILIATE CTA -->
+    <!-- AFFILIATE CTA (SAFE ANCHOR LINK) -->
     <section id="komuniti" class="relative z-10 px-5 pb-20">
         <div class="max-w-4xl mx-auto glass-card rounded-[2rem] p-8 md:p-12 text-center border-emerald-500/30 fade-in-up" style="animation-delay: 0.5s;">
             <div class="w-16 h-16 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center mx-auto mb-6 shadow-inner">
@@ -291,8 +295,7 @@
             <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto mb-8">
                 Sertai keluarga ejen KitaAffiliate. Jana komisen lumayan secara telus setiap kali anda membantu usahawan lain mendigitalisasikan bisnes mereka melalui KitaVerse.
             </p>
-            <!-- NATIVE ANCHOR TAG FOR FLAWLESS NAVIGATION -->
-            <a href="affiliate/index.html" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white hover:bg-slate-200 active:scale-95 text-slate-950 font-black text-sm transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+            <a href="./affiliate/index.html" class="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white active:bg-slate-200 active:scale-95 text-slate-950 font-black text-sm transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] block">
                 Daftar Portal Ejen Sekarang
             </a>
         </div>
@@ -301,7 +304,7 @@
     <!-- FOOTER -->
     <footer class="border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-lg relative z-10">
         <div class="max-w-6xl mx-auto px-5 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
                 <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center font-black text-slate-900 text-[10px]">K</div>
                 <span class="font-bold text-xs text-white tracking-widest uppercase">KitaVerse</span>
             </div>
@@ -312,7 +315,6 @@
     </footer>
 
     <script>
-        // Membina ikon Lucide
         lucide.createIcons();
     </script>
 </body>
