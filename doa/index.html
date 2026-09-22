@@ -159,6 +159,11 @@
     .btn-press:active { transform: scale(0.95); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* CRITICAL FIX FOR IOS AUTO-ZOOM ON INPUT FIELDS */
+    input, textarea, select {
+      font-size: 16px !important; 
+    }
 
     @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(40px, 60px) scale(1.1); } }
     @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -178,14 +183,14 @@
   </div>
   <div class="mesh-grid"></div>
 
-  <header class="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[600px] z-50 ultra-glass px-2 py-2">
+  <header id="main-header" class="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[600px] z-50 ultra-glass px-2 py-2 transition-transform duration-300">
     <div class="flex flex-col gap-2">
       <!-- Top Row -->
       <div class="flex items-center justify-between px-3 pt-1">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.5)] cursor-pointer" onclick="window.location.reload()">
+          <a href="../index.html" class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.5)] cursor-pointer hover:scale-105 transition-transform" title="Kembali ke Laman Utama">
             <i class="fa-solid fa-hands-praying text-slate-900 text-lg"></i>
-          </div>
+          </a>
           <div>
             <h1 class="font-extrabold text-white text-lg leading-none tracking-tight">Kita<span class="text-emerald-400">Doa</span></h1>
             <p class="text-[9px] text-gold-accent font-bold tracking-widest uppercase mt-0.5">Ultra Premium V5</p>
@@ -211,8 +216,8 @@
     </div>
   </header>
 
-  <!-- IMPORTANT: Increased padding top to ensure header doesn't overlap content when scrolled to top -->
-  <main class="max-w-[600px] mx-auto px-4 pt-[140px] pb-32 relative z-10">
+  <!-- IMPORTANT: Increased padding top to ensure header doesn't overlap content when scrolled to top. Now set to 150px. -->
+  <main class="max-w-[600px] mx-auto px-4 pt-[150px] pb-32 relative z-10">
 
     <!-- ========================================== -->
     <!-- TAB 1: RUANG DOA (AI)                      -->
@@ -240,7 +245,7 @@
           </div>
           
           <div class="relative group z-10">
-            <textarea id="doaInput" rows="3" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-2xl p-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/50 transition-all resize-none shadow-inner" placeholder="Nyatakan hajat anda di sini. Cth: Ya Allah, permudahkanlah urusan temuduga kerjaku esok, lembutkanlah hati penemuduga untuk menerimaku..."></textarea>
+            <textarea id="doaInput" rows="3" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-2xl p-4 text-base text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/50 transition-all resize-none shadow-inner" placeholder="Nyatakan hajat anda di sini. Cth: Ya Allah, permudahkanlah urusan temuduga kerjaku esok, lembutkanlah hati penemuduga untuk menerimaku..."></textarea>
             
             <button onclick="generateDoaAI()" id="btnGenerateDoa" class="absolute bottom-3 right-3 btn-magic-premium text-white w-10 h-10 rounded-xl flex items-center justify-center btn-press">
               <i class="fa-solid fa-paper-plane text-sm"></i>
@@ -275,7 +280,7 @@
             <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">1</div>
             <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
               <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Penyucian Jiwa</h4>
-              <p id="teksLangkah1" class="text-[15px] text-slate-200 italic font-medium leading-relaxed">"Astaghfirullahalazim, allazi la ilaha illa huwal hayyul qayyum wa atubu ilaih." <span class="text-slate-500 text-xs not-italic">(3x)</span></p>
+              <p id="teksLangkah1" class="text-[15px] text-slate-200 font-medium leading-relaxed">"Astaghfirullahalazim, allazi la ilaha illa huwal hayyul qayyum wa atubu ilaih." <span class="text-slate-500 text-xs">(3x)</span></p>
               <button onclick="copySingleText('teksLangkah1', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
             </div>
           </div>
@@ -284,7 +289,7 @@
             <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">2</div>
             <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
               <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Sanjungan Kepada Pencipta</h4>
-              <p id="teksLangkah2" class="text-[15px] text-slate-200 italic font-medium leading-relaxed">"Alhamdulillahirabbil 'alamin. Ya Rahman, Ya Rahim, Ya Dzal Jalali Wal Ikram."</p>
+              <p id="teksLangkah2" class="text-[15px] text-slate-200 font-medium leading-relaxed">"Alhamdulillahirabbil 'alamin. Ya Rahman, Ya Rahim, Ya Dzal Jalali Wal Ikram."</p>
               <button onclick="copySingleText('teksLangkah2', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
             </div>
           </div>
@@ -293,7 +298,7 @@
             <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">3</div>
             <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
               <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Selawat Agung</h4>
-              <p id="teksLangkah3" class="text-[15px] text-slate-200 italic font-medium leading-relaxed">"Allahumma solli 'ala sayyidina Muhammad, wa 'ala ali sayyidina Muhammad."</p>
+              <p id="teksLangkah3" class="text-[15px] text-slate-200 font-medium leading-relaxed">"Allahumma solli 'ala sayyidina Muhammad, wa 'ala ali sayyidina Muhammad."</p>
               <button onclick="copySingleText('teksLangkah3', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
             </div>
           </div>
@@ -321,7 +326,7 @@
             <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">5</div>
             <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
               <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Penutup Sempurna</h4>
-              <p id="teksLangkah5" class="text-[14px] text-slate-300 italic font-medium leading-relaxed">"Rabbana atina fiddunya hasanah wa fil akhirati hasanah waqina 'adzabannar. Wa sollallahu 'ala sayyidina Muhammad, walhamdulillahi rabbil 'alamin."</p>
+              <p id="teksLangkah5" class="text-[14px] text-slate-300 font-medium leading-relaxed">"Rabbana atina fiddunya hasanah wa fil akhirati hasanah waqina 'adzabannar. Wa sollallahu 'ala sayyidina Muhammad, walhamdulillahi rabbil 'alamin."</p>
               <button onclick="copySingleText('teksLangkah5', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
             </div>
           </div>
@@ -366,7 +371,7 @@
       </div>
       
       <div class="relative inline-block text-left w-64 animate-enter" style="animation-delay: 0.2s;">
-        <select id="zikirSelect" class="block w-full ultra-glass text-white font-bold py-4 px-6 appearance-none focus:outline-none border-emerald-500/30 focus:border-emerald-400 transition-all cursor-pointer text-center text-sm">
+        <select id="zikirSelect" class="block w-full ultra-glass text-white font-bold py-4 px-6 appearance-none focus:outline-none border-emerald-500/30 focus:border-emerald-400 transition-all cursor-pointer text-center text-base">
           <option value="Subhanallah">Subhanallah</option>
           <option value="Alhamdulillah">Alhamdulillah</option>
           <option value="Allahu Akbar">Allahu Akbar</option>
@@ -406,7 +411,7 @@
       </div>
 
       <!-- KitaMarket -->
-      <div class="ultra-glass p-5 border-l-4 border-l-emerald-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.2s;" onclick="window.location.href='/market/index.html'">
+      <div class="ultra-glass p-5 border-l-4 border-l-emerald-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.2s;" onclick="window.location.href='../market/index.html'">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl group-hover:bg-emerald-500/30 transition-all"></div>
         <div class="flex items-center gap-4 mb-3 relative z-10">
           <div class="w-10 h-10 rounded-[12px] bg-emerald-900/40 border border-emerald-500/30 flex items-center justify-center shadow-lg">
@@ -423,7 +428,7 @@
       </div>
 
       <!-- KitaWeb -->
-      <div class="ultra-glass p-5 border-l-4 border-l-blue-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.3s;" onclick="window.location.href='/web/index.html'">
+      <div class="ultra-glass p-5 border-l-4 border-l-blue-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.3s;" onclick="window.location.href='../web/index.html'">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-500/20 rounded-full blur-2xl group-hover:bg-blue-500/30 transition-all"></div>
         <div class="flex items-center gap-4 mb-3 relative z-10">
           <div class="w-10 h-10 rounded-[12px] bg-blue-900/40 border border-blue-500/30 flex items-center justify-center shadow-lg">
@@ -440,7 +445,7 @@
       </div>
 
       <!-- KitaKahwin -->
-      <div class="ultra-glass p-5 border-l-4 border-l-amber-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.4s;" onclick="window.location.href='/kahwin/index.html'">
+      <div class="ultra-glass p-5 border-l-4 border-l-amber-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.4s;" onclick="window.location.href='../kahwin/index.html'">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-500/20 rounded-full blur-2xl group-hover:bg-amber-500/30 transition-all"></div>
         <div class="flex items-center gap-4 mb-3 relative z-10">
           <div class="w-10 h-10 rounded-[12px] bg-amber-900/40 border border-amber-500/30 flex items-center justify-center shadow-lg">
@@ -457,7 +462,7 @@
       </div>
 
       <!-- KitaInvite -->
-      <div class="ultra-glass p-5 border-l-4 border-l-pink-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.5s;" onclick="window.location.href='/invite/index.html'">
+      <div class="ultra-glass p-5 border-l-4 border-l-pink-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.5s;" onclick="window.location.href='../invite/index.html'">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-pink-500/20 rounded-full blur-2xl group-hover:bg-pink-500/30 transition-all"></div>
         <div class="flex items-center gap-4 mb-3 relative z-10">
           <div class="w-10 h-10 rounded-[12px] bg-pink-900/40 border border-pink-500/30 flex items-center justify-center shadow-lg">
@@ -474,7 +479,7 @@
       </div>
 
       <!-- KitaAffiliate -->
-      <div class="ultra-glass p-5 border-l-4 border-l-cyan-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.6s;" onclick="window.location.href='/affiliate/index.html'">
+      <div class="ultra-glass p-5 border-l-4 border-l-cyan-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.6s;" onclick="window.location.href='../affiliate/index.html'">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/20 rounded-full blur-2xl group-hover:bg-cyan-500/30 transition-all"></div>
         <div class="flex items-center gap-4 mb-3 relative z-10">
           <div class="w-10 h-10 rounded-[12px] bg-cyan-900/40 border border-cyan-500/30 flex items-center justify-center shadow-lg">
@@ -745,6 +750,20 @@
         loadingEl.classList.add('hidden');
       }
     }
+
+    // Initialize scrolling listener for subtle header effect
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        const header = document.getElementById('main-header');
+        if (window.scrollY > 50) {
+            header.style.backgroundColor = 'rgba(10, 15, 30, 0.85)';
+            header.style.backdropFilter = 'blur(40px)';
+        } else {
+            header.style.backgroundColor = 'var(--glass-bg)';
+            header.style.backdropFilter = 'blur(32px)';
+        }
+        lastScrollY = window.scrollY;
+    });
   </script>
 
 </body>
