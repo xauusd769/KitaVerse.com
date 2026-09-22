@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>KitaDoa | Ultra Premium Ecosystem V5</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --emerald-primary: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.5);
+      --gold-accent: #fbbf24;
+      --bg-deep: #02040a;
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-bg: rgba(10, 15, 30, 0.4);
+    }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-deep);
+      color: #e2e8f0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      overscroll-behavior-y: none;
+    }
+
+    /* Cosmic Ambient Background */
+    .cosmic-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: radial-gradient(circle at 50% 0%, #061e16 0%, var(--bg-deep) 70%);
+      overflow: hidden;
+    }
+    
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.4;
+      animation: floatOrb 25s infinite ease-in-out alternate;
+    }
+    .orb-1 { top: -10%; left: -20%; width: 60vw; height: 60vw; background: #064e3b; animation-delay: 0s; }
+    .orb-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: #0f172a; animation-delay: -5s; }
+    .orb-3 { top: 40%; left: 60%; width: 40vw; height: 40vw; background: rgba(16, 185, 129, 0.15); animation-delay: -10s; }
+
+    .mesh-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .ultra-glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        0 20px 40px -10px rgba(0,0,0,0.7),
+        inset 0 1px 0 0 rgba(255,255,255,0.1),
+        inset 0 0 20px rgba(16, 185, 129, 0.05);
+      border-radius: 28px;
+    }
+
+    .interactive-card {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .interactive-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: 
+        0 30px 60px -15px rgba(16, 185, 129, 0.15),
+        inset 0 1px 0 0 rgba(255,255,255,0.2);
+    }
+
+    .premium-tab {
+      position: relative;
+      transition: all 0.4s ease;
+      overflow: hidden;
+    }
+    .premium-tab.active {
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.2), rgba(6, 78, 59, 0.1));
+      color: #fff;
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+    .premium-tab.active::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, #34d399, transparent);
+    }
+
+    .tasbih-core {
+      background: linear-gradient(145deg, #0f172a, #020617);
+      box-shadow: 
+        inset 5px 5px 15px rgba(255, 255, 255, 0.03),
+        inset -5px -5px 20px rgba(0, 0, 0, 0.9),
+        0 25px 50px -12px rgba(0, 0, 0, 0.8),
+        0 0 0 2px rgba(16, 185, 129, 0.1),
+        0 0 40px rgba(16, 185, 129, 0.2);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tasbih-core:active {
+      box-shadow: 
+        inset 10px 10px 25px rgba(0, 0, 0, 0.9),
+        inset -2px -2px 10px rgba(255, 255, 255, 0.02),
+        0 10px 20px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(16, 185, 129, 0.4);
+      transform: scale(0.96) translateY(2px);
+    }
+    
+    .tasbih-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent, var(--emerald-primary), var(--gold-accent), transparent 40%);
+      animation: spin 4s linear infinite;
+      z-index: -1;
+      opacity: 0.5;
+      filter: blur(4px);
+    }
+
+    .btn-magic-premium {
+      background: linear-gradient(135deg, #059669, #10b981);
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn-magic-premium:hover {
+      box-shadow: 0 15px 35px -5px rgba(16, 185, 129, 0.6), inset 0 1px 0 rgba(255,255,255,0.4);
+      transform: translateY(-2px);
+    }
+
+    .timeline-node { position: relative; }
+    .timeline-node::before {
+      content: ''; position: absolute; top: 30px; bottom: -30px; left: 15px; width: 2px;
+      background: linear-gradient(to bottom, var(--emerald-primary) 0%, rgba(16,185,129,0.1) 100%);
+      z-index: 0;
+    }
+    .timeline-node:last-child::before { display: none; }
+
+    .text-gradient-gold { background: linear-gradient(to right, #fde68a, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .text-gradient-emerald { background: linear-gradient(to right, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .btn-press:active { transform: scale(0.95); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(40px, 60px) scale(1.1); } }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
+    
+    .animate-enter { animation: enterUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+    @keyframes enterUp { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  </style>
+</head>
+<body class="selection:bg-emerald-500/40 text-slate-300">
+
+  <!-- Ambient Universe Background -->
+  <div class="cosmic-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="mesh-grid"></div>
+
+  <header class="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[600px] z-50 ultra-glass px-2 py-2">
+    <div class="flex flex-col gap-2">
+      <!-- Top Row -->
+      <div class="flex items-center justify-between px-3 pt-1">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.5)] cursor-pointer" onclick="window.location.reload()">
+            <i class="fa-solid fa-hands-praying text-slate-900 text-lg"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-white text-lg leading-none tracking-tight">Kita<span class="text-emerald-400">Doa</span></h1>
+            <p class="text-[9px] text-gold-accent font-bold tracking-widest uppercase mt-0.5">Ultra Premium V5</p>
+          </div>
+        </div>
+        <div class="bg-slate-900/60 px-3 py-1.5 rounded-full border border-emerald-500/30 flex items-center gap-2">
+          <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-[9px] font-bold text-emerald-100 tracking-wider uppercase">Online</span>
+        </div>
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto no-scrollbar px-1 pb-1">
+        <button onclick="switchTab('doa')" id="tab-doa" class="premium-tab active btn-press shrink-0 px-5 py-2.5 rounded-xl border border-slate-700/50 text-xs font-bold text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Ruang Doa
+        </button>
+        <button onclick="switchTab('tasbih')" id="tab-tasbih" class="premium-tab btn-press shrink-0 px-5 py-2.5 rounded-xl border border-slate-700/50 text-xs font-bold text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-fingerprint"></i> Tasbih 4D
+        </button>
+        <button onclick="switchTab('biz')" id="tab-biz" class="premium-tab btn-press shrink-0 px-5 py-2.5 rounded-xl border border-amber-900/30 text-xs font-bold text-amber-500/70 flex items-center gap-2">
+          <i class="fa-solid fa-gem"></i> Ekosistem
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- IMPORTANT: Increased padding top to ensure header doesn't overlap content when scrolled to top -->
+  <main class="max-w-[600px] mx-auto px-4 pt-[140px] pb-32 relative z-10">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: RUANG DOA (AI)                      -->
+    <!-- ========================================== -->
+    <div id="content-doa" class="space-y-6 block">
+      
+      <!-- AI Generator Engine Input -->
+      <div class="ultra-glass p-1.5 animate-enter" style="animation-delay: 0.1s;">
+        <div class="bg-slate-900/80 rounded-[22px] p-5 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          
+          <div class="flex justify-between items-center mb-4 relative z-10">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
+                <i class="fa-solid fa-microchip text-emerald-400 text-xs"></i>
+              </div>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-white text-sm">Enjin Doa Pintar (AI)</h3>
+                  <span class="bg-emerald-500/20 text-emerald-400 text-[8px] font-black px-2 py-0.5 rounded border border-emerald-500/30 uppercase tracking-widest hidden sm:inline-block">Diperkaya 'Aafiyah & Inayah</span>
+                </div>
+                <p class="text-[10px] text-slate-400">Pohon doa spesifik dengan adab yang betul</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="relative group z-10">
+            <textarea id="doaInput" rows="3" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-2xl p-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/50 transition-all resize-none shadow-inner" placeholder="Nyatakan hajat anda di sini. Cth: Ya Allah, permudahkanlah urusan temuduga kerjaku esok, lembutkanlah hati penemuduga untuk menerimaku..."></textarea>
+            
+            <button onclick="generateDoaAI()" id="btnGenerateDoa" class="absolute bottom-3 right-3 btn-magic-premium text-white w-10 h-10 rounded-xl flex items-center justify-center btn-press">
+              <i class="fa-solid fa-paper-plane text-sm"></i>
+            </button>
+          </div>
+
+          <div id="doaLoading" class="hidden flex-col items-center justify-center py-6 mt-2">
+            <div class="relative w-10 h-10 flex items-center justify-center mb-3">
+              <div class="absolute inset-0 border-2 border-emerald-500/20 rounded-full"></div>
+              <div class="absolute inset-0 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+              <i class="fa-solid fa-sparkles text-emerald-300 text-[10px] animate-pulse"></i>
+            </div>
+            <p class="text-[10px] text-emerald-400 font-mono uppercase tracking-[0.2em]">Memproses Frekuensi Kerohanian...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULT: STRUKTUR DOA EXTRA POWERFUL -->
+      <div id="aiDoaResultContainer" class="hidden space-y-4 animate-enter" style="animation-delay: 0.1s;">
+        <div class="flex justify-between items-center px-2">
+          <h3 class="font-extrabold text-white text-sm tracking-wide flex items-center gap-2">
+            <i class="fa-solid fa-sitemap text-emerald-500"></i> Struktur Doa Mustajab
+          </h3>
+          <button onclick="copyFullDoa()" id="btnCopyFullDoa" class="text-[10px] font-bold text-slate-900 bg-emerald-400 hover:bg-emerald-300 px-4 py-2 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all flex items-center gap-1.5 btn-press">
+            <i class="fa-regular fa-copy"></i> Salin Semua Langkah
+          </button>
+        </div>
+
+        <div class="relative pl-10 space-y-5" id="doaCopyTarget">
+          <!-- Steps 1 to 3 -->
+          <div class="timeline-node group">
+            <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">1</div>
+            <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
+              <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Penyucian Jiwa</h4>
+              <p id="teksLangkah1" class="text-[15px] text-slate-200 italic font-medium leading-relaxed">"Astaghfirullahalazim, allazi la ilaha illa huwal hayyul qayyum wa atubu ilaih." <span class="text-slate-500 text-xs not-italic">(3x)</span></p>
+              <button onclick="copySingleText('teksLangkah1', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+
+          <div class="timeline-node group">
+            <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">2</div>
+            <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
+              <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Sanjungan Kepada Pencipta</h4>
+              <p id="teksLangkah2" class="text-[15px] text-slate-200 italic font-medium leading-relaxed">"Alhamdulillahirabbil 'alamin. Ya Rahman, Ya Rahim, Ya Dzal Jalali Wal Ikram."</p>
+              <button onclick="copySingleText('teksLangkah2', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+
+          <div class="timeline-node group">
+            <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">3</div>
+            <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
+              <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Selawat Agung</h4>
+              <p id="teksLangkah3" class="text-[15px] text-slate-200 italic font-medium leading-relaxed">"Allahumma solli 'ala sayyidina Muhammad, wa 'ala ali sayyidina Muhammad."</p>
+              <button onclick="copySingleText('teksLangkah3', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+
+          <!-- Step 4: AI Generated (Highlighted) -->
+          <div class="timeline-node">
+            <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-emerald-500 border-2 border-emerald-300 rounded-full font-bold text-xs text-slate-900 z-10 shadow-[0_0_20px_rgba(16,185,129,0.8)]">4</div>
+            <div class="ultra-glass p-1 relative overflow-hidden interactive-card border-emerald-500/50">
+              <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-emerald-500/10 opacity-50"></div>
+              <div class="bg-gradient-to-br from-slate-900/90 to-[#02100a]/90 p-5 rounded-[26px] relative z-10">
+                <div class="flex items-center justify-between mb-4 relative z-10">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                    <span class="text-emerald-400 text-[10px] font-extrabold uppercase tracking-[0.2em]">Hajat ('Aafiyah & Inayah)</span>
+                  </div>
+                  <button onclick="copySingleText('aiDoaText', this)" class="text-emerald-400/60 hover:text-emerald-300 bg-emerald-900/30 w-8 h-8 rounded-full flex items-center justify-center border border-emerald-500/20 transition-all"><i class="fa-regular fa-copy text-xs"></i></button>
+                </div>
+                <p id="aiDoaText" class="text-[17px] font-semibold text-white leading-relaxed tracking-wide relative z-10 drop-shadow-md"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="timeline-node group">
+            <div class="absolute -left-10 top-2 w-8 h-8 flex items-center justify-center bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 rounded-full font-bold text-xs text-slate-400 group-hover:text-emerald-400 transition-colors z-10 shadow-lg">5</div>
+            <div class="ultra-glass p-5 hover:border-emerald-500/30 transition-colors relative interactive-card">
+              <h4 class="text-[10px] font-extrabold text-slate-400 mb-2 uppercase tracking-[0.15em]">Penutup Sempurna</h4>
+              <p id="teksLangkah5" class="text-[14px] text-slate-300 italic font-medium leading-relaxed">"Rabbana atina fiddunya hasanah wa fil akhirati hasanah waqina 'adzabannar. Wa sollallahu 'ala sayyidina Muhammad, walhamdulillahi rabbil 'alamin."</p>
+              <button onclick="copySingleText('teksLangkah5', this)" class="absolute top-4 right-4 text-slate-500 hover:text-emerald-400 p-2 transition-colors"><i class="fa-regular fa-copy"></i></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DOA RAWAK HARIAN -->
+      <div class="ultra-glass p-6 animate-enter interactive-card group" style="animation-delay: 0.2s;">
+        <div class="flex justify-between items-start mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center border border-rose-500/30">
+              <i class="fa-solid fa-heart text-rose-400 text-xs"></i>
+            </div>
+            <div>
+              <h3 id="doaHarianTitle" class="font-extrabold text-white text-sm tracking-wide">Doa Harian</h3>
+              <p class="text-[9px] text-slate-400 uppercase tracking-widest mt-0.5">Saranan Auto-Rawak</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1">
+            <button onclick="copySingleText('doaHarianText', this)" class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-all flex items-center justify-center" title="Salin Doa">
+              <i class="fa-regular fa-copy text-xs"></i>
+            </button>
+            <button onclick="janaDoaHarian()" class="w-8 h-8 rounded-full bg-slate-800/50 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-all flex items-center justify-center btn-press" title="Tukar Doa">
+              <i class="fa-solid fa-rotate-right text-xs"></i>
+            </button>
+          </div>
+        </div>
+        <div class="bg-slate-900/40 rounded-xl p-4 border border-slate-700/30">
+          <p id="doaHarianText" class="text-[15px] text-slate-200 leading-relaxed font-medium"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: TASBIH 4D                           -->
+    <!-- ========================================== -->
+    <div id="content-tasbih" class="hidden space-y-10 text-center pt-8">
+      <div class="animate-enter" style="animation-delay: 0.1s;">
+        <h2 class="text-3xl font-black text-white tracking-tight mb-2">Tasbih <span class="text-gradient-emerald">Pro</span></h2>
+        <p class="text-xs text-slate-400 uppercase tracking-[0.1em] font-bold">Haptic Feedback Enabled</p>
+      </div>
+      
+      <div class="relative inline-block text-left w-64 animate-enter" style="animation-delay: 0.2s;">
+        <select id="zikirSelect" class="block w-full ultra-glass text-white font-bold py-4 px-6 appearance-none focus:outline-none border-emerald-500/30 focus:border-emerald-400 transition-all cursor-pointer text-center text-sm">
+          <option value="Subhanallah">Subhanallah</option>
+          <option value="Alhamdulillah">Alhamdulillah</option>
+          <option value="Allahu Akbar">Allahu Akbar</option>
+          <option value="Istighfar">Astaghfirullah</option>
+          <option value="Selawat">Selawat ke atas Nabi</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-5 flex items-center text-emerald-400">
+          <i class="fa-solid fa-caret-down"></i>
+        </div>
+      </div>
+
+      <div class="flex justify-center animate-enter" style="animation-delay: 0.3s;">
+        <div class="relative">
+          <div class="tasbih-ring w-[280px] h-[280px]"></div>
+          <button onclick="incrementTasbih()" class="tasbih-core w-[280px] h-[280px] rounded-full flex flex-col items-center justify-center relative outline-none select-none touch-manipulation">
+            <span id="tasbihCount" class="text-8xl font-black text-white tracking-tighter z-10" style="text-shadow: 0 10px 30px rgba(0,0,0,0.8);">0</span>
+            <span class="text-[11px] text-emerald-400 mt-6 font-bold uppercase tracking-[0.3em] z-10 drop-shadow-md">Ketik Skrin</span>
+            <div id="rippleContainer" class="absolute inset-0 pointer-events-none overflow-hidden rounded-full"></div>
+          </button>
+        </div>
+      </div>
+      
+      <div class="flex justify-center animate-enter" style="animation-delay: 0.4s;">
+        <button onclick="resetTasbih()" class="px-6 py-3 rounded-full ultra-glass text-slate-300 font-bold text-xs uppercase tracking-widest hover:text-white transition-all flex items-center gap-2 btn-press">
+          <i class="fa-solid fa-rotate-left"></i> Kosongkan
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: EKOSISTEM BIZ (KEMASKINI LIVE)      -->
+    <!-- ========================================== -->
+    <div id="content-biz" class="hidden space-y-5 pt-2">
+      <div class="text-center mb-6 animate-enter" style="animation-delay: 0.1s;">
+        <h2 class="text-2xl font-black text-white tracking-tight mb-2">Kita<span class="text-gradient-gold">Verse</span></h2>
+        <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">Rangkaian Ekosistem Pintar</p>
+      </div>
+
+      <!-- KitaMarket -->
+      <div class="ultra-glass p-5 border-l-4 border-l-emerald-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.2s;" onclick="window.location.href='/market/index.html'">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl group-hover:bg-emerald-500/30 transition-all"></div>
+        <div class="flex items-center gap-4 mb-3 relative z-10">
+          <div class="w-10 h-10 rounded-[12px] bg-emerald-900/40 border border-emerald-500/30 flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-shop text-emerald-400 text-base"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-sm">KitaMarket</h3>
+            <span class="text-[9px] text-emerald-400 font-bold tracking-wider uppercase">Hab E-Dagang Komuniti</span>
+          </div>
+        </div>
+        <p class="text-[12px] text-slate-300 leading-relaxed relative z-10 font-medium">
+          Menyokong usahawan tempatan dan produk KEMAS dengan sistem pesanan COD yang pantas dan dipercayai.
+        </p>
+      </div>
+
+      <!-- KitaWeb -->
+      <div class="ultra-glass p-5 border-l-4 border-l-blue-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.3s;" onclick="window.location.href='/web/index.html'">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-500/20 rounded-full blur-2xl group-hover:bg-blue-500/30 transition-all"></div>
+        <div class="flex items-center gap-4 mb-3 relative z-10">
+          <div class="w-10 h-10 rounded-[12px] bg-blue-900/40 border border-blue-500/30 flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-globe text-blue-400 text-base"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-sm">KitaWeb SaaS</h3>
+            <span class="text-[9px] text-blue-400 font-bold tracking-wider uppercase">Laman Web Bisnes Pantas</span>
+          </div>
+        </div>
+        <p class="text-[12px] text-slate-300 leading-relaxed relative z-10 font-medium">
+          Bina laman jualan perniagaan anda yang dilengkapi dengan borang pesanan WhatsApp pintar dan katalog produk yang kemas.
+        </p>
+      </div>
+
+      <!-- KitaKahwin -->
+      <div class="ultra-glass p-5 border-l-4 border-l-amber-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.4s;" onclick="window.location.href='/kahwin/index.html'">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-500/20 rounded-full blur-2xl group-hover:bg-amber-500/30 transition-all"></div>
+        <div class="flex items-center gap-4 mb-3 relative z-10">
+          <div class="w-10 h-10 rounded-[12px] bg-amber-900/40 border border-amber-500/30 flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-ring text-amber-400 text-base"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-sm">KitaKahwin</h3>
+            <span class="text-[9px] text-amber-400 font-bold tracking-wider uppercase">Direktori Perkahwinan</span>
+          </div>
+        </div>
+        <p class="text-[12px] text-slate-300 leading-relaxed relative z-10 font-medium">
+          Platform utama untuk mencari vendor majlis, dewan acara, dan pengurusan bajet kenduri dengan kalkulator bersepadu.
+        </p>
+      </div>
+
+      <!-- KitaInvite -->
+      <div class="ultra-glass p-5 border-l-4 border-l-pink-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.5s;" onclick="window.location.href='/invite/index.html'">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-pink-500/20 rounded-full blur-2xl group-hover:bg-pink-500/30 transition-all"></div>
+        <div class="flex items-center gap-4 mb-3 relative z-10">
+          <div class="w-10 h-10 rounded-[12px] bg-pink-900/40 border border-pink-500/30 flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-envelope-open-text text-pink-400 text-base"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-sm">KitaInvite</h3>
+            <span class="text-[9px] text-pink-400 font-bold tracking-wider uppercase">Kad Jemputan Digital</span>
+          </div>
+        </div>
+        <p class="text-[12px] text-slate-300 leading-relaxed relative z-10 font-medium">
+          Sistem kad jemputan kahwin digital interaktif (gaya pintu istana 3D) yang dihubungkan terus dengan pengurusan kehadiran tetamu (RSVP).
+        </p>
+      </div>
+
+      <!-- KitaAffiliate -->
+      <div class="ultra-glass p-5 border-l-4 border-l-cyan-500 relative overflow-hidden group cursor-pointer animate-enter interactive-card" style="animation-delay: 0.6s;" onclick="window.location.href='/affiliate/index.html'">
+        <div class="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/20 rounded-full blur-2xl group-hover:bg-cyan-500/30 transition-all"></div>
+        <div class="flex items-center gap-4 mb-3 relative z-10">
+          <div class="w-10 h-10 rounded-[12px] bg-cyan-900/40 border border-cyan-500/30 flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-handshake text-cyan-400 text-base"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-sm">KitaAffiliate</h3>
+            <span class="text-[9px] text-cyan-400 font-bold tracking-wider uppercase">Jana Pendapatan Ejen</span>
+          </div>
+        </div>
+        <p class="text-[12px] text-slate-300 leading-relaxed relative z-10 font-medium">
+          Sertai komuniti ejen kami. Promosi dan jana komisen lumayan untuk setiap pendaftaran vendor atau jualan produk di ekosistem KitaVerse.
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Premium Toast -->
+  <div id="copyToast" class="fixed bottom-8 left-1/2 -translate-x-1/2 ultra-glass border-emerald-500/50 px-6 py-3 text-white font-bold text-sm transition-all duration-500 translate-y-24 opacity-0 z-[100] flex items-center gap-3 shadow-[0_10px_40px_rgba(16,185,129,0.3)] pointer-events-none">
+    <div class="w-6 h-6 rounded-full bg-emerald-500 text-slate-900 flex items-center justify-center"><i class="fa-solid fa-check text-[10px]"></i></div>
+    Teks Berjaya Disalin
+  </div>
+
+  <script>
+    // ==========================================
+    // Doa Harian Rawak (Telah Diperkaya 'Aafiyah & Inayah)
+    // ==========================================
+    const senaraiDoa = [
+      { tajuk: "Doa Ketenangan & 'Aafiyah", teks: "Ya Allah, kurniakanlah nikmat 'Aafiyah (kesembuhan rohani dan fizikal) ke atasku. Aku memohon jiwa yang tenang, yang percaya pada pertemuan dengan-Mu, dan redha dengan ketetapan-Mu." },
+      { tajuk: "Doa Rawat Gelisah & Inayah", teks: "Ya Allah, aku memohon perlindungan-Mu daripada keresahan dan kesedihan. Peliharalah setiap langkahku dengan Inayah-Mu (jagaan-Mu) yang tidak bertepi agar aku sentiasa dalam rahmat-Mu." },
+      { tajuk: "Doa Memohon Kemudahan", teks: "Ya Allah, tiada kemudahan melainkan apa yang Engkau jadikan mudah. Dan Engkaulah yang menjadikan kesukaran itu mudah jika Engkau kehendaki. Pimpinlah tanganku ya Allah." },
+      { tajuk: "Doa Tawakkal Mutlak", teks: "Ya Allah, aku berserah diri kepada-Mu, aku beriman kepada-Mu, aku bertawakkal kepada-Mu. Jadikanlah Inayah-Mu sebagai pendinding dari segala mudarat dunia dan akhirat." },
+      { tajuk: "Doa Syukur (Syakir)", teks: "Ya Allah, aku bersyukur atas segala ujian-Mu. Kurniakanlah aku 'Aafiyah agar aku teguh menghadapi hari-hari mendatang, dan berikanlah kelapangan dada yang luar biasa." }
+    ];
+
+    function janaDoaHarian() {
+      const el = document.getElementById('doaHarianText');
+      el.style.opacity = 0; 
+      
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * senaraiDoa.length);
+        const doa = senaraiDoa[randomIndex];
+        document.getElementById('doaHarianTitle').innerText = doa.tajuk;
+        el.innerText = `"${doa.teks}"`;
+        el.style.opacity = 1; 
+        el.style.transition = "opacity 0.4s ease";
+      }, 200);
+    }
+    document.addEventListener('DOMContentLoaded', janaDoaHarian);
+
+    // ==========================================
+    // Premium Copy Functionality
+    // ==========================================
+    function showCopyToast() {
+      const toast = document.getElementById('copyToast');
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(50);
+      setTimeout(() => { toast.classList.add('translate-y-24', 'opacity-0'); }, 2500);
+    }
+
+    function fallbackCopyTextToClipboard(text, btnElement) {
+      var textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.top = "0"; textArea.style.left = "0"; textArea.style.position = "fixed";
+      document.body.appendChild(textArea);
+      textArea.focus(); textArea.select();
+      try {
+        var successful = document.execCommand('copy');
+        if(successful) { animateButtonSuccess(btnElement); showCopyToast(); }
+      } catch (err) { console.error('Fallback Copy Error', err); }
+      document.body.removeChild(textArea);
+    }
+
+    function copyText(text, btnElement) {
+      if (!navigator.clipboard) {
+        fallbackCopyTextToClipboard(text, btnElement); return;
+      }
+      navigator.clipboard.writeText(text).then(function() {
+        animateButtonSuccess(btnElement);
+        showCopyToast();
+      }, function(err) {
+        fallbackCopyTextToClipboard(text, btnElement); 
+      });
+    }
+
+    function animateButtonSuccess(btnElement) {
+      if(!btnElement) return;
+      const originalHTML = btnElement.innerHTML;
+      btnElement.innerHTML = '<i class="fa-solid fa-check text-emerald-400 text-xs"></i>';
+      btnElement.classList.add('border-emerald-400');
+      setTimeout(() => {
+        btnElement.innerHTML = originalHTML;
+        btnElement.classList.remove('border-emerald-400');
+      }, 2000);
+    }
+
+    function copySingleText(elementId, btnElement) {
+      const el = document.getElementById(elementId);
+      if(!el || el.innerText.trim() === "") return;
+      const textToCopy = el.innerText.replace(/"/g, '').trim();
+      copyText(textToCopy, btnElement);
+    }
+
+    function copyFullDoa() {
+      const doaKhususEl = document.getElementById('aiDoaText');
+      const doaKhusus = doaKhususEl ? doaKhususEl.innerText.trim() : "";
+      
+      let textToCopy = "PANDUAN DOA MUSTAJAB\n\n";
+      textToCopy += "1. Penyucian Diri\nAstaghfirullahalazim, allazi la ilaha illa huwal hayyul qayyum wa atubu ilaih. (3x)\n\n";
+      textToCopy += "2. Memuji Allah\nAlhamdulillahirabbil 'alamin. Ya Rahman, Ya Rahim, Ya Dzal Jalali Wal Ikram.\n\n";
+      textToCopy += "3. Selawat\nAllahumma solli 'ala sayyidina Muhammad, wa 'ala ali sayyidina Muhammad.\n\n";
+      
+      if(doaKhusus) {
+          textToCopy += "4. Hajat Khusus\n" + doaKhusus + "\n\n";
+      } else {
+          textToCopy += "4. Hajat Khusus\n(Nyatakan hajat anda di sini)\n\n";
+      }
+      
+      textToCopy += "5. Penutup\nRabbana atina fiddunya hasanah wa fil akhirati hasanah waqina 'adzabannar. Wa sollallahu 'ala sayyidina Muhammad, walhamdulillahi rabbil 'alamin.\n";
+
+      const btn = document.getElementById('btnCopyFullDoa');
+      const originalHTML = btn.innerHTML;
+      copyText(textToCopy, null); 
+      
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Disalin Sempurna';
+      setTimeout(() => { btn.innerHTML = originalHTML; }, 2500);
+    }
+
+    // ==========================================
+    // Tab Switching Logic (Fixes the overlapping issue)
+    // ==========================================
+    function switchTab(tabId) {
+      // 1. Scroll to top to ensure header doesn't overlap new content
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      const contents = ['content-doa', 'content-tasbih', 'content-biz'];
+      const tabs = ['tab-doa', 'tab-tasbih', 'tab-biz'];
+
+      contents.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.add('hidden');
+        const animatedElements = el.querySelectorAll('.animate-enter');
+        animatedElements.forEach(animEl => {
+          animEl.style.animation = 'none';
+          animEl.offsetHeight; 
+          animEl.style.animation = null; 
+        });
+      });
+
+      tabs.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('active', 'text-white');
+        if(id !== 'tab-biz') {
+          el.classList.add('text-slate-400');
+        } else {
+          el.classList.add('text-amber-500/70');
+        }
+      });
+
+      document.getElementById('content-' + tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('tab-' + tabId);
+      if(tabId === 'biz') {
+        activeBtn.classList.remove('text-amber-500/70');
+        activeBtn.classList.add('active');
+      } else {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('active');
+      }
+    }
+
+    // ==========================================
+    // Tasbih 4D Logic
+    // ==========================================
+    let count = 0;
+    const countDisplay = document.getElementById('tasbihCount');
+    const rippleContainer = document.getElementById('rippleContainer');
+
+    function incrementTasbih() {
+      count++;
+      countDisplay.innerText = count;
+      if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(15); 
+      
+      const ripple = document.createElement('div');
+      ripple.classList.add('absolute', 'inset-0', 'bg-emerald-400/20', 'rounded-full');
+      ripple.style.animation = 'pulse-ring 0.5s ease-out forwards';
+      rippleContainer.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 500);
+    }
+
+    function resetTasbih() {
+      count = 0;
+      countDisplay.innerText = count;
+      if (window.navigator && window.navigator.vibrate) window.navigator.vibrate([30, 50, 30]); 
+    }
+
+    // ==========================================
+    // AI Doa Generator (Gemini API)
+    // ==========================================
+    async function generateDoaAI() {
+      const inputEl = document.getElementById('doaInput');
+      const btnEl = document.getElementById('btnGenerateDoa');
+      const loadingEl = document.getElementById('doaLoading');
+      const resultContainer = document.getElementById('aiDoaResultContainer');
+      const resultText = document.getElementById('aiDoaText');
+
+      const userHajat = inputEl.value.trim();
+
+      if (!userHajat) {
+        if (window.navigator && window.navigator.vibrate) window.navigator.vibrate([50, 50]);
+        inputEl.classList.add('border-rose-500/80');
+        setTimeout(() => inputEl.classList.remove('border-rose-500/80'), 800);
+        return;
+      }
+
+      btnEl.classList.add('hidden');
+      loadingEl.classList.remove('hidden');
+      resultContainer.classList.add('hidden');
+
+      try {
+        const apiKey = ""; // KOSONGKAN DALAM CANVAS
+        // Using stable API endpoint
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+        // PROMPT PREMIUM DIKEMASKINI: Wajib mengulang input pengguna & menyelitkan 'Aafiyah & Inayah
+        const systemPrompt = "Anda adalah pembantu spiritual Islam yang sangat bijaksana. Pengguna akan memberikan hajat atau situasi mereka. ARAHAN WAJIB 1: Anda MESTI mengulang dan menyelitkan situasi/hajat yang diberikan pengguna tersebut secara spesifik ke dalam bait doa. ARAHAN WAJIB 2 (SANGAT PENTING): Anda MESTI menggunakan dan memohon perkataan 'Aafiyah (kesembuhan/kesejahteraan fizikal dan mental) DAN Inayah (pertolongan/jagaan Allah) di dalam doa tersebut dengan ayat yang puitis. Jana SATU perenggan doa (maksimum 4-5 baris) dalam Bahasa Melayu. Fokus pada Tawakkal. Mula terus dengan doa (cth: 'Ya Allah, ...'). JANGAN letak sebarang format teks seperti markdown (bintang, bold). HANYA TEKS BIASA SAHAJA.";
+
+        const payload = {
+          contents: [{ parts: [{ text: userHajat }] }],
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          generationConfig: { temperature: 0.7 }
+        };
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const result = await response.json();
+        const candidate = result.candidates?.[0];
+
+        if (candidate && candidate.content?.parts?.[0]?.text) {
+          let cleanText = candidate.content.parts[0].text.replace(/\*\*/g, '').replace(/\*/g, '');
+          resultText.innerText = cleanText;
+          resultContainer.classList.remove('hidden');
+          
+          setTimeout(() => {
+            // Adjust scroll padding dynamically based on screen width/header size if needed
+            window.scrollTo({ 
+              top: resultContainer.offsetTop - 150, 
+              behavior: 'smooth' 
+            });
+          }, 100);
+        } else {
+           throw new Error("Invalid response format");
+        }
+
+      } catch (error) {
+        console.error("API Error:", error);
+        resultText.innerText = "Ya Allah, kurniakanlah nikmat 'Aafiyah ke atasku. Peliharalah hajatku ini dengan Inayah-Mu, jadikanlah ia sesuatu yang Engkau perkenankan. Permudahkanlah segalanya dengan rahmat-Mu. (Nota: Sistem AI sedang menyelaras, sila kiaskan niat anda sendiri di hati).";
+        resultContainer.classList.remove('hidden');
+      } finally {
+        btnEl.classList.remove('hidden');
+        loadingEl.classList.add('hidden');
+      }
+    }
+  </script>
+
+</body>
+</html>
